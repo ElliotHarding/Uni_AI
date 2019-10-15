@@ -1,0 +1,9 @@
+Plant pathology diagnosis chatbot
+ - Enter symptoms of plant pathology --> Returns type of infection
+ - Extension --> Ways of combatting infection
+
+
+
+Databases : 
+https://www.uaex.edu/yard-garden/resource-library/diseases/
+https://guides.lib.lsu.edu/c.php?g=243808&p=1879116
