@@ -7,3 +7,11 @@ Plant pathology diagnosis chatbot
 Databases : 
 https://www.uaex.edu/yard-garden/resource-library/diseases/
 https://guides.lib.lsu.edu/c.php?g=243808&p=1879116
+
+
+
+Deadlines:
+1 Tue 05/11/2019 
+Chatbot design planning document
+Chatbot with rule-based and similarity-based component
+Conversation log
