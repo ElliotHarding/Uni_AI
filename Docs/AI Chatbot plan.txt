@@ -2,7 +2,15 @@ Plant pathology diagnosis chatbot
  - Enter symptoms of plant pathology --> Returns type of infection
  - Extension --> Ways of combatting infection
 
+ - Plesentaries
+ - Ask what the chatbot does
+ - Ask for info on breeds
+ - Type in text similar to breed description --> returns 'that sounds like breed x' --> would you like info on that? --> yes/no
 
+ - Plesentaries --> returns plesentaries
+ - Ask what chatbot does --> returns what is does
+ - Enter dog breed --> returns info on dog breed (if vSimilar ask did you mean this breed? if yes describe breed if no goto sounds like)
+ - Describe dog --> returns 'that soudns like x want more on this breed?'
 
 
 Databases : 
