@@ -4,6 +4,7 @@ Plant pathology diagnosis chatbot
 
 
 
+
 Databases : 
 https://www.uaex.edu/yard-garden/resource-library/diseases/
 https://guides.lib.lsu.edu/c.php?g=243808&p=1879116
