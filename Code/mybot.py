@@ -22,9 +22,13 @@ texts = ["Trees and dogs are main characters in this story",
         "Nothing better than another story talking about airplanes, airlines and birds",
         "Superman defeats batman in the last round"]
 
-tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(texts)
-similarity = cosine_similarity(tfidf[0:1], tfidf)
-similarity = np.delete(similarity, 1)
-iMostSimilar = similarity.argmax()
-print(iMostSimilar)
-print(texts[iMostSimilar])
+def GetMostSimilar(string):
+    array = [string] + texts
+    tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(array)
+    similarityArray = cosine_similarity(tfidf[0:1], tfidf)
+    similarityArray = np.delete(similarityArray, 0)
+    return texts[similarityArray.argmax()]
+
+print(GetMostSimilar("This is dogs and houses too, but also about trees"))
+
+
