@@ -2,6 +2,7 @@
 import aiml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 # Create a Kernel object. No string encoding (all I/O is unicode)
 kern = aiml.Kernel()
@@ -13,18 +14,7 @@ print("Welcome")
 
 stopWords = ["the","is","an","a","at","and"]
 
-def TermFrequencyTable(term):
-    frequencyDict = dict()
-    
-    for word in term.split():
-        if word in frequencyDict:
-            frequencyDict[word] += 1
-        else:
-            frequencyDict[word] = 1
-            
-    return frequencyDict
-
-texts = ["This is about airplanes and airlines",
+texts = ["Trees and dogs are main characters in this story",
         "This is about airplanes and airlines",
         "This is about dogs and houses too, but also about trees",
         "Trees and dogs are main characters in this story",
@@ -33,8 +23,8 @@ texts = ["This is about airplanes and airlines",
         "Superman defeats batman in the last round"]
 
 tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(texts)
-#print(tfidf)
-
 similarity = cosine_similarity(tfidf[0:1], tfidf)
-
-print(similarity)
+similarity = np.delete(similarity, 1)
+iMostSimilar = similarity.argmax()
+print(iMostSimilar)
+print(texts[iMostSimilar])
