@@ -48,14 +48,17 @@ def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
     else:
         return similarityArray.argmax()
 
+def Exit():
+    print("Bye!")
+    sys.exit()
+
 def GetInput():
     try:
         userInput = input("> ")
         if userInput == '':
-            return "#"
+            return "-"
     except (KeyboardInterrupt, EOFError) as e:
-        print("Bye!")
-        sys.exit()
+        Exit()
     return userInput
 
 def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
@@ -65,17 +68,32 @@ def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
         if (GetInput() in waysOfSayingYes):
             print(breedInfo[iDog])
             return 1
+        else:
+            print("Apologies. ")
+            return 2
     return 0
 
 def DescribeDog(dogName):
     iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.95)        
     if iMostSimilarDog != -1:
         print(breedInfo[iMostSimilarDog])
-        return 1
     else:
-        return 0
+        print("Apologies, I don't have any info on that breed.")        
 
+def HandleUnknownInput(userInput):
 
+    ret = CheckDescribeDog(userInput, breeds, 0.6)
+    if ret == 1:
+        return
+    
+    elif ret == 2:
+        ret = CheckDescribeDog(userInput, breedInfo, 0.4)
+        if ret == 1:
+            return
+        elif ret == 0:
+            print("I did not get that, please try again.")
+    else:
+        print("I did not get that, please try again.")
 
 #######################################################
 # Main loop
@@ -99,25 +117,30 @@ def MainLoop():
         
         #Check if input can be handled by aiml
         answer = kern.respond(userInput)
-        if answer[0] != '#':
+        if answer[0] == '#':
 
-            if "Command-Describe" in answer:
-                DescribeDog([answer[:16]])
-            else:
-                if '?' in answer:
-                    previousWasQuestion = 1
-                print(answer)
-            
-        elif DescribeDog(userInput):
-            continue
-        elif CheckDescribeDog(userInput, breeds, 0.6):
-            continue
-        elif CheckDescribeDog(userInput, breedInfo, 0.4):
-            continue
+            #Split answer into cmd & input
+            params = answer[1:].split('$')
+            cmd = int(params[0])
+
+            if cmd == 0:
+                Exit()
+                
+            elif cmd == 1:
+                DescribeDog(params[1])
+                continue
+                    
+            elif cmd == 99:
+                HandleUnknownInput(params[1])
+                continue
+  
         else:
-            print("I did not get that, please try again.")
-        
-    
+            print(answer)
+
+        if '?' in answer:
+            previousWasQuestion = 1
+            
+            
 ReadFiles()
 MainLoop()
     
