@@ -121,7 +121,7 @@ def CheckSimilarDogNames(userInput, similariyBound):
         index+=1
 
     arrayLen = len(dogsToCheck)
-    dogsToCheck = dogsToCheck[0:arrayLen-1]
+    dogsToCheck = dogsToCheck[0:arrayLen-2]
 
     if arrayLen > 0:
         print("Which of these dogs would you like to know more about? " + dogsToCheck)
@@ -207,8 +207,8 @@ def MainLoop():
     
     previousWasQuestion = 0
 
-    prompt = "Try asking me a question about a specifc breed, try and describe a breed, or just make general dog related chit-chat!"
-    print("Hi! I'm the dog breed information chatbot. " + prompt)
+    prompt = ""
+    print("Hi! I'm the dog breed information chatbot.\nTry asking me a question about a specifc breed, ask me about groups of breeds\n(hounds, terriers, retrievers), try and describe a breed,\nor just make general dog related chit-chat!")
     
     while True: 
 
@@ -217,7 +217,7 @@ def MainLoop():
 
         if previousWasQuestion:
             previousWasQuestion = 0
-            print("Nice! " + prompt)
+            print("Nice!")
             continue
 
         #Get response from aiml
