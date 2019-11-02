@@ -50,6 +50,9 @@
 <category><pattern> WIKI SEARCH A * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
   
+<category><pattern> WIKI SEARCH * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
 <category><pattern> WIKIPEDIA SEARCH A * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
   

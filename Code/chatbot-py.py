@@ -24,7 +24,10 @@ breeds = []
 breedInfo = []
 
 #######################################################
-# Main loop
+# ReadFiles
+#   
+#   Reads breed-and-information file into global arrays
+#   breeds & breedInfo
 #######################################################
 def ReadFiles():
     global breeds, breedInfo
@@ -38,10 +41,10 @@ def ReadFiles():
         print("Error occured opening one of the files! " + e.strerror)
         sys.exit()
 
-# GetMostSimilar : Checks input list for most similar string to input string
-#   returns # if no string found
 #######################################################
-# Main loop
+# GetIndexOfMostSimilar
+#   Checks input list for most similar string to input string
+#   Returns -1 if no strings over similarityBound
 #######################################################
 def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
     array = [string] + searchArray
@@ -55,14 +58,15 @@ def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
         return similarityArray.argmax()
 
 #######################################################
-# Main loop
+# Exit
 #######################################################
 def Exit():
     print("Bye!")
     sys.exit()
 
 #######################################################
-# Main loop
+# GetInput
+#   Handles & returns user input
 #######################################################
 def GetInput():
     try:
@@ -74,7 +78,11 @@ def GetInput():
     return userInput
 
 #######################################################
-# Main loop
+# CheckDescribeDog
+#   Checks if user maybe trying to describe a dog,
+#   uses passed array to check
+#
+#
 #######################################################
 def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
     iDog = GetIndexOfMostSimilar(userInput, arrayToCheck, similariyBound)
@@ -89,10 +97,10 @@ def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
     return 0
 
 #######################################################
-# Main loop
+# WikiSearch
 #######################################################
-def WikiSearch(breed):    
-    wpage = wiki_wiki.page(breed)
+def WikiSearch(search):    
+    wpage = wiki_wiki.page(search)
     if wpage.exists():
         print(wpage.summary)
         print("Learn more at", wpage.canonicalurl)
@@ -100,7 +108,8 @@ def WikiSearch(breed):
         print("Sorry, I don't know what that is.")
             
 #######################################################
-# Main loop
+# DescribeDog
+# describes a dog
 #######################################################
 def DescribeDog(dogName):
 
@@ -109,7 +118,8 @@ def DescribeDog(dogName):
         print(breedInfo[iMostSimilarDog])
         
     else:
-        
+
+        #Handle case if user makes searched dog plural
         length = len(dogName) - 1
         if dogName[length].lower() == 's':
             DescribeDog(dogName[0:length])
@@ -120,7 +130,10 @@ def DescribeDog(dogName):
             WikiSearch(dogName)
             
 #######################################################
-# Main loop
+# HandleUnknownInput
+#
+#   Attempts to find figure out if user is asking for
+#   information on a dog
 #######################################################
 def HandleUnknownInput(userInput):
 
@@ -170,6 +183,10 @@ def MainLoop():
                 
             elif cmd == 1:
                 DescribeDog(params[1])
+                continue
+
+            elif cmd == 2:
+                WikiSearch(params[1])
                 continue
                     
             elif cmd == 99:
