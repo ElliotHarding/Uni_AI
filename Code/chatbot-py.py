@@ -92,7 +92,6 @@ def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
             print(breedInfo[iDog])
             return 1
         else:
-            print("Apologies. ")
             return 2
     return 0
 
@@ -124,10 +123,11 @@ def DescribeDog(dogName):
         if dogName[length].lower() == 's':
             DescribeDog(dogName[0:length])
             return
-            
-        print("Apologies, I don't have any info on that breed. Would you like me to wikipekida it?")
-        if (GetInput() in waysOfSayingYes):
-            WikiSearch(dogName)
+
+        if HandleUnknownInput(dogName) == 0:            
+            print("Apologies, I don't have any info on that breed. Would you like me to wikipekida it?")
+            if (GetInput() in waysOfSayingYes):
+                WikiSearch(dogName)
             
 #######################################################
 # HandleUnknownInput
@@ -135,20 +135,30 @@ def DescribeDog(dogName):
 #   Attempts to find figure out if user is asking for
 #   information on a dog
 #######################################################
-def HandleUnknownInput(userInput):
+def HandleUnknownInput(search):
 
-    ret = CheckDescribeDog(userInput, breeds, 0.4)
+    ret = CheckDescribeDog(search, breeds, 0.2)
     if ret == 1:
-        return
+        return 1 
     
     elif ret == 2:
-        ret = CheckDescribeDog(userInput, breedInfo, 0.2)
+        ret = CheckDescribeDog(search, breedInfo, 0.1)
         if ret == 1:
-            return
+            return 1
         elif ret == 0:
-            print("I did not get that, please try again.")
+            #Handle plural input, only after inital search,
+            #since dog name may just has an s at the end
+            length = len(search) - 1
+            if search[length].lower() == 's':
+                return HandleUnknownInput(search[0:length])
+            return 0
     else:
-        print("I did not get that, please try again.")
+        #Handle plural input, only after inital search,
+        #since dog name may just has an s at the end
+        length = len(search) - 1
+        if search[length].lower() == 's':
+            return HandleUnknownInput(search[0:length])
+        return 0
 
 #######################################################
 # Main loop
@@ -178,6 +188,10 @@ def MainLoop():
             params = answer[1:].split('$')
             cmd = int(params[0])
 
+            if params[1] == "":
+                print("I did not get that, please try again.")
+                continue
+
             if cmd == 0:
                 Exit()
                 
@@ -190,7 +204,8 @@ def MainLoop():
                 continue
                     
             elif cmd == 99:
-                HandleUnknownInput(params[1])
+                if HandleUnknownInput(params[1]) == 0:
+                    print("I did not get that, please try again.")
                 continue
   
         else:
