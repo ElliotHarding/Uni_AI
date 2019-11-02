@@ -86,32 +86,13 @@ def GetInput():
     return userInput
 
 #######################################################
-# CheckDescribeDog
-#   Checks if user maybe trying to describe a dog,
-#   uses passed array to check
+# CheckSimilarDogs
 #
 #
 #######################################################
-def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
-    iDog = GetIndexOfMostSimilar(userInput, arrayToCheck, similariyBound)
-    if iDog != -1:
-        print("Seems like you may be trying to describe a " + breeds[iDog] + ". Would you like information on this breed?")
-        if (GetInput() in waysOfSayingYes):
-            print(breedInfo[iDog])
-            return 1
-        else:
-            print("Right.")
-            return 2
-    return 0
+def CheckSimilarDogs(userInput, arrayToCheck, similariyBound):
 
-#######################################################
-# CheckSimilarDogNames
-#
-#
-#######################################################
-def CheckSimilarDogNames(userInput, similariyBound):
-
-    dogsAndSimilarity = GetSimilarityArray(userInput, breeds)
+    dogsAndSimilarity = GetSimilarityArray(userInput, arrayToCheck)
 
     dogsToCheck = ""
     index = 0
@@ -124,12 +105,8 @@ def CheckSimilarDogNames(userInput, similariyBound):
     dogsToCheck = dogsToCheck[0:arrayLen-2]
 
     if arrayLen > 0:
-        print("Which of these dogs would you like to know more about? " + dogsToCheck)
-        iMostSimilarDog = GetIndexOfMostSimilar(GetInput(), breeds, 0.7)        
-        if iMostSimilarDog != -1:
-            print(breedInfo[iMostSimilarDog])
-            return 1
-        print("Sorry it's not in the list!")
+        print("You can ask me about any of these dogs: " + dogsToCheck)
+        return 1
     return 0
 
 #######################################################
@@ -154,20 +131,7 @@ def DescribeDog(dogName):
         print(breedInfo[iMostSimilarDog])
         
     else:
-        #Handle case if user makes searched dog plural
-        length = len(dogName) - 1
-        if dogName[length].lower() == 's':
-            DescribeDog(dogName[0:length])
-            return
-
-        if CheckSimilarDogNames(dogName, 0.3) == 1:
-            return
-
-        print("It seems I couldn't find what you were looking for. Would you like me to wikipekida search '" + dogName + "'?")
-        if (GetInput() in waysOfSayingYes):
-            WikiSearch(dogName)
-        else:
-             print("Right.")
+        HandleUnknownInput(dogName)
             
 #######################################################
 # HandleUnknownInput
@@ -177,28 +141,85 @@ def DescribeDog(dogName):
 #######################################################
 def HandleUnknownInput(search):
 
-    ret = CheckDescribeDog(search, breeds, 0.2)
-    if ret == 1:
-        return 1 
-    
-    elif ret == 2:
-        ret = CheckDescribeDog(search, breedInfo, 0.1)
-        if ret == 1:
-            return 1
-        elif ret == 0:
-            #Handle plural input, only after inital search,
-            #since dog name may just has an s at the end
-            length = len(search) - 1
-            if search[length].lower() == 's':
-                return HandleUnknownInput(search[0:length])
-        return ret
+    if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
+        return
+        
+    print("It seems I couldn't find what you were looking for. Would you like me to wikipekida search '" + search + "'?")
+    if (GetInput() in waysOfSayingYes):
+        WikiSearch(dogName)
     else:
-        #Handle plural input, only after inital search,
-        #since dog name may just has an s at the end
-        length = len(search) - 1
-        if search[length].lower() == 's':
-            return HandleUnknownInput(search[0:length])
-        return ret
+        print("Right.")
+
+#######################################################
+# PrintDogSize
+#
+#   Prints size of a dog
+#######################################################
+def PrintDogSize(dogName):
+    iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)
+    if iMostSimilarDog != -1:
+        if sizes[iMostSimilarDog] == "L":
+            print("A " + breeds[iMostSimilarDog] " is a large sized dog.")
+        elif sizes[iMostSimilarDog] == "M":
+            print("A " + breeds[iMostSimilarDog] " is a medium sized dog")
+        elif sizes[iMostSimilarDog] == "S":
+            print("A " + breeds[iMostSimilarDog] " is a small sized dog")
+    print("Sorry I don't know the size of that dog.")
+
+#######################################################
+# ListSizedDogs
+#
+#   Prints list of dogs of specified size
+#######################################################
+def ListSizedDogs(size):
+    breedList = ""
+    for dog in breeds:
+        if sizes[dog.index] == size:
+            breedList += dog + ", "
+
+    #Get rid of last ", "
+    breedList = breedList[0:len(breedList)-2]
+    print("Here's the dogs I found: " + breedList)
+
+#######################################################
+# IsCrossBreed
+#
+#   Returns if a dog at index iDog in breedInfo is a cross breed or not
+#######################################################
+def IsCrossBreed(iDog):
+    dogDescription = breedInfo[iDog]
+    if "mixed breed" in dogDescription or "a cross" in dogDescription:
+        return 1
+    else:
+        return 0
+
+#######################################################
+# PrintCrossBreed
+#
+#   Prints out if a dog is a cross breed or not
+#######################################################
+def PrintCrossBreed(dog):
+    iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)
+    if iMostSimilarDog != -1:        
+        if IsCrossBreed(iMostSimilar):
+            print("A " + breeds[iMostSimilarDog] " is in fact a cross breed.")
+        else
+            print("A " + breeds[iMostSimilarDog] " is not cross breed.")
+
+#######################################################
+# PrintCrossBreeds
+#
+#   Prints out all cross breeds
+#######################################################
+def PrintCrossBreeds():
+    breedList = ""
+    for dog in breeds:
+        if IsCrossBreed(dog.index):
+            breedList += dog + ", "
+
+    #Get rid of last ", "
+    breedList = breedList[0:len(breedList)-2]
+    print("Here are all the cross breeds: " + breedList)
 
 #######################################################
 # Main loop
@@ -206,8 +227,6 @@ def HandleUnknownInput(search):
 def MainLoop():
     
     previousWasQuestion = 0
-
-    prompt = ""
     print("Hi! I'm the dog breed information chatbot.\nTry asking me a question about a specifc breed, ask me about groups of breeds\n(hounds, terriers, retrievers), try and describe a breed,\nor just make general dog related chit-chat!")
     
     while True: 
@@ -242,7 +261,23 @@ def MainLoop():
             elif cmd == 2:
                 WikiSearch(params[1])
                 continue
-                    
+
+            elif cmd == 3:
+                PrintCrossBreed(params[1])
+                continue
+
+            elif cmd == 4:
+                PrintCrossBreeds()
+                continue
+
+            elif cmd == 5:
+                PrintDogSize(params[1])
+                continue
+
+            elif cmd == 6:
+                ListSizedDogs(params[1])
+                continue
+            
             elif cmd == 99:
                 if HandleUnknownInput(params[1]) == 0:
                     print("I did not get that, please try again.")
