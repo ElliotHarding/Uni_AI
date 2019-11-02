@@ -124,8 +124,10 @@ def DescribeDog(dogName):
             DescribeDog(dogName[0:length])
             return
 
-        if HandleUnknownInput(dogName) == 0:            
-            print("Apologies, I don't have any info on that breed. Would you like me to wikipekida it?")
+        res = HandleUnknownInput(dogName)
+        print(res)
+        if res == 0 or res == 2:            
+            print("Apologies, I don't have any info on that. Would you like me to wikipekida it?")
             if (GetInput() in waysOfSayingYes):
                 WikiSearch(dogName)
             
@@ -151,14 +153,14 @@ def HandleUnknownInput(search):
             length = len(search) - 1
             if search[length].lower() == 's':
                 return HandleUnknownInput(search[0:length])
-            return 0
+        return ret
     else:
         #Handle plural input, only after inital search,
         #since dog name may just has an s at the end
         length = len(search) - 1
         if search[length].lower() == 's':
             return HandleUnknownInput(search[0:length])
-        return 0
+        return ret
 
 #######################################################
 # Main loop
