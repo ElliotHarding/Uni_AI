@@ -22,6 +22,7 @@ waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", 
                    "sure", "indeed", "yea", "yeah", "yep", "yup", "certainly"]
 breeds = []
 breedInfo = []
+sizes = []
 
 #######################################################
 # ReadFiles
@@ -30,12 +31,13 @@ breedInfo = []
 #   breeds & breedInfo
 #######################################################
 def ReadFiles():
-    global breeds, breedInfo
+    global breeds, breedInfo, sizes
     try:        
         breedAndInfoPairs = list(csv.reader(open('breed-and-information.csv', 'r')))
         
         breeds = [row[0] for row in breedAndInfoPairs]
         breedInfo = [row[1] for row in breedAndInfoPairs]
+        sizes = [row[2] for row in breedAndInfoPairs]
         
     except (IOError) as e:
         print("Error occured opening one of the files! " + e.strerror)
