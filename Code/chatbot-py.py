@@ -11,6 +11,11 @@ kern = aiml.Kernel()
 kern.setTextEncoding(None)
 kern.bootstrap(learnFiles="chatbot-aiml.xml")
 
+#Initialize wikipedia api
+import wikipediaapi
+wiki_wiki = wikipediaapi.Wikipedia('en')
+wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
+
 #Global vars
 stopWords = ["the","is","an","a","at","and"]
 waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", "of course", "by all means",
@@ -18,6 +23,9 @@ waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", 
 breeds = []
 breedInfo = []
 
+#######################################################
+# Main loop
+#######################################################
 def ReadFiles():
     global breeds, breedInfo
     try:        
@@ -27,11 +35,14 @@ def ReadFiles():
         breedInfo = [row[1] for row in breedAndInfoPairs]
         
     except (IOError) as e:
-        print("Error occured opening one of the files! " + e.message)
+        print("Error occured opening one of the files! " + e.strerror)
         sys.exit()
 
 # GetMostSimilar : Checks input list for most similar string to input string
 #   returns # if no string found
+#######################################################
+# Main loop
+#######################################################
 def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
     array = [string] + searchArray
     tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(array)
@@ -43,10 +54,16 @@ def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
     else:
         return similarityArray.argmax()
 
+#######################################################
+# Main loop
+#######################################################
 def Exit():
     print("Bye!")
     sys.exit()
 
+#######################################################
+# Main loop
+#######################################################
 def GetInput():
     try:
         userInput = input("> ")
@@ -56,6 +73,9 @@ def GetInput():
         Exit()
     return userInput
 
+#######################################################
+# Main loop
+#######################################################
 def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
     iDog = GetIndexOfMostSimilar(userInput, arrayToCheck, similariyBound)
     if iDog != -1:
@@ -68,21 +88,48 @@ def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
             return 2
     return 0
 
+#######################################################
+# Main loop
+#######################################################
+def WikiSearch(breed):    
+    wpage = wiki_wiki.page(breed)
+    if wpage.exists():
+        print(wpage.summary)
+        print("Learn more at", wpage.canonicalurl)
+    else:
+        print("Sorry, I don't know what that is.")
+            
+#######################################################
+# Main loop
+#######################################################
 def DescribeDog(dogName):
-    iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.95)        
+
+    iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)        
     if iMostSimilarDog != -1:
         print(breedInfo[iMostSimilarDog])
+        
     else:
-        print("Apologies, I don't have any info on that breed.")        
-
+        
+        length = len(dogName) - 1
+        if dogName[length].lower() == 's':
+            DescribeDog(dogName[0:length])
+            return
+            
+        print("Apologies, I don't have any info on that breed. Would you like me to wikipekida it?")
+        if (GetInput() in waysOfSayingYes):
+            WikiSearch(dogName)
+            
+#######################################################
+# Main loop
+#######################################################
 def HandleUnknownInput(userInput):
 
-    ret = CheckDescribeDog(userInput, breeds, 0.6)
+    ret = CheckDescribeDog(userInput, breeds, 0.4)
     if ret == 1:
         return
     
     elif ret == 2:
-        ret = CheckDescribeDog(userInput, breedInfo, 0.4)
+        ret = CheckDescribeDog(userInput, breedInfo, 0.2)
         if ret == 1:
             return
         elif ret == 0:
@@ -109,8 +156,8 @@ def MainLoop():
             previousWasQuestion = 0
             print("Nice! " + prompt)
             continue
-        
-        #Check if input can be handled by aiml
+
+        #Get response from aiml
         answer = kern.respond(userInput)
         if answer[0] == '#':
 

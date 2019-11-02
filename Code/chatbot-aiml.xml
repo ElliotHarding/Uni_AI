@@ -39,15 +39,24 @@
 
 <category> <pattern> CHEERS * </pattern>
   <template>Sure mate.</template></category>
+  
+<!-- Wiki api -->
+<category><pattern> WIKI A * </pattern>
+  <template>#2$<star index="1"/></template></category>
 
-<!-- Weather API -->
-<category><pattern> WHAT IS THE WEATHER LIKE IN * </pattern>
-  <template>#2$<star/></template></category>
+<category><pattern> WIKIPEDIA A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
 
-<category><pattern> HOW IS THE WEATHER IN * </pattern>
-  <template><srai>WHAT IS THE WEATHER LIKE IN <star/></srai></template></category>
+<category><pattern> WIKI SEARCH A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern> WIKIPEDIA SEARCH A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern> SEARCH WIKIPEDIA FOR A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
 
-<!--- Wikipedia API -->
+<!--- Dog info API -->
 <category><pattern> WHAT IS A * </pattern>
   <template>#1$<star index="1"/></template></category>
 
@@ -56,11 +65,41 @@
 
 <category><pattern> WHAT IS * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> WHAT'S A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
 
 <category><pattern> DEFINE * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> DEFINE A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
 
-<category><pattern> WHO IS * </pattern>
+<category><pattern> TELL ME ABOUT * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> DESCRIBE A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> GIVE ME INFORMATION ON A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> GIVE ME INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> * INFO </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> * INFORMATION </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> * DESCRIPTION </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+
+<category><pattern> GIVE ME INFORMATION ON * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
 
 <!-- Default reaction -->
