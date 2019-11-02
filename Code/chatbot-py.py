@@ -42,16 +42,24 @@ def ReadFiles():
         sys.exit()
 
 #######################################################
-# GetIndexOfMostSimilar
-#   Checks input list for most similar string to input string
-#   Returns -1 if no strings over similarityBound
+# GetSimilarityArray
+#   
 #######################################################
-def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
+def GetSimilarityArray(string, searchArray):
     array = [string] + searchArray
     tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(array)
     similarityArray = cosine_similarity(tfidf[0:1], tfidf)
     similarityArray = np.delete(similarityArray, 0)
 
+    return similarityArray
+
+#######################################################
+# GetIndexOfMostSimilar
+#   Checks input list for most similar string to input string
+#   Returns -1 if no strings over similarityBound
+#######################################################
+def GetIndexOfMostSimilar(string, searchArray, similariyBound=0):
+    similarityArray = GetSimilarityArray(string, searchArray)
     if similarityArray[similarityArray.argmax()] < similariyBound:
         return -1
     else:
@@ -92,7 +100,36 @@ def CheckDescribeDog(userInput, arrayToCheck, similariyBound):
             print(breedInfo[iDog])
             return 1
         else:
+            print("Right.")
             return 2
+    return 0
+
+#######################################################
+# CheckSimilarDogNames
+#
+#
+#######################################################
+def CheckSimilarDogNames(userInput, similariyBound):
+
+    dogsAndSimilarity = GetSimilarityArray(userInput, breeds)
+
+    dogsToCheck = ""
+    index = 0
+    for i in dogsAndSimilarity:
+        if i > similariyBound:
+            dogsToCheck += breeds[index] + ", "
+        index+=1
+
+    arrayLen = len(dogsToCheck)
+    dogsToCheck = dogsToCheck[0:arrayLen-1]
+
+    if arrayLen > 0:
+        print("Which of these dogs would you like to know more about? " + dogsToCheck)
+        iMostSimilarDog = GetIndexOfMostSimilar(GetInput(), breeds, 0.7)        
+        if iMostSimilarDog != -1:
+            print(breedInfo[iMostSimilarDog])
+            return 1
+        print("Sorry it's not in the list!")
     return 0
 
 #######################################################
@@ -117,19 +154,20 @@ def DescribeDog(dogName):
         print(breedInfo[iMostSimilarDog])
         
     else:
-
         #Handle case if user makes searched dog plural
         length = len(dogName) - 1
         if dogName[length].lower() == 's':
             DescribeDog(dogName[0:length])
             return
 
-        res = HandleUnknownInput(dogName)
-        print(res)
-        if res == 0 or res == 2:            
-            print("Apologies, I don't have any info on that. Would you like me to wikipekida it?")
-            if (GetInput() in waysOfSayingYes):
-                WikiSearch(dogName)
+        if CheckSimilarDogNames(dogName, 0.3) == 1:
+            return
+
+        print("It seems I couldn't find what you were looking for. Would you like me to wikipekida search '" + dogName + "'?")
+        if (GetInput() in waysOfSayingYes):
+            WikiSearch(dogName)
+        else:
+             print("Right.")
             
 #######################################################
 # HandleUnknownInput
