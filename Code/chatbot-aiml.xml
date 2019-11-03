@@ -295,8 +295,14 @@
 <category><pattern>IS A * CROSS *</pattern>
   <template>#3$<star/></template></category>
   
-<category><pattern>* A MIXED *</pattern>
+<category><pattern>IS A * CROSS *</pattern>
+  <template>#3$<star/></template></category>
+  
+<category><pattern>IS A * MIXED *</pattern>
   <template>#3$<star index="1"/></template></category>
+  
+<category><pattern>IS A * PURE *</pattern>
+  <template>#3$<star/></template></category>
   
 <category><pattern>* A PURE *</pattern>
   <template>#3$<star/></template></category>

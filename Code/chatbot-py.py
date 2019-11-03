@@ -219,7 +219,6 @@ def IsCrossBreed(iDog):
 #   Prints out if a dog is a cross breed or not
 #######################################################
 def PrintCrossBreed(dog):
-    print(dog)
     iMostSimilarDog = GetIndexOfMostSimilar(dog, breeds, 0.5)
     if iMostSimilarDog != -1:        
         if IsCrossBreed(iMostSimilarDog):
@@ -265,7 +264,6 @@ def MainLoop():
 
         #Get response from aiml
         answer = kern.respond(userInput)
-        print(answer)
         if answer[0] == '#':
 
             #Split answer into cmd & input
