@@ -291,7 +291,10 @@
 <!-- Cross or pure -->
 <category><pattern>* A CROSS *</pattern>
   <template>#3$<star/></template></category>
-
+  
+<category><pattern>IS A * CROSS *</pattern>
+  <template>#3$<star/></template></category>
+  
 <category><pattern>* A MIXED *</pattern>
   <template>#3$<star index="1"/></template></category>
   

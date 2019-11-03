@@ -154,6 +154,10 @@ def HandleUnknownInput(search):
 
     if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
         return
+
+    #No point in doing a wiki search if related to bot
+    if " you" in search or "you " in search or " me" in search or "me " in search:
+        return 0
         
     print("It seems I couldn't find what you were looking for. Would you like me to wikipekida search '" + search + "'?")
     if (GetInput() in waysOfSayingYes):
