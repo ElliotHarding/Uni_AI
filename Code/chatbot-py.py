@@ -131,7 +131,6 @@ def WikiSearch(search):
 # describes a dog
 #######################################################
 def DescribeDog(dogName):
-
     iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)        
     if iMostSimilarDog != -1:
         print(breedInfo[iMostSimilarDog])
@@ -151,9 +150,11 @@ def HandleUnknownInput(search):
         return
 
     #If it's a single word, just quick check if its plural
-    if not " " in search:        
-        if CheckSimilarDogs(p.singular_noun(search), breeds, 0.3) == 1:
-            return
+    if not " " in search:
+        singular = p.singular_noun(search)
+        if singular:            
+            if CheckSimilarDogs(p.singular_noun(search), breeds, 0.3) == 1:
+                return
 
     if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
         return
@@ -281,7 +282,7 @@ def HandleAIMLCommand(cmd, data):
 # Main loop
 #######################################################
 def MainLoop():    
-    print(("Hi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke."))
+    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke.\n"))
     
     while True: 
 

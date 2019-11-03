@@ -1,5 +1,14 @@
 <aiml version="1.0.1" encoding="UTF-8">
 
+<!-- 
+	Apologies... I attempted to get wild cards such as
+	# & _ to work (Ones that specify 0 more more as apposed to 1 or more)
+	but it seems these are only available in version 2 of AIML.
+	
+	Because of this there are duplicate categories with templates
+	that have one with a preceding * and one without
+ -->
+ 
 <!-- Greetings and Politeness -->
 <category> <pattern> HELLO </pattern>
   <template>Hello! How are you?</template> </category>
@@ -125,18 +134,33 @@
 
 <category><pattern> WIKIPEDIA A * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* WIKIPEDIA A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
 
 <category><pattern> WIKI SEARCH A * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
   
+<category><pattern>* WIKI SEARCH A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+  
 <category><pattern> WIKI SEARCH * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* WIKI SEARCH * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
   
 <category><pattern> WIKIPEDIA SEARCH A * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
   
+<category><pattern>* WIKIPEDIA SEARCH A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+  
 <category><pattern> SEARCH WIKIPEDIA FOR A * </pattern>
   <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* SEARCH WIKIPEDIA FOR A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
 
 <!--- Dog info API -->
 <category><pattern> WHAT IS A * </pattern>
@@ -156,21 +180,39 @@
   
 <category><pattern> DEFINE A * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* DEFINE A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
 
 <category><pattern> TELL ME ABOUT * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
   
+<category><pattern>* TELL ME ABOUT * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
 <category><pattern> DESCRIBE A * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* DESCRIBE A *</pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
   
 <category><pattern> GIVE ME INFORMATION ON A * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
   
+<category><pattern>* GIVE ME INFORMATION ON A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
 <category><pattern> GIVE ME INFO ON A * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
   
+<category><pattern>* GIVE ME INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
 <category><pattern> INFO ON A * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
   
 <category><pattern> * INFO </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
@@ -183,6 +225,9 @@
 
 <category><pattern> GIVE ME INFORMATION ON * </pattern>
   <template><srai>WHAT IS A <star/></srai></template></category>
+ 
+<category><pattern>* GIVE ME INFORMATION ON * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
   
 <!-- Sizes Questions -->
 <category><pattern>HOW BIG IS A *</pattern>
