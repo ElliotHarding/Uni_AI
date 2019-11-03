@@ -95,7 +95,6 @@ def GetInput():
 def CheckSimilarDogs(userInput, arrayToCheck, similariyBound):
 
     dogsAndSimilarity = GetSimilarityArray(userInput, arrayToCheck)
-    print(dogsAndSimilarity)
 
     dogsToCheck = ""
     index = 0
@@ -243,18 +242,12 @@ def PrintCrossBreeds():
 #######################################################
 def MainLoop():
     
-    previousWasQuestion = 0
     print("Hi! I'm the dog breed information chatbot.\nTry asking me a question about a specifc breed, ask me about groups of breeds\n(hounds, terriers, retrievers), try and describe a breed,\nor just make general dog related chit-chat!")
     
     while True: 
 
         #Get input
         userInput = GetInput()
-
-        if previousWasQuestion:
-            previousWasQuestion = 0
-            print("Nice!")
-            continue
 
         #Get response from aiml
         answer = kern.respond(userInput)
@@ -302,9 +295,6 @@ def MainLoop():
   
         else:
             print(answer)
-
-        if '?' in answer:
-            previousWasQuestion = 1
             
             
 ReadFiles()

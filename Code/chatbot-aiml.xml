@@ -3,6 +3,12 @@
 <!-- Greetings and Politeness -->
 <category> <pattern> HELLO </pattern>
   <template>Hello! How are you?</template> </category>
+  
+<category>
+<pattern>*</pattern>
+<that>Hello! How are you?</that>
+<template>Nice!</template>
+</category>
 
 <category> <pattern> HELLO * </pattern>
   <template><srai>HELLO</srai></template> </category>
@@ -39,6 +45,78 @@
 
 <category> <pattern> CHEERS * </pattern>
   <template>Sure mate.</template></category>
+  
+<!-- Dog jokes -->
+<category>
+      <pattern>TELL ME A DOG JOKE</pattern>
+      <template>
+         <random>
+            <li> What did the dog say when he sat on sandpaper? </li>
+            <li> Why did the poor dog chase his own tail? </li>
+			<li> What dog keeps the best time? </li>
+			<li> Why don't dogs make good dancers? </li>
+			<li> What happens when it rains cats and dogs? </li>
+			<li> Why are dogs like phones? </li>
+			<li> What dog loves to take bubble baths? </li>
+			<li> What do you call a dog that is left handed? </li>
+			<li> What did one flea say to the other? </li>
+         </random>
+      </template> 
+</category>  
+   
+<category>
+<pattern>*</pattern>
+<that>What did the dog say when he sat on sandpaper?</that>
+<template>Ruff!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>Why did the poor dog chase his own tail?</that>
+<template>He was trying to make both ends meet!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>What dog keeps the best time?</that>
+<template>A watch dog!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>Why don't dogs make good dancers?</that>
+<template>Because they have two left feet!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>What happens when it rains cats and dogs?</that>
+<template>You can step in a poodle!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>Why are dogs like phones?</that>
+<template>Because they have collar IDs.</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>What dog loves to take bubble baths?</that>
+<template>A shampoodle!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>What do you call a dog that is left handed?</that>
+<template>A south paw!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>What did one flea say to the other?</that>
+<template>Should we walk or take a dog?</template>
+</category>
   
 <!-- Wiki api -->
 <category><pattern> WIKI A * </pattern>
@@ -196,7 +274,7 @@
   
 <category><pattern>* SMALLER SIZED DOGS *</pattern>
   <template><srai>LIST ALL SMALL DOGS</srai></template></category>
-  
+
 <category><pattern>* SMALL DOGS</pattern>
   <template><srai>LIST ALL SMALL DOGS</srai></template></category>
   
