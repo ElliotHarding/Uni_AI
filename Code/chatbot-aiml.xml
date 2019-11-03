@@ -106,67 +106,121 @@
   <template><srai>WHAT IS A <star/></srai></template></category>
   
 <!-- Sizes Questions -->
-<category><pattern> How big is a * </pattern>
+<category><pattern>HOW BIG IS A *</pattern>
   <template>#5$<star index="1"/></template></category>
   
-<category><pattern> * size of * </pattern>
+<category><pattern>* SIZE OF *</pattern>
   <template>#5$<star index="2"/></template></category>
   
-<category><pattern>Is a * a big *</pattern>
+<category><pattern>IS A * A BIG *</pattern>
   <template>#5$<star index="1"/></template></category>
   
-<category><pattern> Is a * a large * </pattern>
-  <template><srai>Is a * a big * </srai></template></category>
+<category><pattern>IS A * A LARGE *</pattern>
+  <template><srai>IS A <star index="1"/> A BIG <star index="2"/></srai></template></category>
   
-<category><pattern> Is a * a larger * </pattern>
-  <template><srai>Is a * a big *</srai></template></category>
+<category><pattern>IS A * A LARGER *</pattern>
+  <template><srai>IS A <star index="1"/> A BIG <star index="2"/></srai></template></category>
   
-<category><pattern>Is a * a small *</pattern>
+<category><pattern>IS A * A SMALL *</pattern>
   <template>#5$<star index="1"/></template></category>
   
-<category><pattern> Is a * a smaller * </pattern>
-  <template><srai>Is a * a small *</srai></template></category>
+<category><pattern>IS A * A SMALLER *</pattern>
+  <template><srai>IS A <star index="1"/> A SMALL <star index="2"/></srai></template></category>
   
 <!-- Sizes Lists -->
-<category><pattern>* big dogs</pattern>
+<category><pattern>LIST ALL BIG DOGS</pattern>
   <template>#6$L</template></category>
-  
-<category><pattern> * large dogs </pattern>
-  <template><srai>List all big dogs</srai></category>
-  
-<category><pattern> * tall dogs </pattern>
-  <template><srai>List all big dogs</srai></category>
 
-<category><pattern>* medium dogs</pattern>
+<category><pattern>* BIG DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* BIG DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* LARGE DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* LARGE SIZED DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* TALL DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+
+<category><pattern>* LARGE DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* LARGE SIZED DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* TALL DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>  
+
+<category><pattern>LIST ALL MEDIUM DOGS</pattern>
   <template>#6$M</template></category>
   
-<category><pattern> * normal dogs </pattern>
-  <template><srai>List all medium dogs</srai></category>
+<category><pattern>* MEDIUM DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
   
-<category><pattern> * small dogs </pattern>
+<category><pattern>* MEDIUM SIZED DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL SIZED DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* MEDIUM DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* MEDIUM SIZED DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL SIZED DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+   
+<category><pattern>LIST ALL SMALL DOGS</pattern>
   <template>#6$S</template></category>
   
-<category><pattern> * smaller dogs </pattern>
-  <template><srai>* small dogs</srai></category>
+<category><pattern>* SMALL DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALL SIZED DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER SIZED DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALL DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALL SIZED DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER SIZED DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
    
 <!-- Cross or pure -->
-<category><pattern> * a cross *</pattern>
+<category><pattern>* A CROSS *</pattern>
   <template>#3$<star index="1"/></template></category>
 
-<category><pattern> * a mixed *</pattern>
+<category><pattern>* A MIXED *</pattern>
   <template>#3$<star index="1"/></template></category>
   
 <!-- List of cross-breeds -->
-<category><pattern> * cross breeds * </pattern>
+<category><pattern>* CROSS BREEDS *</pattern>
   <template>#4$</template></category>
   
-<category><pattern> * mixed breeds *</pattern>
-  <template>#4$</template></category>
-  
-<category><pattern> * mixed breed dogs *</pattern>
-  <template>#4$</template></category>
-  
-<category><pattern> * cross breed dogs *</pattern>
+<category><pattern>* MIXED BREEDS *</pattern>
   <template>#4$</template></category>
 
 <!-- Default reaction -->

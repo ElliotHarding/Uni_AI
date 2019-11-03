@@ -95,6 +95,7 @@ def GetInput():
 def CheckSimilarDogs(userInput, arrayToCheck, similariyBound):
 
     dogsAndSimilarity = GetSimilarityArray(userInput, arrayToCheck)
+    print(dogsAndSimilarity)
 
     dogsToCheck = ""
     index = 0
@@ -143,6 +144,15 @@ def DescribeDog(dogName):
 #######################################################
 def HandleUnknownInput(search):
 
+    if CheckSimilarDogs(search, breeds, 0.3) == 1:
+        return
+
+    #Search may be plural?
+    length = len(search)
+    if search[length-1] == "s":
+        if CheckSimilarDogs(search[0:length-1], breeds, 0.3) == 1:
+            return
+
     if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
         return
         
@@ -161,11 +171,14 @@ def PrintDogSize(dogName):
     iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)
     if iMostSimilarDog != -1:
         if sizes[iMostSimilarDog] == "L":
-            print("A " + breeds[iMostSimilarDog] " is a large sized dog.")
+            print("A " + breeds[iMostSimilarDog] + " is a large sized dog.")
+            return
         elif sizes[iMostSimilarDog] == "M":
-            print("A " + breeds[iMostSimilarDog] " is a medium sized dog")
+            print("A " + breeds[iMostSimilarDog] + " is a medium sized dog")
+            return
         elif sizes[iMostSimilarDog] == "S":
-            print("A " + breeds[iMostSimilarDog] " is a small sized dog")
+            print("A " + breeds[iMostSimilarDog] + " is a small sized dog")
+            return
     print("Sorry I don't know the size of that dog.")
 
 #######################################################
@@ -175,9 +188,11 @@ def PrintDogSize(dogName):
 #######################################################
 def ListSizedDogs(size):
     breedList = ""
+    index = 0
     for dog in breeds:
-        if sizes[dog.index] == size:
+        if sizes[index] == size:
             breedList += dog + ", "
+        index+=1
 
     #Get rid of last ", "
     breedList = breedList[0:len(breedList)-2]
@@ -204,10 +219,10 @@ def PrintCrossBreed(dog):
     iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)
     if iMostSimilarDog != -1:        
         if IsCrossBreed(iMostSimilar):
-            print("A " + breeds[iMostSimilarDog] " is in fact a cross breed.")
-        else
-            print("A " + breeds[iMostSimilarDog] " is not cross breed.")
-
+            print("A " + breeds[iMostSimilarDog] + " is in fact a cross breed.")
+        else:
+            print("A " + breeds[iMostSimilarDog] + " is not cross breed.")
+ 
 #######################################################
 # PrintCrossBreeds
 #
