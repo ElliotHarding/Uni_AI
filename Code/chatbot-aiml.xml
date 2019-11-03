@@ -290,10 +290,13 @@
    
 <!-- Cross or pure -->
 <category><pattern>* A CROSS *</pattern>
-  <template>#3$<star index="1"/></template></category>
+  <template>#3$<star/></template></category>
 
 <category><pattern>* A MIXED *</pattern>
   <template>#3$<star index="1"/></template></category>
+  
+<category><pattern>* A PURE *</pattern>
+  <template>#3$<star/></template></category>
   
 <!-- List of cross-breeds -->
 <category><pattern>* CROSS BREEDS *</pattern>

@@ -215,12 +215,18 @@ def IsCrossBreed(iDog):
 #   Prints out if a dog is a cross breed or not
 #######################################################
 def PrintCrossBreed(dog):
-    iMostSimilarDog = GetIndexOfMostSimilar(dogName, breeds, 0.8)
+    iMostSimilarDog = GetIndexOfMostSimilar(dog, breeds, 0.8)
     if iMostSimilarDog != -1:        
         if IsCrossBreed(iMostSimilar):
             print("A " + breeds[iMostSimilarDog] + " is in fact a cross breed.")
         else:
             print("A " + breeds[iMostSimilarDog] + " is not cross breed.")
+            
+    if CheckSimilarDogs(dog, breeds, 0.3) == 1:
+        return
+    else:
+        print("It seems I couldn't find what you were looking for. Would you like me to wikipekida search '" + dog + "'?")
+    
  
 #######################################################
 # PrintCrossBreeds
@@ -229,9 +235,11 @@ def PrintCrossBreed(dog):
 #######################################################
 def PrintCrossBreeds():
     breedList = ""
+    index = 0
     for dog in breeds:
-        if IsCrossBreed(dog.index):
+        if IsCrossBreed(index):
             breedList += dog + ", "
+        index+=1
 
     #Get rid of last ", "
     breedList = breedList[0:len(breedList)-2]
@@ -251,15 +259,12 @@ def MainLoop():
 
         #Get response from aiml
         answer = kern.respond(userInput)
+        print(answer)
         if answer[0] == '#':
 
             #Split answer into cmd & input
             params = answer[1:].split('$')
             cmd = int(params[0])
-
-            if params[1] == "":
-                print("I did not get that, please try again.")
-                continue
 
             if cmd == 0:
                 Exit()
@@ -273,6 +278,7 @@ def MainLoop():
                 continue
 
             elif cmd == 3:
+                print(params[1])
                 PrintCrossBreed(params[1])
                 continue
 
