@@ -5,6 +5,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import csv
 import sys
+import inflect
+
+#For singularization 
+p = inflect.engine()
 
 # Create a Kernel object & bootstrap to aiml file.
 kern = aiml.Kernel()
@@ -146,10 +150,9 @@ def HandleUnknownInput(search):
     if CheckSimilarDogs(search, breeds, 0.3) == 1:
         return
 
-    #Search may be plural?
-    length = len(search)
-    if search[length-1] == "s":
-        if CheckSimilarDogs(search[0:length-1], breeds, 0.3) == 1:
+    #If it's a single word, just quick check if its plural
+    if not " " in search:        
+        if CheckSimilarDogs(p.singular_noun(search), breeds, 0.3) == 1:
             return
 
     if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
@@ -251,11 +254,34 @@ def PrintCrossBreeds():
     print("Here are all the cross breeds: " + breedList)
 
 #######################################################
+# HandleAIMLCommand
+#
+#   Handles responses for AIML commands
+#######################################################
+def HandleAIMLCommand(cmd, data):
+    if cmd == 0:
+        Exit()                
+    elif cmd == 1:
+        DescribeDog(data)
+    elif cmd == 2:
+        WikiSearch(data)
+    elif cmd == 3:
+        PrintCrossBreed(data)
+    elif cmd == 4:
+        PrintCrossBreeds()
+    elif cmd == 5:
+        PrintDogSize(data)
+    elif cmd == 6:
+        ListSizedDogs(data)            
+    elif cmd == 99:
+        if HandleUnknownInput(data) == 0:
+            print("I did not get that, please try again.")
+
+#######################################################
 # Main loop
 #######################################################
-def MainLoop():
-    
-    print("Hi! I'm the dog breed information chatbot.\nTry asking me a question about a specifc breed, ask me about groups of breeds\n(hounds, terriers, retrievers), try and describe a breed,\nor just make general dog related chit-chat!")
+def MainLoop():    
+    print(("Hi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke."))
     
     while True: 
 
@@ -264,45 +290,15 @@ def MainLoop():
 
         #Get response from aiml
         answer = kern.respond(userInput)
-        if answer[0] == '#':
 
+        #Check if command response
+        if answer[0] == '#':
+            
             #Split answer into cmd & input
             params = answer[1:].split('$')
-            cmd = int(params[0])
+            HandleAIMLCommand(int(params[0]), params[1])
 
-            if cmd == 0:
-                Exit()
-                
-            elif cmd == 1:
-                DescribeDog(params[1])
-                continue
-
-            elif cmd == 2:
-                WikiSearch(params[1])
-                continue
-
-            elif cmd == 3:
-                print(params[1])
-                PrintCrossBreed(params[1])
-                continue
-
-            elif cmd == 4:
-                PrintCrossBreeds()
-                continue
-
-            elif cmd == 5:
-                PrintDogSize(params[1])
-                continue
-
-            elif cmd == 6:
-                ListSizedDogs(params[1])
-                continue
-            
-            elif cmd == 99:
-                if HandleUnknownInput(params[1]) == 0:
-                    print("I did not get that, please try again.")
-                continue
-  
+        #Otherwise direct respond
         else:
             print(answer)
             
