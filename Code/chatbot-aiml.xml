@@ -4,12 +4,6 @@
 <category> <pattern> HELLO </pattern>
   <template>Hello! How are you?</template> </category>
   
-<category>
-<pattern>*</pattern>
-<that>Hello! How are you?</that>
-<template>Nice!</template>
-</category>
-
 <category> <pattern> HELLO * </pattern>
   <template><srai>HELLO</srai></template> </category>
 
@@ -46,6 +40,12 @@
 <category> <pattern> CHEERS * </pattern>
   <template>Sure mate.</template></category>
   
+<category>
+<pattern>*</pattern>
+<that>HELLO HOW ARE YOU</that>
+<template>Nice!</template>
+</category>
+  
 <!-- Dog jokes -->
 <category>
       <pattern>TELL ME A DOG JOKE</pattern>
@@ -62,62 +62,63 @@
 			<li> What did one flea say to the other? </li>
          </random>
       </template> 
-</category>  
-   
-<category>
-<pattern>*</pattern>
-<that>What did the dog say when he sat on sandpaper?</that>
-<template>Ruff!</template>
 </category>
+
+<category><pattern>* JOKE</pattern>
+  <template><srai>TELL ME A DOG JOKE</srai></template></category>
+  
+<category><pattern>* JOKE *</pattern>
+  <template><srai>TELL ME A DOG JOKE</srai></template></category>
 
 <category>
 <pattern>*</pattern>
-<that>Why did the poor dog chase his own tail?</that>
+<that>WHY DID THE POOR DOG CHASE HIS OWN TAIL</that>
 <template>He was trying to make both ends meet!</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>What dog keeps the best time?</that>
+<that>WHAT DOG KEEPS THE BEST TIME</that>
 <template>A watch dog!</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>Why don't dogs make good dancers?</that>
+<that>WHY DON'T DOGS MAKE GOOD DANCERS</that>
 <template>Because they have two left feet!</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>What happens when it rains cats and dogs?</that>
+<that>WHAT HAPPENS WHEN IT RAINS CATS AND DOGS</that>
 <template>You can step in a poodle!</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>Why are dogs like phones?</that>
+<that>WHY ARE DOGS LIKE PHONES</that>
 <template>Because they have collar IDs.</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>What dog loves to take bubble baths?</that>
+<that>WHAT DOG LOVES TO TAKE BUBBLE BATHS</that>
 <template>A shampoodle!</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>What do you call a dog that is left handed?</that>
+<that>WHAT DO YOU CALL A DOG THAT IS LEFT HANDED</that>
 <template>A south paw!</template>
 </category>
 
 <category>
 <pattern>*</pattern>
-<that>What did one flea say to the other?</that>
+<that>WHAT DID ONE FLEA SAY TO THE OTHER</that>
 <template>Should we walk or take a dog?</template>
 </category>
-  
+
+ 
 <!-- Wiki api -->
 <category><pattern> WIKI A * </pattern>
   <template>#2$<star index="1"/></template></category>
