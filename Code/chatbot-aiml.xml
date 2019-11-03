@@ -299,10 +299,16 @@
   <template>#3$<star/></template></category>
   
 <!-- List of cross-breeds -->
+<category><pattern>* CROSS BREEDS</pattern>
+  <template>#4$</template></category>
+  
 <category><pattern>* CROSS BREEDS *</pattern>
   <template>#4$</template></category>
   
 <category><pattern>* MIXED BREEDS *</pattern>
+  <template>#4$</template></category>
+  
+<category><pattern>* MIXED BREEDS</pattern>
   <template>#4$</template></category>
 
 <!-- Default reaction -->
