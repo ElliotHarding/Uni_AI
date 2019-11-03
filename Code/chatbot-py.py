@@ -17,7 +17,7 @@ wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 
 #Global vars
-stopWords = ["the","is","an","a","at","and"]
+stopWords = ["the","is","an","a","at","and","i"]
 waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", "of course", "by all means",
                    "sure", "indeed", "yea", "yeah", "yep", "yup", "certainly"]
 breeds = []
@@ -215,12 +215,14 @@ def IsCrossBreed(iDog):
 #   Prints out if a dog is a cross breed or not
 #######################################################
 def PrintCrossBreed(dog):
-    iMostSimilarDog = GetIndexOfMostSimilar(dog, breeds, 0.8)
+    print(dog)
+    iMostSimilarDog = GetIndexOfMostSimilar(dog, breeds, 0.5)
     if iMostSimilarDog != -1:        
-        if IsCrossBreed(iMostSimilar):
+        if IsCrossBreed(iMostSimilarDog):
             print("A " + breeds[iMostSimilarDog] + " is in fact a cross breed.")
         else:
-            print("A " + breeds[iMostSimilarDog] + " is not cross breed.")
+            print("A " + breeds[iMostSimilarDog] + " is in fact a pure breed.")
+        return
             
     if CheckSimilarDogs(dog, breeds, 0.3) == 1:
         return
