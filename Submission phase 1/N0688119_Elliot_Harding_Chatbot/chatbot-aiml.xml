@@ -1,0 +1,372 @@
+<aiml version="1.0.1" encoding="UTF-8">
+
+<!-- 
+	Apologies... I attempted to get wild cards such as
+	# & _ to work (Ones that specify 0 more more as apposed to 1 or more)
+	but it seems these are only available in version 2 of AIML.
+	
+	Because of this there are duplicate categories with templates
+	that have one with a preceding * and one without
+ -->
+ 
+<!-- Greetings and Politeness -->
+<category> <pattern> HELLO </pattern>
+  <template>Hello! How are you?</template> </category>
+  
+<category> <pattern> HELLO * </pattern>
+  <template><srai>HELLO</srai></template> </category>
+
+<category> <pattern> HI </pattern>
+  <template><srai>HELLO</srai></template> </category>
+  
+<category> <pattern> HEY </pattern>
+  <template><srai>HELLO</srai></template> </category>
+
+<category> <pattern> HI * </pattern>
+  <template><srai>HELLO</srai></template> </category>
+
+<category> <pattern> HOW ARE YOU </pattern>
+  <template>I'm functioning within normal parameters, thanks for asking.</template></category>
+
+<category><pattern> BYE </pattern>
+  <template>#0$Bye! Nice talking to you. You take care now.</template></category>
+
+<category><pattern> GOODBYE </pattern>
+  <template><srai>BYE</srai></template></category>
+
+<category><pattern> EXIT </pattern>
+  <template><srai>BYE</srai></template></category>
+
+<category> <pattern> THANKS </pattern>
+  <template>You are welcome.</template></category>
+
+<category> <pattern> THANK YOU </pattern>
+  <template><srai>THANKS</srai></template></category>
+
+<category> <pattern> CHEERS </pattern>
+  <template>Sure mate.</template></category>
+
+<category> <pattern> CHEERS * </pattern>
+  <template>Sure mate.</template></category>
+  
+<category>
+<pattern>*</pattern>
+<that>HELLO HOW ARE YOU</that>
+<template>Nice!</template>
+</category>
+  
+<!-- Dog jokes -->
+<category>
+      <pattern>TELL ME A DOG JOKE</pattern>
+      <template>
+         <random>
+            <li> What did the dog say when he sat on sandpaper? </li>
+            <li> Why did the poor dog chase his own tail? </li>
+			<li> What dog keeps the best time? </li>
+			<li> Why don't dogs make good dancers? </li>
+			<li> What happens when it rains cats and dogs? </li>
+			<li> Why are dogs like phones? </li>
+			<li> What dog loves to take bubble baths? </li>
+			<li> What do you call a dog that is left handed? </li>
+			<li> What did one flea say to the other? </li>
+         </random>
+      </template> 
+</category>
+
+<category><pattern>* JOKE</pattern>
+  <template><srai>TELL ME A DOG JOKE</srai></template></category>
+  
+<category><pattern>* JOKE *</pattern>
+  <template><srai>TELL ME A DOG JOKE</srai></template></category>
+
+<category>
+<pattern>*</pattern>
+<that>WHY DID THE POOR DOG CHASE HIS OWN TAIL</that>
+<template>He was trying to make both ends meet!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHAT DOG KEEPS THE BEST TIME</that>
+<template>A watch dog!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHY DON'T DOGS MAKE GOOD DANCERS</that>
+<template>Because they have two left feet!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHAT HAPPENS WHEN IT RAINS CATS AND DOGS</that>
+<template>You can step in a poodle!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHY ARE DOGS LIKE PHONES</that>
+<template>Because they have collar IDs.</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHAT DOG LOVES TO TAKE BUBBLE BATHS</that>
+<template>A shampoodle!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHAT DO YOU CALL A DOG THAT IS LEFT HANDED</that>
+<template>A south paw!</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<that>WHAT DID ONE FLEA SAY TO THE OTHER</that>
+<template>Should we walk or take a dog?</template>
+</category>
+
+ 
+<!-- Wiki api -->
+<category><pattern> WIKI A * </pattern>
+  <template>#2$<star index="1"/></template></category>
+
+<category><pattern> WIKIPEDIA A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* WIKIPEDIA A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+
+<category><pattern> WIKI SEARCH A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* WIKI SEARCH A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+  
+<category><pattern> WIKI SEARCH * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* WIKI SEARCH * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+  
+<category><pattern> WIKIPEDIA SEARCH A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* WIKIPEDIA SEARCH A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+  
+<category><pattern> SEARCH WIKIPEDIA FOR A * </pattern>
+  <template><srai>WIKI A <star/></srai></template></category>
+  
+<category><pattern>* SEARCH WIKIPEDIA FOR A * </pattern>
+  <template><srai>WIKI A <star index="2"/></srai></template></category>
+
+<!--- Dog info API -->
+<category><pattern> WHAT IS A * </pattern>
+  <template>#1$<star index="1"/></template></category>
+
+<category><pattern> WHAT IS AN * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+
+<category><pattern> WHAT IS * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> WHAT'S A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+
+<category><pattern> DEFINE * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> DEFINE A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* DEFINE A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+
+<category><pattern> TELL ME ABOUT * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* TELL ME ABOUT * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
+<category><pattern> DESCRIBE A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* DESCRIBE A *</pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
+<category><pattern> GIVE ME INFORMATION ON A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* GIVE ME INFORMATION ON A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
+<category><pattern> GIVE ME INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* GIVE ME INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
+<category><pattern> INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern>* INFO ON A * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
+<category><pattern> * INFO </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> * INFORMATION </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+  
+<category><pattern> * DESCRIPTION </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+
+<category><pattern> GIVE ME INFORMATION ON * </pattern>
+  <template><srai>WHAT IS A <star/></srai></template></category>
+ 
+<category><pattern>* GIVE ME INFORMATION ON * </pattern>
+  <template><srai>WHAT IS A <star index="2"/></srai></template></category>
+  
+<!-- Sizes Questions -->
+<category><pattern>HOW BIG IS A *</pattern>
+  <template>#5$<star index="1"/></template></category>
+  
+<category><pattern>* SIZE OF *</pattern>
+  <template>#5$<star index="2"/></template></category>
+  
+<category><pattern>IS A * A BIG *</pattern>
+  <template>#5$<star index="1"/></template></category>
+  
+<category><pattern>IS A * A LARGE *</pattern>
+  <template><srai>IS A <star index="1"/> A BIG <star index="2"/></srai></template></category>
+  
+<category><pattern>IS A * A LARGER *</pattern>
+  <template><srai>IS A <star index="1"/> A BIG <star index="2"/></srai></template></category>
+  
+<category><pattern>IS A * A SMALL *</pattern>
+  <template>#5$<star index="1"/></template></category>
+  
+<category><pattern>IS A * A SMALLER *</pattern>
+  <template><srai>IS A <star index="1"/> A SMALL <star index="2"/></srai></template></category>
+  
+<!-- Sizes Lists -->
+<category><pattern>LIST ALL BIG DOGS</pattern>
+  <template>#6$L</template></category>
+
+<category><pattern>* BIG DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* BIG DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* LARGE DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* LARGE SIZED DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* TALL DOGS *</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+
+<category><pattern>* LARGE DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* LARGE SIZED DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>
+  
+<category><pattern>* TALL DOGS</pattern>
+  <template><srai>LIST ALL BIG DOGS</srai></template></category>  
+
+<category><pattern>LIST ALL MEDIUM DOGS</pattern>
+  <template>#6$M</template></category>
+  
+<category><pattern>* MEDIUM DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* MEDIUM SIZED DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL SIZED DOGS *</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* MEDIUM DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* MEDIUM SIZED DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+  
+<category><pattern>* NORMAL SIZED DOGS</pattern>
+  <template><srai>LIST ALL MEDIUM DOGS</srai></template></category>
+   
+<category><pattern>LIST ALL SMALL DOGS</pattern>
+  <template>#6$S</template></category>
+  
+<category><pattern>* SMALL DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALL SIZED DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER SIZED DOGS *</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+
+<category><pattern>* SMALL DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALL SIZED DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+  
+<category><pattern>* SMALLER SIZED DOGS</pattern>
+  <template><srai>LIST ALL SMALL DOGS</srai></template></category>
+   
+<!-- Cross or pure -->
+<category><pattern>* A CROSS *</pattern>
+  <template>#3$<star/></template></category>
+  
+<category><pattern>IS A * CROSS *</pattern>
+  <template>#3$<star/></template></category>
+  
+<category><pattern>IS A * CROSS *</pattern>
+  <template>#3$<star/></template></category>
+  
+<category><pattern>IS A * MIXED *</pattern>
+  <template>#3$<star index="1"/></template></category>
+  
+<category><pattern>IS A * PURE *</pattern>
+  <template>#3$<star/></template></category>
+  
+<category><pattern>* A PURE *</pattern>
+  <template>#3$<star/></template></category>
+  
+<!-- List of cross-breeds -->
+<category><pattern>* CROSS BREEDS</pattern>
+  <template>#4$</template></category>
+  
+<category><pattern>* CROSS BREEDS *</pattern>
+  <template>#4$</template></category>
+  
+<category><pattern>* MIXED BREEDS *</pattern>
+  <template>#4$</template></category>
+  
+<category><pattern>* MIXED BREEDS</pattern>
+  <template>#4$</template></category>
+
+<!-- Default reaction -->
+<category><pattern> * </pattern>
+  <template>#99$<star index="1"/></template></category>
+
+</aiml>
