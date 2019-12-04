@@ -58,6 +58,7 @@ def ReadFiles():
         classifierBreeds = [row[0] for row in classifierBreedsCsv]
 
         dogBreedClassifier = tf.keras.models.load_model('E:\\dog-cnn.h5')
+
         
     except (IOError) as e:
         print("Error occured opening one of the files! ")
@@ -280,22 +281,18 @@ def PrintCrossBreeds():
 #   on the pre-trained CNN
 #######################################################
 def PredictDogImage(imagePath):
-    print(imagePath)
     img = ""
     try:    
         img = image.load_img(imagePath, target_size=(IMG_SIZE, IMG_SIZE))
-        print(img)
     except (Exception) as e:
         print("Sorry! I can't seem to find that image")
         return
 
-    raw_image = cv2.imread(imagePath)
-    scaled_image = cv2.resize(raw_image, dsize=(IMG_SIZE, IMG_SIZE), interpolation=cv2.INTER_CUBIC)
-    image_array = scaled_image.reshape(1, IMG_SIZE, IMG_SIZE, 3)
-    prediction_list = dogBreedClassifier.predict(image_array)
-    
-    print(prediction_list)
-    result=np.argmax(prediction_list,axis=1)
+    x = image.img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+    images = np.vstack([x])
+    classes = dogBreedClassifier.predict(x)
+    result=np.argmax(classes,axis=1)
 
     try:    
         print("It should be a " + classifierBreeds[result[0]])      
@@ -372,7 +369,6 @@ def MainLoop():
             continue
 
         answer = answer.replace("  #99$", ".")
-        print(answer)
 
         #Check if command response
         if answer[0] == '#':
