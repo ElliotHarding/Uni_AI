@@ -364,6 +364,19 @@
   
 <category><pattern>* MIXED BREEDS</pattern>
   <template>#4$</template></category>
+  
+<!-- Image prediction -->
+<category><pattern>PREDICT *</pattern>
+  <template>#7$<star index="1"/></template></category>
+  
+<category><pattern>* PREDICT *</pattern>
+  <template><srai>PREDICT <star index="2"/></srai></template></category>
+  
+<category><pattern>* IMAGE *</pattern>
+  <template><srai>PREDICT <star index="2"/></srai></template></category>
+  
+<category><pattern>* THE BREED OF *</pattern>
+  <template><srai>PREDICT <star index="2"/></srai></template></category>
 
 <!-- Default reaction -->
 <category><pattern> * </pattern>

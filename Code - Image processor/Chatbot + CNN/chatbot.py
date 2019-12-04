@@ -10,6 +10,7 @@ import tensorflow as tf
 from keras.preprocessing import image
 import matplotlib.pyplot as plt
 import pandas as pd
+import cv2
 
 #For singularization 
 p = inflect.engine()
@@ -35,7 +36,7 @@ breedInfo = []
 sizes = []
 
 dogBreedClassifier = 0
-IMG_SIZE = 150
+IMG_SIZE = 244
 classifierBreeds = []
 
 #######################################################
@@ -56,10 +57,10 @@ def ReadFiles():
         classifierBreedsCsv = list(csv.reader(open('cnn-breed-names.csv', 'r')))
         classifierBreeds = [row[0] for row in classifierBreedsCsv]
 
-        dogBreedClassifier = tf.keras.models.load_model('C:\\dog-cnn.h5')
+        dogBreedClassifier = tf.keras.models.load_model('E:\\dog-cnn.h5')
         
     except (IOError) as e:
-        print("Error occured opening one of the files! " + e.strerror)
+        print("Error occured opening one of the files! ")
         sys.exit()
 
 #######################################################
@@ -160,6 +161,9 @@ def DescribeDog(dogName):
 #   information on a dog
 #######################################################
 def HandleUnknownInput(search):
+
+    if TrailImagePredictionRequest(data) == 1:
+        return
 
     if CheckSimilarDogs(search, breeds, 0.3) == 1:
         return
@@ -280,13 +284,19 @@ def PredictDogImage(imagePath):
     img = ""
     try:    
         img = image.load_img(imagePath, target_size=(IMG_SIZE, IMG_SIZE))
+        print(img)
     except (Exception) as e:
         print("Sorry! I can't seem to find that image")
         return
+
+    raw_image = cv2.imread(imagePath)
+    scaled_image = cv2.resize(raw_image, dsize=(IMG_SIZE, IMG_SIZE), interpolation=cv2.INTER_CUBIC)
+    image_array = scaled_image.reshape(1, IMG_SIZE, IMG_SIZE, 3)
+    prediction_list = dogBreedClassifier.predict(image_array)
     
-    img = np.expand_dims(img, axis=0)
-    result=dogBreedClassifier.predict_classes(img/255)
-    
+    print(prediction_list)
+    result=np.argmax(prediction_list,axis=1)
+
     try:    
         print("It should be a " + classifierBreeds[result[0]])      
     except (Exception) as e:
@@ -337,7 +347,10 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 5:
         PrintDogSize(data)
     elif cmd == 6:
-        ListSizedDogs(data)            
+        ListSizedDogs(data)
+    elif cmd == 7:
+        if TrailImagePredictionRequest(data) == 0:
+            print("I did not get that, please try again.")
     elif cmd == 99:
         if HandleUnknownInput(data) == 0:
             print("I did not get that, please try again.")
@@ -346,21 +359,20 @@ def HandleAIMLCommand(cmd, data):
 # Main loop
 #######################################################
 def MainLoop():    
-    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke.\n"))
+    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me to predict the breed of a dog from an image. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke.\n"))
  
     while True: 
 
         #Get input
         userInput = GetInput()
 
-        #Determine if image prediction request
-        if TrailImagePredictionRequest(userInput):
-            continue
-
         #Get response from aiml & error check
         answer = kern.respond(userInput)
         if len(answer) == 0:
             continue
+
+        answer = answer.replace("  #99$", ".")
+        print(answer)
 
         #Check if command response
         if answer[0] == '#':
