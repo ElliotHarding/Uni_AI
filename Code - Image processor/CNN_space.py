@@ -41,8 +41,8 @@ for layer in model.layers[20:]:
 data_dir = "C:\\aData"
 image_size=244
 batch_size=32
-epochs=10
-data_dataGen = ImageDataGenerator(preprocessing_function=preprocess_input, validation_split=0.2, horizontal_flip=True) # Generator for our validation data
+epochs=60
+data_dataGen = ImageDataGenerator(rescale = 1./255, preprocessing_function=preprocess_input, validation_split=0.2, horizontal_flip=True) # Generator for our validation data
 
 train_generator = data_dataGen.flow_from_directory(
     data_dir,
@@ -79,7 +79,7 @@ history = model.fit_generator(generator=train_generator,
                    steps_per_epoch=batch_size,
                    epochs=epochs)
 
-model.save('C:\\dog-cnn.h5')
+model.save('E:\\dog-cnn.h5')
 
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
