@@ -1,19 +1,21 @@
 #Imports
-import aiml
+import sys, os, csv, inflect, aiml, cv2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-import csv
-import sys
-import inflect
 import tensorflow as tf
 from keras.preprocessing import image
 import matplotlib.pyplot as plt
 import pandas as pd
-import cv2
+import tkinter as tk
+from tkinter import filedialog
 
 #For singularization 
 p = inflect.engine()
+
+#For file dialog
+root = tk.Tk()
+root.withdraw()
 
 # Create a Kernel object & bootstrap to aiml file.
 kern = aiml.Kernel()
@@ -163,9 +165,6 @@ def DescribeDog(dogName):
 #######################################################
 def HandleUnknownInput(search):
 
-    if TrailImagePredictionRequest(data) == 1:
-        return
-
     if CheckSimilarDogs(search, breeds, 0.3) == 1:
         return
 
@@ -300,30 +299,73 @@ def PredictDogImage(imagePath):
         print("Unknown dog!")
 
 #######################################################
-# TrailImagePredictionRequest
+# CheckImageNameWithQuotesAndPredict
 #
-#   Searches through text for image types, if so finds the specified
-#   image & calls PredictDogImage on it
+#   Searches through text for image paths delimited by parameter char,
+#   if so finds the specified image & calls PredictDogImage on it
 #######################################################
-def TrailImagePredictionRequest(string):
+def CheckImageNameWithQuotesAndPredict(string, char):
+    iFirst = string.find(char)
+    iLast = string.rfind(char)
+    if not(iLast == iFirst):
+        path = string[iFirst+1:iLast]
+        if os.path.exists(path):
+            PredictDogImage(path)
+            return 1
+    return 0
+  
+#######################################################
+# ImagePredictionRequest
+#
+#   Searches through text for image paths, if so finds the specified
+#   image & calls PredictDogImage on it
+#
+#   Otherwise opens a dialog to select an image
+#######################################################
+def ImagePredictionRequest(string):
+
+    #Check for image paths & attempt to process if found
+    pathProvided=False
+    path=""
     for imageTypeEnding in imageEndingTypes:
         if imageTypeEnding in string:
 
+            pathProvided = True
+            
             #Get the name that goes infront of the imgage type ending
             startIndex=string.find(imageTypeEnding)
             endIndex=startIndex
             while startIndex > -1:
                 startIndex-=1
-                if string[startIndex] == " " or string[startIndex] == "\\" or string[startIndex] == "/":
+                if string[startIndex] == " ": #or string[startIndex] == "\\" or string[startIndex] == "/"
                     break
 
             if startIndex < endIndex:
-                PredictDogImage(string[startIndex+1:endIndex]+imageTypeEnding)
-            else:
-                print("Sorry! I can't seem to find that image")
-            return 1
-    return 0
+                path = string[startIndex+1:endIndex]+imageTypeEnding
+                if os.path.exists(path):
+                    PredictDogImage(path)
+                    return
+
+    #Open picker dialog if path not provided
+    if not pathProvided:
+        ImagePredictionFromDialog()
+        return
+
+    #Perhaps path was not found due to space in path? Attempt to get a path using quotes
+    if CheckImageNameWithQuotesAndPredict(string,"'"):
+        return
     
+    if CheckImageNameWithQuotesAndPredict(string,'"'):
+        return
+
+    print("Sorry. I couldn't find that image")
+
+def ImagePredictionFromDialog():
+    file_path = filedialog.askopenfilename()
+    if os.path.exists(file_path):
+        PredictDogImage(file_path)#[file_path.rfind('/')+1:]
+    else:
+        print("No image selected.")
 
 #######################################################
 # HandleAIMLCommand
@@ -346,8 +388,7 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 6:
         ListSizedDogs(data)
     elif cmd == 7:
-        if TrailImagePredictionRequest(data) == 0:
-            print("I did not get that, please try again.")
+        ImagePredictionRequest(data)
     elif cmd == 99:
         if HandleUnknownInput(data) == 0:
             print("I did not get that, please try again.")
