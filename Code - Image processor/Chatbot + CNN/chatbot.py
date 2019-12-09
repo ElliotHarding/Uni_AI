@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog
+from PIL import Image
+import requests
+from io import BytesIO
 
 #For singularization 
 p = inflect.engine()
@@ -59,7 +62,7 @@ def ReadFiles():
         classifierBreedsCsv = list(csv.reader(open('cnn-breed-names.csv', 'r')))
         classifierBreeds = [row[0] for row in classifierBreedsCsv]
 
-        dogBreedClassifier = tf.keras.models.load_model('E:\\dog-cnn.h5')
+        dogBreedClassifier = tf.keras.models.load_model('dog-cnn.h5')
 
         
     except (IOError) as e:
@@ -313,6 +316,10 @@ def CheckImageNameWithQuotesAndPredict(string, char):
             PredictDogImage(path)
             return 1
     return 0
+
+def ImageUrlPredictionRequest(url):
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
   
 #######################################################
 # ImagePredictionRequest
@@ -363,7 +370,7 @@ def ImagePredictionRequest(string):
 def ImagePredictionFromDialog():
     file_path = filedialog.askopenfilename()
     if os.path.exists(file_path):
-        PredictDogImage(file_path)#[file_path.rfind('/')+1:]
+        PredictDogImage(file_path)
     else:
         print("No image selected.")
 

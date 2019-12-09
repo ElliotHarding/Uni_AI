@@ -21,7 +21,7 @@ from tensorflow.keras.optimizers import Adam
 #Settings
 image_size=244
 batch_size=32
-epochs=75
+epochs=250
 
 
 #Get pre-traied model & apply layers
