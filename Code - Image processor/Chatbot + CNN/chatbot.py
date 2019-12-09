@@ -12,6 +12,7 @@ from tkinter import filedialog
 from PIL import Image
 import requests
 from io import BytesIO
+import re
 
 #For singularization 
 p = inflect.engine()
@@ -282,14 +283,8 @@ def PrintCrossBreeds():
 #   Takes an image path and runs the corresponding image to that path
 #   on the pre-trained CNN
 #######################################################
-def PredictDogImage(imagePath):
-    img = ""
-    try:    
-        img = image.load_img(imagePath, target_size=(IMG_SIZE, IMG_SIZE))
-    except (Exception) as e:
-        print("Sorry! I can't seem to find that image")
-        return
-
+def PredictDogImage(img):
+    
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     images = np.vstack([x])
@@ -300,6 +295,20 @@ def PredictDogImage(imagePath):
         print("It should be a " + classifierBreeds[result[0]])      
     except (Exception) as e:
         print("Unknown dog!")
+
+#######################################################
+# PredictDogImageFromPath
+#
+#   Takes an image path and runs the corresponding image to that path
+#   on the pre-trained CNN
+#######################################################
+def PredictDogImageFromPath(imagePath):
+    try:    
+        img = image.load_img(imagePath, target_size=(IMG_SIZE, IMG_SIZE))
+        PredictDogImage(img)
+    except (Exception) as e:
+        print("Sorry! I can't seem to find that image")
+        return
 
 #######################################################
 # CheckImageNameWithQuotesAndPredict
@@ -313,23 +322,49 @@ def CheckImageNameWithQuotesAndPredict(string, char):
     if not(iLast == iFirst):
         path = string[iFirst+1:iLast]
         if os.path.exists(path):
-            PredictDogImage(path)
+            PredictDogImageFromPath(path)
             return 1
     return 0
 
+#######################################################
+# ImageUrlPredictionRequest
+#
+#   Gets an image from a url and calls PredictDogImage()
+#######################################################
 def ImageUrlPredictionRequest(url):
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-  
+    try:
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        PredictDogImage(img)
+    except (Exception) as e:
+        print("Sorry! I can't seem to find that image")
+        return
+
+#######################################################
+# CheckUrl
+#
+#   Checks a string for a given url
+#######################################################
+def CheckUrl(string):
+    # with valid conditions for urls in string 
+    url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string) 
+    return url 
+
 #######################################################
 # ImagePredictionRequest
 #
-#   Searches through text for image paths, if so finds the specified
+#   Searches through text for image paths or urls, if so finds the specified
 #   image & calls PredictDogImage on it
 #
 #   Otherwise opens a dialog to select an image
 #######################################################
 def ImagePredictionRequest(string):
+
+    #Process urls outside of aiml since it dosent handel them
+    url = CheckUrl(string)
+    if url:
+        ImageUrlPredictionRequest(url[0])
+        return
 
     #Check for image paths & attempt to process if found
     pathProvided=False
@@ -344,13 +379,13 @@ def ImagePredictionRequest(string):
             endIndex=startIndex
             while startIndex > -1:
                 startIndex-=1
-                if string[startIndex] == " ": #or string[startIndex] == "\\" or string[startIndex] == "/"
+                if string[startIndex] == " ":
                     break
 
             if startIndex < endIndex:
                 path = string[startIndex+1:endIndex]+imageTypeEnding
                 if os.path.exists(path):
-                    PredictDogImage(path)
+                    PredictDogImageFromPath(path)
                     return
 
     #Open picker dialog if path not provided
@@ -367,10 +402,15 @@ def ImagePredictionRequest(string):
 
     print("Sorry. I couldn't find that image")
 
+#######################################################
+# ImagePredictionFromDialog
+#
+#   Handles responses for AIML commands
+#######################################################
 def ImagePredictionFromDialog():
     file_path = filedialog.askopenfilename()
     if os.path.exists(file_path):
-        PredictDogImage(file_path)
+        PredictDogImageFromPath(file_path)
     else:
         print("No image selected.")
 
@@ -417,7 +457,7 @@ def MainLoop():
             continue
 
         answer = answer.replace("  #99$", ".")
-
+        
         #Check if command response
         if answer[0] == '#':
             
