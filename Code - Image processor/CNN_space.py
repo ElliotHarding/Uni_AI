@@ -69,17 +69,26 @@ validation_data = data_dataGen.flow_from_directory(
 #Compile model
 model.compile(optimizer='Adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-#keras.callbacks.EarlyStopping(monitor='val_loss',
-                              #min_delta=0,
-                              #patience=2,
-                              #verbose=0, mode='auto')
+callbacks = [
+    keras.callbacks.ModelCheckpoint(
+        filepath='E://dog-cnn-savepoint.h5',
+        # Path where to save the model
+        # The two parameters below mean that we will overwrite
+        # the current checkpoint if and only if
+        # the `val_loss` score has improved.
+        save_best_only=True,
+        monitor='val_loss',
+        verbose=1)#,
+    #keras.callbacks.EarlyStopping(monitor='val_loss')
+]
 
 #Run on GPU
 with tf.device("/gpu:0"):
   history = model.fit_generator(generator=train_data,
                     validation_data=validation_data,
-                   steps_per_epoch=train_data.samples/batch_size,
-                   epochs=epochs)
+                    callbacks=callbacks,
+                    steps_per_epoch=train_data.samples/batch_size,
+                    epochs=epochs)
 
 #Save model
 model.save('E://dog-cnnn.h5')
@@ -94,18 +103,18 @@ val_acc = history.history['val_accuracy']
 loss = history.history['loss']
 val_loss = history.history['val_loss']
 
-epochs_range = range(epochs)
+#epochs_range = range(epochs)
 
-plt.figure(figsize=(8, 8))
-plt.subplot(1, 2, 1)
-plt.plot(epochs_range, acc, label='Training Accuracy')
-plt.plot(epochs_range, val_acc, label='Validation Accuracy')
-plt.legend(loc='lower right')
-plt.title('Training and Validation Accuracy')
+#plt.figure(figsize=(8, 8))
+#plt.subplot(1, 2, 1)
+#plt.plot(epochs_range, acc, label='Training Accuracy')
+#plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+#plt.legend(loc='lower right')
+#plt.title('Training and Validation Accuracy')
 
-plt.subplot(1, 2, 2)
-plt.plot(epochs_range, loss, label='Training Loss')
-plt.plot(epochs_range, val_loss, label='Validation Loss')
-plt.legend(loc='upper right')
-plt.title('Training and Validation Loss')
-plt.show()
+#plt.subplot(1, 2, 2)
+#plt.plot(epochs_range, loss, label='Training Loss')
+#plt.plot(epochs_range, val_loss, label='Validation Loss')
+#plt.legend(loc='upper right')
+#plt.title('Training and Validation Loss')
+#plt.show()
