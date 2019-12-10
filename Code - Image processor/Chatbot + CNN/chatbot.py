@@ -291,8 +291,10 @@ def PredictDogImage(img):
     classes = dogBreedClassifier.predict(x)
     result=np.argmax(classes,axis=1)
 
-    try:    
-        print("It should be a " + classifierBreeds[result[0]])      
+    try:
+        answer = classifierBreeds[result[0]]
+        answer = answer.replace("_", " ")
+        print("It should be a " + answer)      
     except (Exception) as e:
         print("Unknown dog!")
 
@@ -360,7 +362,7 @@ def CheckUrl(string):
 #######################################################
 def ImagePredictionRequest(string):
 
-    #Process urls outside of aiml since it dosent handel them
+    #Process urls
     url = CheckUrl(string)
     if url:
         ImageUrlPredictionRequest(url[0])
