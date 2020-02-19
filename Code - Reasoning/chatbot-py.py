@@ -76,7 +76,7 @@ def GetSimilarityArray(string, searchArray):
     array = [string] + searchArray
     tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(array)
     similarityArray = cosine_similarity(tfidf[0:1], tfidf)
-    similarityArray = np.delete(similarityArray, 0) todo todo todo todo todo todo todo todo todo todo
+    similarityArray = np.delete(similarityArray, 0)
 
     return similarityArray
 
