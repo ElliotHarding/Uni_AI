@@ -1,0 +1,4 @@
+chatbot.py --> chatbot python file
+CNN_Generator --> python file used to generate CNN for image classification
+dog-cnn.h5 --> generated CNN
+Other files have been included so the rest of the python bot still works
