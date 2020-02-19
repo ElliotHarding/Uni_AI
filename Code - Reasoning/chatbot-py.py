@@ -2,11 +2,12 @@
 import aiml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-#import numpy as np
+import numpy as np
 import csv
 import sys
 import inflect
 import nltk
+import wikipediaapi
 
 #Reasoning
 v = """
@@ -25,7 +26,6 @@ field4 => {}
 be_in => {}
 """
 folval = nltk.Valuation.fromstring(v)
-print(type(folval))
 grammar_file = 'simple-sem.fcfg'
 objectCounter = 0
 
@@ -38,7 +38,6 @@ kern.setTextEncoding(None)
 kern.bootstrap(learnFiles="chatbot-aiml.xml")
 
 #Initialize wikipedia api
-import wikipediaapi
 wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 
@@ -77,7 +76,7 @@ def GetSimilarityArray(string, searchArray):
     array = [string] + searchArray
     tfidf = TfidfVectorizer(stop_words=stopWords).fit_transform(array)
     similarityArray = cosine_similarity(tfidf[0:1], tfidf)
-    #similarityArray = np.delete(similarityArray, 0) todo todo todo todo todo todo todo todo todo todo
+    similarityArray = np.delete(similarityArray, 0) todo todo todo todo todo todo todo todo todo todo
 
     return similarityArray
 
