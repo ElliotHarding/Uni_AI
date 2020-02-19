@@ -282,23 +282,23 @@ def PrintCrossBreeds():
 #   Handles responses for AIML commands
 #######################################################
 def HandleAIMLCommand(cmd, data):
+    global objectCounter
+    global folval
     if cmd == 0:
         Exit()                
     elif cmd == 1:
-        DescribeDog(data)
+        DescribeDog(data[1])
     elif cmd == 2:
-        WikiSearch(data)
+        WikiSearch(data[1])
     elif cmd == 3:
-        PrintCrossBreed(data)
+        PrintCrossBreed(data[1])
     elif cmd == 4:
         PrintCrossBreeds()
     elif cmd == 5:
-        PrintDogSize(data)
+        PrintDogSize(data[1])
     elif cmd == 6:
-        ListSizedDogs(data)
+        ListSizedDogs(data[1])
     elif cmd == 7: # I will plant x in y
-        global objectCounter
-        global folval
         o = 'o' + str(objectCounter)
         objectCounter += 1
         folval['o' + o] = o #insert constant
@@ -311,10 +311,8 @@ def HandleAIMLCommand(cmd, data):
                 folval["be_in"].clear()
         folval["be_in"].add((o, folval[data[2]])) #insert location
     elif cmd == 8: #Are there any x in y
-        g = nltk.Assignment(folval.domain)
-        m = nltk.Model(folval.domain, folval)
         sent = 'some ' + data[1] + ' are_in ' + data[2]
-        results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
+        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
             print("Yes.")
         else:
@@ -336,8 +334,7 @@ def HandleAIMLCommand(cmd, data):
         if len(sat) == 0:
             print("None.")
         else:
-            #find satisfying objects in the valuation dictionary,
-            #and print their type names
+            #find satisfying objects in the valuation dictionary, and print their type names
             sol = folval.values()
             for so in sat:
                 for k, v in folval.items():
@@ -349,7 +346,7 @@ def HandleAIMLCommand(cmd, data):
                                     print(k)
                                     break        
     elif cmd == 99:
-        if HandleUnknownInput(data) == 0:
+        if HandleUnknownInput(data[1]) == 0:
             print("I did not get that, please try again.")
 
 #######################################################
