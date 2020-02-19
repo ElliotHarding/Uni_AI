@@ -23,6 +23,7 @@ potatoes => {}
 onions => {}
 carrots => {}
 beans => {}
+apples => {}
 peas => {}
 field1 => f1
 field2 => f2
@@ -318,19 +319,14 @@ def HandleAIMLCommand(cmd, data):
         else:
             print("No.")
     elif cmd == 9: # Are all x in y
-        g = nltk.Assignment(folval.domain)
-        m = nltk.Model(folval.domain, folval)
         sent = 'all ' + data[1] + ' are_in ' + data[2]
-        results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
+        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
             print("Yes.")
         else:
             print("No.")
     elif cmd == 10: # Which plants are in ...
-        g = nltk.Assignment(folval.domain)
-        m = nltk.Model(folval.domain, folval)
-        e = nltk.Expression.fromstring("be_in(x," + data[1] + ")")
-        sat = m.satisfiers(e, "x", g)
+        sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring("be_in(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
         if len(sat) == 0:
             print("None.")
         else:
@@ -372,7 +368,8 @@ def MainLoop():
         #Otherwise direct respond
         else:
             print(answer)
-            
+
+
             
 ReadFiles()
 MainLoop()

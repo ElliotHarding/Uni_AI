@@ -365,9 +365,17 @@
 <category><pattern>* MIXED BREEDS</pattern>
   <template>#4$</template></category>
   
-<!-- Reasoning -->
-<category> <pattern> I WILL PLANT * IN * </pattern>
+<!-- Reasoning 
+<category> <pattern> MOVE * </pattern>
+  <template>#7$<star index="1"/></template></category>
+<category> <pattern> GO * </pattern>
+  <template>#8$<star index="1"/></template></category>
+<category> <pattern> LOOK * </pattern>
+  <template>#8$<star index="1"/></template></category>-->
+-<category> <pattern> I WILL PLANT * IN * </pattern>
   <template>#7$<star index="1"/>$<star index="2"/></template></category>
+
+  
 <category> <pattern> ARE THERE ANY * IN * </pattern>
   <template>#8$<star index="1"/>$<star index="2"/></template></category>
 <category> <pattern> ARE ALL * IN * </pattern>
