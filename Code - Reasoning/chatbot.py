@@ -277,109 +277,106 @@ def PrintCrossBreeds():
     print("Here are all the cross breeds: " + breedList)
 
 #######################################################
-# Welcome user
+# HandleAIMLCommand
+#
+#   Handles responses for AIML commands
 #######################################################
-print("Welcome to the urban agriculture chat bot. Please feel free to ask questions about",
-      "concepts and methods in making your garden a food production site,  Permaculture,",
-      "Aquaponics, crops, the weather, or any plant images you might have.")
+def HandleAIMLCommand(cmd, data):
+    if cmd == 0:
+        Exit()                
+    elif cmd == 1:
+        DescribeDog(data)
+    elif cmd == 2:
+        WikiSearch(data)
+    elif cmd == 3:
+        PrintCrossBreed(data)
+    elif cmd == 4:
+        PrintCrossBreeds()
+    elif cmd == 5:
+        PrintDogSize(data)
+    elif cmd == 6:
+        ListSizedDogs(data)
+    elif cmd == 7: # I will plant x in y
+        global objectCounter
+        global folval
+        o = 'o' + str(objectCounter)
+        objectCounter += 1
+        folval['o' + o] = o #insert constant
+        if len(folval[data[1]]) == 1: #clean up if necessary
+            if ('',) in folval[data[1]]:
+                folval[data[1]].clear()
+        folval[data[1]].add((o,)) #insert type of plant information
+        if len(folval["be_in"]) == 1: #clean up if necessary
+            if ('',) in folval["be_in"]:
+                folval["be_in"].clear()
+        folval["be_in"].add((o, folval[data[2]])) #insert location
+    elif cmd == 8: #Are there any x in y
+        g = nltk.Assignment(folval.domain)
+        m = nltk.Model(folval.domain, folval)
+        sent = 'some ' + data[1] + ' are_in ' + data[2]
+        results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+    elif cmd == 9: # Are all x in y
+        g = nltk.Assignment(folval.domain)
+        m = nltk.Model(folval.domain, folval)
+        sent = 'all ' + data[1] + ' are_in ' + data[2]
+        results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+    elif cmd == 10: # Which plants are in ...
+        g = nltk.Assignment(folval.domain)
+        m = nltk.Model(folval.domain, folval)
+        e = nltk.Expression.fromstring("be_in(x," + data[1] + ")")
+        sat = m.satisfiers(e, "x", g)
+        if len(sat) == 0:
+            print("None.")
+        else:
+            #find satisfying objects in the valuation dictionary,
+            #and print their type names
+            sol = folval.values()
+            for so in sat:
+                for k, v in folval.items():
+                    if len(v) > 0:
+                        vl = list(v)
+                        if len(vl[0]) == 1:
+                            for i in vl:
+                                if i[0] == so:
+                                    print(k)
+                                    break        
+    elif cmd == 99:
+        if HandleUnknownInput(data) == 0:
+            print("I did not get that, please try again.")
+
 #######################################################
 # Main loop
 #######################################################
-while True:
-    #get user input
-    try:
-        userInput = input("> ")
-    except (KeyboardInterrupt, EOFError) as e:
-        print("Bye!")
-        break
-    #pre-process user input and determine response agent (if needed)
-    responseAgent = 'aiml'
-    #activate selected response agent
-    if responseAgent == 'aiml':
+def MainLoop():    
+    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke.\n"))
+    while True: 
+
+        #Get input
+        userInput = GetInput()
+
+        #Get response from aiml
         answer = kern.respond(userInput)
-    #post-process the answer for commands
-    if answer[0] == '#':
-        params = answer[1:].split('$')
-        cmd = int(params[0])
-        if cmd == 0:
-            print(params[1])
-            break
-        elif cmd == 1:
-            wpage = wiki_wiki.page(params[1])
-            if wpage.exists():
-                print(wpage.summary)
-                print("Learn more at", wpage.canonicalurl)
-            else:
-                print("Sorry, I don't know what that is.")
-        elif cmd == 2:
-            succeeded = False
-            api_url = r"http://api.openweathermap.org/data/2.5/weather?q="
-            response = requests.get(api_url + params[1] + r"&units=metric&APPID="+APIkey)
-            if response.status_code == 200:
-                response_json = json.loads(response.content)
-                if response_json:
-                    t = response_json['main']['temp']
-                    tmi = response_json['main']['temp_min']
-                    tma = response_json['main']['temp_max']
-                    hum = response_json['main']['humidity']
-                    wsp = response_json['wind']['speed']
-                    wdir = response_json['wind']['deg']
-                    conditions = response_json['weather'][0]['description']
-                    print("The temperature is", t, "°C, varying between", tmi, "and", tma, "at the moment, humidity is", hum, "%, wind speed ", wsp, "m/s,", conditions)
-                    succeeded = True
-            if not succeeded:
-                print("Sorry, I could not resolve the location you gave me.")
-        elif cmd == 7: # I will plant x in y
-            o = 'o' + str(objectCounter)
-            objectCounter += 1
-            folval['o' + o] = o #insert constant
-            if len(folval[params[1]]) == 1: #clean up if necessary
-                if ('',) in folval[params[1]]:
-                    folval[params[1]].clear()
-            folval[params[1]].add((o,)) #insert type of plant information
-            if len(folval["be_in"]) == 1: #clean up if necessary
-                if ('',) in folval["be_in"]:
-                    folval["be_in"].clear()
-            folval["be_in"].add((o, folval[params[2]])) #insert location
-        elif cmd == 8: #Are there any x in y
-            g = nltk.Assignment(folval.domain)
-            m = nltk.Model(folval.domain, folval)
-            sent = 'some ' + params[1] + ' are_in ' + params[2]
-            results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
-            if results[2] == True:
-                print("Yes.")
-            else:
-                print("No.")
-        elif cmd == 9: # Are all x in y
-            g = nltk.Assignment(folval.domain)
-            m = nltk.Model(folval.domain, folval)
-            sent = 'all ' + params[1] + ' are_in ' + params[2]
-            results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
-            if results[2] == True:
-                print("Yes.")
-            else:
-                print("No.")
-        elif cmd == 10: # Which plants are in ...
-            g = nltk.Assignment(folval.domain)
-            m = nltk.Model(folval.domain, folval)
-            e = nltk.Expression.fromstring("be_in(x," + params[1] + ")")
-            sat = m.satisfiers(e, "x", g)
-            if len(sat) == 0:
-                print("None.")
-            else:
-                #find satisfying objects in the valuation dictionary,
-		#and print their type names
-                sol = folval.values()
-                for so in sat:
-                    for k, v in folval.items():
-                        if len(v) > 0:
-                            vl = list(v)
-                            if len(vl[0]) == 1:
-                                for i in vl:
-                                    if i[0] == so:
-                                        print(k)
-                                        break        
-        elif cmd == 99:
-            print("I did not get that, please try again.")
-    else:
-        print(answer)
+
+        #Check if command response
+        if answer[0] == '#':
+            
+            #Split answer into cmd & input
+            params = answer[1:].split('$')
+            HandleAIMLCommand(int(params[0]), params)
+
+        #Otherwise direct respond
+        else:
+            print(answer)
+            
+            
+ReadFiles()
+MainLoop()
+    
