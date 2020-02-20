@@ -23,22 +23,23 @@ field4 => f4
 the_lake => the_lake
 Rosie => Rosie
 rover => rover
-Bob => Bob
-Dennis => Dennis
-Spark => Spark
-Charlie => Charlie
-Max => Max
-dog => {Rosie, Rover, Bob, Dennis, Spark, Charlie}
+bob => bob
+dennis => dennis
+spark => spark
+charlie => charlie
+max => max
+dog => {rosie, rover, bob, dennis, spark, charlie}
 is_in => {}
 is_on => {}
 is_chasing => {}
 is_below => {}
 climbs => {}
 lies => {}
-walk => {}
-bark => {}
+walks => {}
+barks => {}
 sits => {}
 sees => {}
+bone => {}
 """
 folval = nltk.Valuation.fromstring(v)
 grammar_file = 'simple-sem.fcfg'
@@ -59,6 +60,35 @@ waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", 
 breeds = []
 breedInfo = []
 sizes = []
+
+def ResetWorld():
+    v = """
+    field1 => f1
+    field2 => f2
+    field3 => f3
+    field4 => f4
+    the_lake => the_lake
+    Rosie => Rosie
+    rover => rover
+    bob => bob
+    dennis => dennis
+    spark => spark
+    charlie => charlie
+    max => max
+    dog => {rosie, rover, bob, dennis, spark, charlie}
+    is_in => {}
+    is_on => {}
+    is_chasing => {}
+    is_below => {}
+    climbs => {}
+    lies => {}
+    walks => {}
+    barks => {}
+    sits => {}
+    sees => {}
+    bone => {}
+    """
+    folval = nltk.Valuation.fromstring(v)
 
 #######################################################
 # ReadFiles
@@ -309,34 +339,52 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 6:
         ListSizedDogs(data[0])
 
+    #Query
     elif cmd == 7:
-        sent = " "
-        sent = sent.join(data)#.lower()
-        print(sent)
-        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-        print()
-        if results[2] == True:
-            print("Yes.")
-        else:
-            print("No.")
+        try:
+            sent = " "
+            sent = sent.join(data).lower()
+            results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+            if results[2] == True:
+                print("Yes.")
+            else:
+                print("No.")
+        except:
+            print("Sorry, I don't know that.")
 
-    #Set action --> x(PropN) z(on/in/below) y(PropN)
-    elif cmd == 8:    
-        folval[data[1]].add((data[0], folval[data[2]])) 
+    #Set action --> x(PropN) z(TV in/below) y(PropN)
+    elif cmd == 8:                
+        if data[0] in folval:
+            if data[2] in folval:                
+                folval[data[1]].add((data[0], folval[data[2]]))
+            else:
+                print(data[2] + " does not exit in toy world.")
+        else:
+            print(data[0] + " does not exit in toy world.")
     
-    #I will plant x in y    
-    elif cmd == 77: 
-        o = 'o' + str(objectCounter)
-        objectCounter += 1
-        folval['o' + o] = o #insert constant
-        if len(folval[data[1]]) == 1: #clean up if necessary
-            if ('',) in folval[data[1]]:
-                folval[data[1]].clear()
-        folval[data[1]].add((o,)) #insert type of plant information
-        if len(folval["be_in"]) == 1: #clean up if necessary
-            if ('',) in folval["be_in"]:
-                folval["be_in"].clear()
-        folval["be_in"].add((o, folval[data[2]])) #insert location
+    #Set action --> x(PropN) z(TV below/chase/climbs/sees) y(-DET N)   
+    elif cmd == 9:
+
+        if data[0] in folval:
+            if data[2] in folval:                
+
+                #insert constant
+                o = 'o' + str(objectCounter)
+                objectCounter += 1
+                folval['o' + o] = o
+
+                #insert type of object information        
+                folval[data[0]].add((o,))
+
+                #insert location 
+                folval[data[1]].add((o, folval[data[2]])) 
+                
+            else:
+                print(data[2] + " does not exit in toy world.")
+        else:
+            print(data[0] + " does not exit in toy world.")
+
+        
 
     #Are there any x in y    
     elif cmd == 88: 
@@ -351,7 +399,7 @@ def HandleAIMLCommand(cmd, data):
             print("No.")
             
     # Are all x in y      
-    elif cmd == 9: 
+    elif cmd == 99: 
         sent = 'all ' + data[1] + ' are_in ' + data[2]
         results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
