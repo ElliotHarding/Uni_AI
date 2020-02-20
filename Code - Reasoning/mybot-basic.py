@@ -34,7 +34,7 @@ field4 => f4
 be_in => {}
 """
 folval = nltk.Valuation.fromstring(v)
-grammar_file = 'simple-sem.fcfg'
+grammar_file = 'simple-sem - Copy.fcfg'
 objectCounter = 0
 
 

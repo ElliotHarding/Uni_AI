@@ -366,20 +366,28 @@
   <template>#4$</template></category>
   
 <!-- Reasoning 
-<category> <pattern> MOVE * </pattern>
-  <template>#7$<star index="1"/></template></category>
-<category> <pattern> GO * </pattern>
-  <template>#8$<star index="1"/></template></category>
-<category> <pattern> LOOK * </pattern>
-  <template>#8$<star index="1"/></template></category>-->
 -<category> <pattern> I WILL PLANT * IN * </pattern>
-  <template>#7$<star index="1"/>$<star index="2"/></template></category>
-
+  <template>#7$<star index="1"/>$<star index="2"/></template></category>  -->
+<category> <pattern> ARE SOME * IN * </pattern>
+  <template>#7$some$<star index="1"/>$is_in$<star index="2"/></template></category>
+<category> <pattern> ARE ALL * IN * </pattern>
+  <template>#7$all$<star index="1"/>$is_in$<star index="2"/></template></category> 
+<category> <pattern> IS * IN * </pattern>
+  <template>#7$<star index="1"/>$is_in$<star index="2"/></template></category> 
+<category> <pattern> MAKE * CHASE * </pattern>
+  <template>#8$<star index="1"/>$is_chasing$<star index="2"/></template></category>
+<category> <pattern> PUT * IN * </pattern>
+  <template>#8$<star index="1"/>$is_in$<star index="2"/></template></category> 
   
+<!--
+<category> <pattern> * LIES DOWN </pattern>
+  <template>#8$<star index="1"/> lies_down</template></category>
+<category> <pattern> * SITS </pattern>
+  <template>#8$<star index="1"/> sits</template></category>
 <category> <pattern> ARE THERE ANY * IN * </pattern>
   <template>#8$<star index="1"/>$<star index="2"/></template></category>
 <category> <pattern> ARE ALL * IN * </pattern>
-  <template>#9$<star index="1"/>$<star index="2"/></template></category>
+  <template>#9$<star index="1"/>$<star index="2"/></template></category>-->
 <category> <pattern> WHICH PLANTS ARE IN * </pattern>
   <template>#10$<star index="1"/></template></category>
 

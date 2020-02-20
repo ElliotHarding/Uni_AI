@@ -16,20 +16,29 @@ wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 
 #Reasoning
 v = """
-lettuces => {}
-cabbages => {}
-mustards => {}
-potatoes => {}
-onions => {}
-carrots => {}
-beans => {}
-apples => {}
-peas => {}
 field1 => f1
 field2 => f2
 field3 => f3
 field4 => f4
-be_in => {}
+the_lake => the_lake
+Rosie => Rosie
+rover => rover
+Bob => Bob
+Dennis => Dennis
+Spark => Spark
+Charlie => Charlie
+Max => Max
+dog => {Rosie, Rover, Bob, Dennis, Spark, Charlie}
+is_in => {}
+is_on => {}
+is_chasing => {}
+is_below => {}
+climbs => {}
+lies => {}
+walk => {}
+bark => {}
+sits => {}
+sees => {}
 """
 folval = nltk.Valuation.fromstring(v)
 grammar_file = 'simple-sem.fcfg'
@@ -288,18 +297,35 @@ def HandleAIMLCommand(cmd, data):
     if cmd == 0:
         Exit()                
     elif cmd == 1:
-        DescribeDog(data[1])
+        DescribeDog(data[0])
     elif cmd == 2:
-        WikiSearch(data[1])
+        WikiSearch(data[0])
     elif cmd == 3:
-        PrintCrossBreed(data[1])
+        PrintCrossBreed(data[0])
     elif cmd == 4:
         PrintCrossBreeds()
     elif cmd == 5:
-        PrintDogSize(data[1])
+        PrintDogSize(data[0])
     elif cmd == 6:
-        ListSizedDogs(data[1])
-    elif cmd == 7: # I will plant x in y
+        ListSizedDogs(data[0])
+
+    elif cmd == 7:
+        sent = " "
+        sent = sent.join(data)#.lower()
+        print(sent)
+        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+        print()
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+
+    #Set action --> x(PropN) z(on/in/below) y(PropN)
+    elif cmd == 8:    
+        folval[data[1]].add((data[0], folval[data[2]])) 
+    
+    #I will plant x in y    
+    elif cmd == 77: 
         o = 'o' + str(objectCounter)
         objectCounter += 1
         folval['o' + o] = o #insert constant
@@ -311,21 +337,30 @@ def HandleAIMLCommand(cmd, data):
             if ('',) in folval["be_in"]:
                 folval["be_in"].clear()
         folval["be_in"].add((o, folval[data[2]])) #insert location
-    elif cmd == 8: #Are there any x in y
-        sent = 'some ' + data[1] + ' are_in ' + data[2]
-        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-        if results[2] == True:
-            print("Yes.")
-        else:
+
+    #Are there any x in y    
+    elif cmd == 88: 
+        try:
+            sent = 'some ' + data[1] + ' are_in ' + data[2]
+            results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+            if results[2] == True:
+                print("Yes.")
+            else:
+                print("No.")
+        except:                            
             print("No.")
-    elif cmd == 9: # Are all x in y
+            
+    # Are all x in y      
+    elif cmd == 9: 
         sent = 'all ' + data[1] + ' are_in ' + data[2]
         results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
             print("Yes.")
         else:
             print("No.")
-    elif cmd == 10: # Which plants are in ...
+
+    # Which plants are in ...        
+    elif cmd == 10: 
         sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring("be_in(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
         if len(sat) == 0:
             print("None.")
@@ -340,9 +375,12 @@ def HandleAIMLCommand(cmd, data):
                             for i in vl:
                                 if i[0] == so:
                                     print(k)
-                                    break        
+                                    break
+    
+
+    
     elif cmd == 99:
-        if HandleUnknownInput(data[1]) == 0:
+        if HandleUnknownInput(data[0]) == 0:
             print("I did not get that, please try again.")
 
 #######################################################
@@ -363,7 +401,7 @@ def MainLoop():
             
             #Split answer into cmd & input
             params = answer[1:].split('$')
-            HandleAIMLCommand(int(params[0]), params)
+            HandleAIMLCommand(int(params[0]), params[1:])
 
         #Otherwise direct respond
         else:
