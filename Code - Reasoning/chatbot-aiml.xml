@@ -375,17 +375,17 @@
 <category><pattern> IS * IN * </pattern>
   <template>#7$<star index="1"/>$is_in$<star index="2"/></template></category>
 <category><pattern> IS * BARKING </pattern>
-  <template>#7$<star/>$barks</template></category>
+  <template>#7$<star/>$is$barking</template></category>
 <category><pattern> IS * LIYING DOWN </pattern>
-  <template>#7$<star/>$lies</template></category>
+  <template>#7$<star/>$is$liying_down</template></category>
 <category><pattern> IS * SITTING </pattern>
-  <template>#7$<star/>$sits</template></category>
+  <template>#7$<star/>$is$sitting</template></category>
 <category><pattern> IS * WALKING </pattern>
   <template>#7$<star/>$is$walking</template></category>
 <category><pattern> IS * CHASING * </pattern>
   <template>#7$<star/>$is_chasing</template></category>
  
-<!-- Set for (PropN) (TV) (PropN) -->
+<!-- Set for (PropN) (TV) (PropN) or (PropN) (Det) (IV)-->
 <category> <pattern> MAKE * CHASE * </pattern>
   <template>#8$<star index="1"/>$is_chasing$<star index="2"/></template></category>
 <category> <pattern> PUT * IN * </pattern>
@@ -393,20 +393,15 @@
 <category> <pattern> MAKE * WALK </pattern>
   <template>#8$<star index="1"/>$is$walking</template></category> 
 <category> <pattern> MAKE * BARK </pattern>
-  <template>#10$<star index="1"/>$is$barking</template></category> 
+  <template>#8$<star index="1"/>$is$barking</template></category> 
 <category> <pattern> MAKE * LIE DOWN </pattern>
-  <template>#10$<star index="1"/>$is$barking</template></category> 
+  <template>#8$<star index="1"/>$is$barking</template></category> 
 <category><pattern> MAKE * SIT </pattern>
-  <template>#10$<star index="1"/>$sits</template></category>
+  <template>#8$<star index="1"/>$is$sitting</template></category>
   
 <!-- Set for (PropN) (TV) (N) -->
 <category> <pattern> MAKE * CHASE A * </pattern>
   <template>#9$<star index="1"/>$is_chasing$<star index="2"/></template></category>
-<category> <pattern> MAKE * CLIMB A * </pattern>
-  <template>#9$<star index="1"/>$climbs$<star index="2"/></template></category>
-<category> <pattern> MAKE * CLIMB A * </pattern>
-  <template>#9$<star index="1"/>$climbs$<star index="2"/></template></category>   
-  
 
 
  
@@ -421,8 +416,6 @@
   <template>#8$<star index="1"/>$<star index="2"/></template></category>
 <category> <pattern> ARE ALL * IN * </pattern>
   <template>#9$<star index="1"/>$<star index="2"/></template></category>-->
-<category> <pattern> WHICH PLANTS ARE IN * </pattern>
-  <template>#10$<star index="1"/></template></category>
 
 
 <!-- Default reaction -->

@@ -21,6 +21,9 @@ field2 => f2
 field3 => f3
 field4 => f4
 walking => walking
+barking => barking
+sitting => sitting
+lying_down => lying_down
 the_lake => the_lake
 rosie => rosie
 rover => rover
@@ -35,7 +38,6 @@ is_in => {}
 is_on => {}
 is_chasing => {}
 is_below => {}
-climbs => {}
 sees => {}
 bone => {}
 """

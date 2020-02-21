@@ -22,7 +22,10 @@ NP[LOC=?l,NUM=?n,SEM=?np] -> PropN[LOC=?l,NUM=?n,SEM=?np]
 Nom[NUM=?n,SEM=?nom] -> N[NUM=?n,SEM=?nom]
 
 VP[NUM=?n,SEM=?v] -> IV[NUM=?n,SEM=?v]
+
+#NEW VP DEFINITION FOR is IV
 VP[NUM=?n,SEM=<?v(?obj)>] -> Det[NUM=?n,SEM=?v] IV[SEM=?obj] 
+
 VP[NUM=?n,SEM=<?v(?obj)>] -> TV[NUM=?n,SEM=?v] NP[SEM=?obj]
 VP[NUM=?n,SEM=<?v(?obj,?pp)>] -> DTV[NUM=?n,SEM=?v] NP[SEM=?obj] PP[+TO,SEM=?pp]
 
@@ -58,17 +61,16 @@ N[NUM=pl,SEM=<\x.bone(x)>] -> 'trees'
 N[NUM=pl,SEM=<\x.dog(x)>] -> 'dogs'
 N[NUM=sg,SEM=<\x.dog(x)>] -> 'dog'
 
-IV[NUM=sg,SEM=<\x.bark(x)>,TNS=pres] -> 'barking'
-IV[NUM=pl,SEM=<\x.bark(x)>,TNS=pres] -> 'barking'
+IV[NUM=sg,SEM=<\P.P(barking)>,TNS=pres] -> 'barking'
+IV[NUM=pl,SEM=<\P.P(barking)>,TNS=pres] -> 'barking'
 IV[NUM=sg,SEM=<\P.P(walking)>,TNS=pres] -> 'walking'
 IV[NUM=pl,SEM=<\P.P(walking)>,TNS=pres] -> 'walking'
 IV[NUM=sg,SEM=<\x.lies(x)>,TNS=pres] -> 'lying_down'
-IV[NUM=pl,SEM=<\x.sits(x)>,TNS=pres] -> 'sitting'
-IV[NUM=sg,SEM=<\X x.X(\y.walks(x,y))>,TNS=pres] -> 'walks'
+IV[NUM=pl,SEM=<\P.P(sitting)>,TNS=pres] -> 'sitting'
+IV[NUM=sg,SEM=<\P.P(sitting)>,TNS=pres] -> 'sitting'
 
 TV[NUM=sg,SEM=<\X x.X(\y.sees(x,y))>,TNS=pres] -> 'sees'
 TV[NUM=pl,SEM=<\X x.X(\y.sees(x,y))>,TNS=pres] -> 'can_see'
-TV[NUM=pl,SEM=<\X x.X(\y.climbs(x,y))>,TNS=pres] -> 'climbs'
 TV[NUM=sg,SEM=<\X x.X(\y.is_below(x,y))>,TNS=pres] -> 'is_below'
 TV[NUM=sg,SEM=<\X x.X(\y.is_chasing(x,y))>,TNS=pres] -> 'is_chasing'
 TV[NUM=sg,SEM=<\X x.X(\y.is_on(x,y))>,TNS=pres] -> 'is_on'
