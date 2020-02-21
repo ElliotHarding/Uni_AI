@@ -37,9 +37,9 @@ is => {}
 is_in => {}
 is_on => {}
 is_chasing => {}
-is_below => {}
 sees => {}
 bone => {}
+leash => {}
 """
 folval = nltk.Valuation.fromstring(v)
 grammar_file = 'simple-sem.fcfg'
