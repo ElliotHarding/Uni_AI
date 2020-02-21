@@ -89,7 +89,7 @@ def ResetToyWorld():
     bone => {}
     tree => {}
     """
-    folval = nltk.Valuation.fromstring(v)
+    folval = nltk.Valuation.fromstring(v)    
 
 #######################################################
 # ReadFiles
@@ -353,7 +353,7 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 7:
         #try:
         sent = " "
-        sent = sent.join(data).lower()        
+        sent = sent.join(data).lower()
         results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
             print("Yes.")
@@ -365,8 +365,15 @@ def HandleAIMLCommand(cmd, data):
     #Set action --> x(PropN) z(TV in/below) y(PropN)
     elif cmd == 8:                
         if data[0] in folval:
-            if data[2] in folval:                
-                folval[data[1]].add((data[0], folval[data[2]]))
+            if data[2] in folval:
+                ClearEmptyFolvalSlot(data[1])
+                
+                for item in folval[data[1]]:
+                    if data[0] in item:
+                        folval[data[1]].remove(item)
+                        break
+                
+                folval[data[1]].add((data[0], folval[data[2]]))               
                 print("done.")
             else:
                 print(data[2] + " does not exit in toy world.")
@@ -377,8 +384,13 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 9:
 
         if data[0] in folval:
-            if data[2] in folval:                
+            if data[2] in folval:
 
+                for item in folval[data[1]]:
+                    if data[0] in item:
+                        folval[data[1]].remove(item)
+                        break
+                        
                 #insert constant
                 o = 'o' + str(objectCounter)
                 objectCounter += 1
@@ -456,7 +468,7 @@ def MainLoop():
         answer = kern.respond(userInput)
 
         #Check if command response
-        if answer[0] == '#':
+        if userInput != "-" and answer[0] == '#':
             
             #Split answer into cmd & input
             params = answer[1:].split('$')

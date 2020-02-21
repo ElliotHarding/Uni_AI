@@ -380,7 +380,7 @@
 <category><pattern> IS * SITTING </pattern>
   <template>#7$<star/>$sits</template></category>
 <category><pattern> IS * WALKING </pattern>
-  <template>#7$<star/>$walks</template></category>
+  <template>#7$$<star/>$walks</template></category>
 <category><pattern> IS * CHASING * </pattern>
   <template>#7$<star/>$is_chasing</template></category>
  
