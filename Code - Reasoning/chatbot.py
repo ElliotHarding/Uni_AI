@@ -61,14 +61,14 @@ breeds = []
 breedInfo = []
 sizes = []
 
-def ResetWorld():
+def ResetToyWorld():
     v = """
     field1 => f1
     field2 => f2
     field3 => f3
     field4 => f4
     the_lake => the_lake
-    Rosie => Rosie
+    rosie => rosie
     rover => rover
     bob => bob
     dennis => dennis
@@ -87,6 +87,7 @@ def ResetWorld():
     sits => {}
     sees => {}
     bone => {}
+    tree => {}
     """
     folval = nltk.Valuation.fromstring(v)
 
@@ -316,6 +317,15 @@ def PrintCrossBreeds():
     breedList = breedList[0:len(breedList)-2]
     print("Here are all the cross breeds: " + breedList)
 
+def ClearEmptyFolvalSlot(slot):
+    if len(folval[slot]) == 1: 
+        if ('',) in folval[slot]:
+            folval[slot].clear()
+
+def AddToToyWorldIfNotExist(index, toAdd):
+    if folval[index].add((o, folval[data[0]])):
+        print()
+
 #######################################################
 # HandleAIMLCommand
 #
@@ -341,22 +351,23 @@ def HandleAIMLCommand(cmd, data):
 
     #Query
     elif cmd == 7:
-        try:
-            sent = " "
-            sent = sent.join(data).lower()
-            results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-            if results[2] == True:
-                print("Yes.")
-            else:
-                print("No.")
-        except:
-            print("Sorry, I don't know that.")
+        #try:
+        sent = " "
+        sent = sent.join(data).lower()        
+        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+        #except:
+            #print("Sorry, I don't know that.")
 
     #Set action --> x(PropN) z(TV in/below) y(PropN)
     elif cmd == 8:                
         if data[0] in folval:
             if data[2] in folval:                
                 folval[data[1]].add((data[0], folval[data[2]]))
+                print("done.")
             else:
                 print(data[2] + " does not exit in toy world.")
         else:
@@ -373,42 +384,41 @@ def HandleAIMLCommand(cmd, data):
                 objectCounter += 1
                 folval['o' + o] = o
 
-                #insert type of object information        
-                folval[data[0]].add((o,))
+                ClearEmptyFolvalSlot(data[2])
 
+                #insert type of object information        
+                folval[data[2]].add((o,))
+
+                ClearEmptyFolvalSlot(data[1])
+                
                 #insert location 
-                folval[data[1]].add((o, folval[data[2]])) 
+                folval[data[1]].add((o, folval[data[0]]))
+                print("done.")
                 
             else:
                 print(data[2] + " does not exit in toy world.")
         else:
             print(data[0] + " does not exit in toy world.")
 
-        
+    #Set action --> x(PropN) z(IV barks/walks)
+    elif cmd == 10:
 
-    #Are there any x in y    
-    elif cmd == 88: 
-        try:
-            sent = 'some ' + data[1] + ' are_in ' + data[2]
-            results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-            if results[2] == True:
-                print("Yes.")
+        if data[0] in folval:
+            if data[1] in folval:                
+
+                #Todo, dont really want dog doing two things at once so need to check if already doing something and remove that.
+                
+                #insert location
+                folval[data[1]].add(data[0])
+                print("done.")
+                
             else:
-                print("No.")
-        except:                            
-            print("No.")
-            
-    # Are all x in y      
-    elif cmd == 99: 
-        sent = 'all ' + data[1] + ' are_in ' + data[2]
-        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-        if results[2] == True:
-            print("Yes.")
+                print(data[2] + " does not exit in toy world.")
         else:
-            print("No.")
+            print(data[0] + " does not exit in toy world.")
 
     # Which plants are in ...        
-    elif cmd == 10: 
+    elif cmd == 11: 
         sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring("be_in(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
         if len(sat) == 0:
             print("None.")
@@ -430,6 +440,7 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 99:
         if HandleUnknownInput(data[0]) == 0:
             print("I did not get that, please try again.")
+    print(folval)
 
 #######################################################
 # Main loop

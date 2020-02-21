@@ -52,6 +52,7 @@ Det[NUM=sg,SEM=<\P Q.exists x.(P(x) & Q(x))>] -> 'a' | 'an'
 N[NUM=sg,SEM=<\x.bone(x)>] -> 'bone' | 'frisbee'
 N[NUM=sg,SEM=<\x.lead(x)>] -> 'leash' | 'dog lead'
 N[NUM=sg,SEM=<\x.bone(x)>] -> 'tree'
+N[NUM=pl,SEM=<\x.bone(x)>] -> 'trees'
 N[NUM=pl,SEM=<\x.dog(x)>] -> 'dogs'
 N[NUM=sg,SEM=<\x.dog(x)>] -> 'dog'
 

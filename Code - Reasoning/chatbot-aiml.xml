@@ -365,21 +365,49 @@
 <category><pattern>* MIXED BREEDS</pattern>
   <template>#4$</template></category>
   
-<!-- Reasoning 
--<category> <pattern> I WILL PLANT * IN * </pattern>
-  <template>#7$<star index="1"/>$<star index="2"/></template></category>  -->
-<category> <pattern> ARE SOME * IN * </pattern>
+<!-- Reasoning -->
+ 
+<category><pattern> ARE SOME * IN * </pattern>
   <template>#7$some$<star index="1"/>$is_in$<star index="2"/></template></category>
-<category> <pattern> ARE ALL * IN * </pattern>
+<category><pattern> ARE ALL * IN * </pattern>
   <template>#7$all$<star index="1"/>$is_in$<star index="2"/></template></category> 
-<category> <pattern> IS * IN * </pattern>
-  <template>#7$<star index="1"/>$is_in$<star index="2"/></template></category> 
+<category><pattern> IS * IN * </pattern>
+  <template>#7$<star index="1"/>$is_in$<star index="2"/></template></category>
+<category><pattern> IS * BARKING </pattern>
+  <template>#7$<star/>$barks</template></category>
+<category><pattern> IS * LIYING DOWN </pattern>
+  <template>#7$<star/>$lies</template></category>
+<category><pattern> IS * SITTING </pattern>
+  <template>#7$<star/>$sits</template></category>
+<category><pattern> IS * WALKING </pattern>
+  <template>#7$<star/>$walks</template></category>
+<category><pattern> IS * CHASING * </pattern>
+  <template>#7$<star/>$is_chasing</template></category>
+ 
 <category> <pattern> MAKE * CHASE * </pattern>
   <template>#8$<star index="1"/>$is_chasing$<star index="2"/></template></category>
 <category> <pattern> PUT * IN * </pattern>
   <template>#8$<star index="1"/>$is_in$<star index="2"/></template></category> 
   
+<category> <pattern> MAKE * CHASE A * </pattern>
+  <template>#9$<star index="1"/>$is_chasing$<star index="2"/></template></category>
+<category> <pattern> MAKE * CLIMB A * </pattern>
+  <template>#9$<star index="1"/>$climbs$<star index="2"/></template></category>
+<category> <pattern> MAKE * CLIMB A * </pattern>
+  <template>#9$<star index="1"/>$climbs$<star index="2"/></template></category>   
+  
+<category> <pattern> MAKE * BARK </pattern>
+  <template>#10$<star index="1"/>$barks</template></category> 
+<category> <pattern> MAKE * WALK </pattern>
+  <template>#10$<star index="1"/>$walks</template></category>
+<category> <pattern> MAKE * LIE DOWN </pattern>
+  <template>#10$<star index="1"/>$lies</template></category> 
+<category><pattern> MAKE * SIT </pattern>
+  <template>#10$<star index="1"/>$sits</template></category>
+ 
 <!--
+	what is x chasing
+
 <category> <pattern> * LIES DOWN </pattern>
   <template>#8$<star index="1"/> lies_down</template></category>
 <category> <pattern> * SITS </pattern>
