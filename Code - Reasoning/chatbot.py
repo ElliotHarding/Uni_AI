@@ -29,6 +29,7 @@ spark => spark
 charlie => charlie
 max => max
 dog => {rosie, rover, bob, dennis, spark, charlie}
+is => {}
 is_in => {}
 is_on => {}
 is_chasing => {}
@@ -327,6 +328,10 @@ def ClearEmptyFolvalSlot(slot):
 def HandleAIMLCommand(cmd, data):
     global objectCounter
     global folval
+    sent = " "
+    sent = sent.join(data).lower()
+    print(sent)
+
     if cmd == 0:
         Exit()                
     elif cmd == 1:
@@ -357,7 +362,10 @@ def HandleAIMLCommand(cmd, data):
             #print("Sorry, I don't know that.")
 
     #Set action --> x(PropN) z(TV in/below) y(PropN)
-    elif cmd == 8:                
+    elif cmd == 8:
+
+        
+                        
         if data[0] in folval:
             if data[2] in folval:
                 ClearEmptyFolvalSlot(data[1])

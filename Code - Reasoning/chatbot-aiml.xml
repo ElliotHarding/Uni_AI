@@ -380,7 +380,7 @@
 <category><pattern> IS * SITTING </pattern>
   <template>#7$<star/>$sits</template></category>
 <category><pattern> IS * WALKING </pattern>
-  <template>#7$<star/>$walks</template></category>
+  <template>#7$<star/>$is$walking</template></category>
 <category><pattern> IS * CHASING * </pattern>
   <template>#7$<star/>$is_chasing</template></category>
  
@@ -388,6 +388,8 @@
   <template>#8$<star index="1"/>$is_chasing$<star index="2"/></template></category>
 <category> <pattern> PUT * IN * </pattern>
   <template>#8$<star index="1"/>$is_in$<star index="2"/></template></category> 
+<category> <pattern> MAKE * WALK </pattern>
+  <template>#8$<star index="1"/>$is$walking</template></category> 
   
 <category> <pattern> MAKE * CHASE A * </pattern>
   <template>#9$<star index="1"/>$is_chasing$<star index="2"/></template></category>
@@ -398,8 +400,8 @@
   
 <category> <pattern> MAKE * BARK </pattern>
   <template>#10$<star index="1"/>$barks</template></category> 
-<category> <pattern> MAKE * WALK </pattern>
-  <template>#8$<star index="1"/>$walks$n</template></category>
+<!--<category> <pattern> MAKE * WALK </pattern>
+  <template>#8$<star index="1"/>$walks$n</template></category>-->
 <category> <pattern> MAKE * LIE DOWN </pattern>
   <template>#10$<star index="1"/>$lies</template></category> 
 <category><pattern> MAKE * SIT </pattern>
