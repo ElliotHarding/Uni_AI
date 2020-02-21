@@ -20,6 +20,7 @@ field1 => f1
 field2 => f2
 field3 => f3
 field4 => f4
+walking => walking
 the_lake => the_lake
 rosie => rosie
 rover => rover
@@ -329,8 +330,7 @@ def HandleAIMLCommand(cmd, data):
     global objectCounter
     global folval
     sent = " "
-    sent = sent.join(data).lower()
-    print(sent)
+    print(sent.join(data).lower())
 
     if cmd == 0:
         Exit()                
@@ -361,20 +361,21 @@ def HandleAIMLCommand(cmd, data):
         #except:
             #print("Sorry, I don't know that.")
 
-    #Set action --> x(PropN) z(TV in/below) y(PropN)
-    elif cmd == 8:
-
-        
-                        
+    #Set action --> x(PropN) z(TV is_in/is) y(PropN)
+    elif cmd == 8:           
         if data[0] in folval:
             if data[2] in folval:
+
                 ClearEmptyFolvalSlot(data[1])
                 
                 for item in folval[data[1]]:
                     if data[0] in item:
                         folval[data[1]].remove(item)
                         break
-                
+                print(type(data[1]))
+                print(type(data[0]))
+                print(type(data[2]))
+                print(type((data[0], folval[data[2]])))
                 folval[data[1]].add((data[0], folval[data[2]]))               
                 print("done.")
             else:
