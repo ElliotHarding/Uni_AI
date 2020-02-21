@@ -22,6 +22,7 @@ NP[LOC=?l,NUM=?n,SEM=?np] -> PropN[LOC=?l,NUM=?n,SEM=?np]
 Nom[NUM=?n,SEM=?nom] -> N[NUM=?n,SEM=?nom]
 
 VP[NUM=?n,SEM=?v] -> IV[NUM=?n,SEM=?v]
+VP[NUM=?n,SEM=<?v(?obj)>] -> TV[NUM=?n,SEM=?v] IV[SEM=?obj]
 VP[NUM=?n,SEM=<?v(?obj)>] -> TV[NUM=?n,SEM=?v] NP[SEM=?obj]
 VP[NUM=?n,SEM=<?v(?obj,?pp)>] -> DTV[NUM=?n,SEM=?v] NP[SEM=?obj] PP[+TO,SEM=?pp]
 
@@ -35,7 +36,6 @@ PropN[-LOC,NUM=sg,SEM=<\P.P(field1)>] -> 'field1'
 PropN[-LOC,NUM=sg,SEM=<\P.P(field2)>] -> 'field2'
 PropN[-LOC,NUM=sg,SEM=<\P.P(field3)>] -> 'field3'
 PropN[-LOC,NUM=sg,SEM=<\P.P(field4)>] -> 'field4'
-PropN[-LOC,NUM=sg,SEM=<\P.P(walking)>] -> 'walking'
 PropN[-LOC,NUM=sg,SEM=<\P.P(the_lake)>] -> 'the_lake'
 PropN[-LOC,NUM=sg,SEM=<\P.P(Rosie)>] -> 'rosie'
 PropN[-LOC,NUM=sg,SEM=<\P.P(rover)>] -> 'rover'
@@ -59,8 +59,8 @@ N[NUM=sg,SEM=<\x.dog(x)>] -> 'dog'
 
 IV[NUM=sg,SEM=<\x.bark(x)>,TNS=pres] -> 'barking'
 IV[NUM=pl,SEM=<\x.bark(x)>,TNS=pres] -> 'barking'
-#IV[NUM=sg,SEM=<\x.walk(x)>,TNS=pres] -> 'walking'
-#IV[NUM=pl,SEM=<\x.walk(x)>,TNS=pres] -> 'walking'
+IV[NUM=sg,SEM=<\P.P(walking)>,TNS=pres] -> 'walking'
+IV[NUM=pl,SEM=<\P.P(walking)>,TNS=pres] -> 'walking'
 IV[NUM=sg,SEM=<\x.lies(x)>,TNS=pres] -> 'lying_down'
 IV[NUM=pl,SEM=<\x.sits(x)>,TNS=pres] -> 'sitting'
 IV[NUM=sg,SEM=<\X x.X(\y.walks(x,y))>,TNS=pres] -> 'walks'
