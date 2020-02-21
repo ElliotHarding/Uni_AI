@@ -351,9 +351,7 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 7:
         #try:
         sent = " "
-        sent = sent.join(data).lower()
-        print(sent)
-        results = nltk.evaluate_sents([sent], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+        results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
             print("Yes.")
         else:
@@ -361,7 +359,7 @@ def HandleAIMLCommand(cmd, data):
         #except:
             #print("Sorry, I don't know that.")
 
-    #Set action --> x(PropN) z(TV is_in/is) y(PropN)
+    #Set action --> (PropN) (TV) (PropN)
     elif cmd == 8:           
         if data[0] in folval:
             if data[2] in folval:
@@ -372,10 +370,7 @@ def HandleAIMLCommand(cmd, data):
                     if data[0] in item:
                         folval[data[1]].remove(item)
                         break
-                print(type(data[1]))
-                print(type(data[0]))
-                print(type(data[2]))
-                print(type((data[0], folval[data[2]])))
+                
                 folval[data[1]].add((data[0], folval[data[2]]))               
                 print("done.")
             else:
@@ -383,7 +378,7 @@ def HandleAIMLCommand(cmd, data):
         else:
             print(data[0] + " does not exit in toy world.")
     
-    #Set action --> x(PropN) z(TV below/chase/climbs/sees) y(-DET N)   
+    #Set action --> (PropN) (TV) y(N)   
     elif cmd == 9:
 
         if data[0] in folval:
