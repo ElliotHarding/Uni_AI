@@ -13,7 +13,7 @@ import wikipediaapi
 import wikipediaapi
 wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
-
+#
 #Reasoning
 v = """
 field1 => f1
@@ -24,6 +24,7 @@ walking => walking
 barking => barking
 sitting => sitting
 lying_down => lying_down
+dog => {rosie, rover, bob, dennis, spark, charlie}
 the_lake => the_lake
 rosie => rosie
 rover => rover
@@ -32,7 +33,6 @@ dennis => dennis
 spark => spark
 charlie => charlie
 max => max
-dog => {rosie, rover, bob, dennis, spark, charlie}
 is => {}
 is_in => {}
 is_on => {}
@@ -380,7 +380,7 @@ def HandleAIMLCommand(cmd, data):
         else:
             print(data[0] + " does not exit in toy world.")
     
-    #Set action --> (PropN) (TV) y(N)   
+    #Set action --> (PropN) (TV) (N)   
     elif cmd == 9:
 
         if data[0] in folval:
@@ -412,48 +412,30 @@ def HandleAIMLCommand(cmd, data):
         else:
             print(data[0] + " does not exit in toy world.")
 
-    #Set action --> x(PropN) z(IV barks/walks)
+    #Query --> action(x,y)
     elif cmd == 10:
 
-        if data[0] in folval:
-            if data[1] in folval:                
+        if data[2] in folval:                
 
-                for item in folval[data[1]]:
-                    if data[0] in item:
-                        folval[data[1]].remove(item)
-                        break
-                
-                ClearEmptyFolvalSlot(data[1])
-
-                #insert location
-                folval[data[1]].add(data[0])
-                print("done.")
-                
+            sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(data[0]+"("+data[1]+","+data[2]+")"), data[1], nltk.Assignment(folval.domain))
+            if len(sat) == 0:
+                print("None.")
             else:
-                print(data[2] + " does not exit in toy world.")
+                #find satisfying objects in the valuation dictionary, and print their type names
+                sol = folval.values()
+                for so in sat:
+                    for k, v in folval.items():
+                        if len(v) > 0:
+                            vl = list(v)
+                            if len(vl[0]) == 1:
+                                for i in vl:
+                                    if i[0] == so:
+                                        print(k)
+                                        break    
+            
         else:
-            print(data[0] + " does not exit in toy world.")
-
-    # Which plants are in ...        
-    elif cmd == 111: 
-        sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring("be_in(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
-        if len(sat) == 0:
-            print("None.")
-        else:
-            #find satisfying objects in the valuation dictionary, and print their type names
-            sol = folval.values()
-            for so in sat:
-                for k, v in folval.items():
-                    if len(v) > 0:
-                        vl = list(v)
-                        if len(vl[0]) == 1:
-                            for i in vl:
-                                if i[0] == so:
-                                    print(k)
-                                    break
-    
-
-    
+            print(data[2] + " does not exit in toy world.")
+   
     elif cmd == 99:
         if HandleUnknownInput(data[0]) == 0:
             print("I did not get that, please try again.")
@@ -473,7 +455,7 @@ def MainLoop():
         answer = kern.respond(userInput)
 
         #Check if command response
-        if userInput != "-" and answer[0] == '#':
+        if userInput != "-" and answer != "" and answer[0] == '#':
             
             #Split answer into cmd & input
             params = answer[1:].split('$')

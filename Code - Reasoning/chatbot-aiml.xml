@@ -385,7 +385,7 @@
 <category><pattern> IS * CHASING * </pattern>
   <template>#7$<star/>$is_chasing</template></category>
 <category><pattern> IS * ON A LEASH </pattern>
-  <template>#7$<star/>$is_on$leash</template></category>
+  <template>#7$<star/>$is_on$a$leash</template></category>
  
 <!-- Set for (PropN) (TV) (PropN) or (PropN) (Det) (IV)-->
 <category> <pattern> MAKE * CHASE * </pattern>
@@ -407,6 +407,13 @@
   <template>#9$<star index="1"/>$is_chasing$<star index="2"/></template></category>
 <category><pattern> PUT * ON A LEASH </pattern>
   <template>#9$<star index="1"/>$is_on$leash</template></category>
+  
+<category> <pattern> WHAT IS IN * </pattern>
+  <template>#10$is_in$x$<star index="1"/></template></category>
+<category> <pattern> WHO IS BARKING </pattern>
+  <template>#10$is$x$barking</template></category>
+<category> <pattern> WHO IS ON A LEASH </pattern>
+  <template>#10$is_on$x$leash</template></category>
 
  
 <!--
