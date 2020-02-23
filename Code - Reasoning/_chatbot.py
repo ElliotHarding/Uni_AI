@@ -15,7 +15,7 @@ wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 #
 #Reasoning
-v = """
+toyWorldString = """
 lettuces => {}
 cabbages => {}
 mustards => {}
@@ -50,7 +50,7 @@ is_chasing => {}
 sees => {}
 bone => {}
 """
-folval = nltk.Valuation.fromstring(v)
+folval = nltk.Valuation.fromstring(toyWorldString)
 grammar_file = '_simple-sem.fcfg'
 objectCounter = 0
 
@@ -71,31 +71,8 @@ breedInfo = []
 sizes = []
 
 def ResetToyWorld():
-    v = """
-    field1 => f1
-    field2 => f2
-    field3 => f3
-    field4 => f4
-    the_lake => the_lake
-    rosie => rosie
-    rover => rover
-    bob => bob
-    dennis => dennis
-    spark => spark
-    charlie => charlie
-    max => max
-    dog => {rosie, rover, bob, dennis, spark, charlie}
-    is_in => {}
-    is_on => {}
-    is_chasing => {}
-    is_below => {}
-    climbs => {}
-    sits => {}
-    sees => {}
-    bone => {}
-    tree => {}
-    """
-    folval = nltk.Valuation.fromstring(v)    
+    global folval
+    folval = nltk.Valuation.fromstring(toyWorldString)
 
 #######################################################
 # ReadFiles
@@ -386,7 +363,7 @@ def HandleAIMLCommand(cmd, data):
 
     # Which plants are in ...
     elif cmd == 9: 
-        sat = m.satisfiers(nltk.Expression.fromstring("be_in(x," + data[0] + ")"), "x", nltk.Assignment(folval.domain))
+        sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring("be_in(x," + data[0] + ")"), "x", nltk.Assignment(folval.domain))
         if len(sat) == 0:
             print("None.")
         else:
@@ -400,6 +377,10 @@ def HandleAIMLCommand(cmd, data):
                                 if i[0] == so:
                                     print(k)
                                     break        
+    
+    elif cmd == 10:
+        ResetToyWorld()
+        print("Done.")
 
     #Query
     # elif cmd == 7:

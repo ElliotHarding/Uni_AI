@@ -375,6 +375,9 @@
 <category> <pattern> WHICH PLANTS ARE IN * </pattern>
   <template>#9$<star index="1"/></template></category>
 
+<category> <pattern> RESET THE TOY WORLD </pattern>
+  <template>#10$</template></category>
+
   
 <!-- Reasoning -->
 
