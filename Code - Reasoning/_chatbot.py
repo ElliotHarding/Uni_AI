@@ -335,7 +335,7 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 6:
         ListSizedDogs(data[0])
 
-    # I will plant x in y
+    # I will plant x Z y
     elif cmd == 7: 
         o = 'o' + str(objectCounter)
         objectCounter += 1
@@ -344,10 +344,10 @@ def HandleAIMLCommand(cmd, data):
             if ('',) in folval[data[0]]:
                 folval[data[0]].clear()
         folval[data[0]].add((o,)) #insert type of plant information
-        if len(folval["be_in"]) == 1: #clean up if necessary
-            if ('',) in folval["be_in"]:
-                folval["be_in"].clear()
-        folval["be_in"].add((o, folval[data[1]])) #insert location
+        if len(folval[data[1]]) == 1: #clean up if necessary
+            if ('',) in folval[data[1]]:
+                folval[data[1]].clear()
+        folval[data[1]].add((o, folval[data[2]])) #insert location
     
     #Yes/no queries
     elif cmd == 8:
