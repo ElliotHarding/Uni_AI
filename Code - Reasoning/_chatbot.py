@@ -358,7 +358,8 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 6:
         ListSizedDogs(data[0])
 
-    elif cmd == 7: # I will plant x in y
+    # I will plant x in y
+    elif cmd == 7: 
         o = 'o' + str(objectCounter)
         objectCounter += 1
         folval['o' + o] = o #insert constant
@@ -370,29 +371,22 @@ def HandleAIMLCommand(cmd, data):
             if ('',) in folval["be_in"]:
                 folval["be_in"].clear()
         folval["be_in"].add((o, folval[data[1]])) #insert location
-    elif cmd == 8: #Are there any x in y
-        g = nltk.Assignment(folval.domain)
-        m = nltk.Model(folval.domain, folval)
-        sent = 'some ' + data[0] + ' are_in ' + data[1]
-        results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
-        if results[2] == True:
-            print("Yes.")
-        else:
-            print("No.")
-    elif cmd == 9: # Are all x in y
-        g = nltk.Assignment(folval.domain)
-        m = nltk.Model(folval.domain, folval)
-        sent = 'all ' + data[0] + ' are_in ' + data[1]
-        results = nltk.evaluate_sents([sent], grammar_file, m, g)[0][0]
-        if results[2] == True:
-            print("Yes.")
-        else:
-            print("No.")
-    elif cmd == 10: # Which plants are in ...
-        g = nltk.Assignment(folval.domain)
-        m = nltk.Model(folval.domain, folval)
-        e = nltk.Expression.fromstring("be_in(x," + data[0] + ")")
-        sat = m.satisfiers(e, "x", g)
+    
+    #Yes/no queries
+    elif cmd == 8:
+        try:
+            sent = " "
+            results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+            if results[2] == True:
+                print("Yes.")
+            else:
+                print("No.")
+        except:
+            print("Sorry, I don't know that.")
+
+    # Which plants are in ...
+    elif cmd == 9: 
+        sat = m.satisfiers(nltk.Expression.fromstring("be_in(x," + data[0] + ")"), "x", nltk.Assignment(folval.domain))
         if len(sat) == 0:
             print("None.")
         else:

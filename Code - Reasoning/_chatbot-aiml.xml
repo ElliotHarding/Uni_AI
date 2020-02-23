@@ -369,11 +369,11 @@
 <category> <pattern> I WILL PLANT * IN * </pattern>
   <template>#7$<star index="1"/>$<star index="2"/></template></category>
 <category> <pattern> ARE THERE ANY * IN * </pattern>
-  <template>#8$<star index="1"/>$<star index="2"/></template></category>
+  <template>#8$some$<star index="1"/>$are_in$<star index="2"/></template></category>
 <category> <pattern> ARE ALL * IN * </pattern>
-  <template>#9$<star index="1"/>$<star index="2"/></template></category>
+  <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category>
 <category> <pattern> WHICH PLANTS ARE IN * </pattern>
-  <template>#10$<star index="1"/></template></category>
+  <template>#9$<star index="1"/></template></category>
 
   
 <!-- Reasoning -->
