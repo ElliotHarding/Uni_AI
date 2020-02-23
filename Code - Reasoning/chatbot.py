@@ -24,6 +24,7 @@ walking => walking
 barking => barking
 sitting => sitting
 lying_down => lying_down
+leash => leash
 dog => {rosie, rover, bob, dennis, spark, charlie}
 the_lake => the_lake
 rosie => rosie
@@ -39,7 +40,6 @@ is_on => {}
 is_chasing => {}
 sees => {}
 bone => {}
-leash => {}
 """
 folval = nltk.Valuation.fromstring(v)
 grammar_file = 'simple-sem.fcfg'

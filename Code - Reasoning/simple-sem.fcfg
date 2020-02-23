@@ -25,6 +25,7 @@ VP[NUM=?n,SEM=?v] -> IV[NUM=?n,SEM=?v]
 
 #NEW VP DEFINITION FOR is IV
 VP[NUM=?n,SEM=<?v(?obj)>] -> Det[NUM=?n,SEM=?v] IV[SEM=?obj]
+VP[NUM=?n,SEM=<?v(?obj)>] -> TV[NUM=?n,SEM=?v] Det[NUM=?n,SEM=?v] N[SEM=?obj]
 
 VP[NUM=?n,SEM=<?v(?obj)>] -> TV[NUM=?n,SEM=?v] NP[SEM=?obj]
 VP[NUM=?n,SEM=<?v(?obj,?pp)>] -> DTV[NUM=?n,SEM=?v] NP[SEM=?obj] PP[+TO,SEM=?pp]
