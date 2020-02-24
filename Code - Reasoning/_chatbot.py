@@ -13,11 +13,13 @@ import wikipediaapi
 import wikipediaapi
 wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
-#
+#dog => {rosie, rover, bob, dennis, spark, charlie}
 #Reasoning
 toyWorldString = """
 lettuces => {}
 cabbages => {}
+rover => {}
+barking => {}
 mustards => {}
 potatoes => {}
 onions => {}
@@ -30,14 +32,11 @@ field2 => f2
 field3 => f3
 field4 => f4
 walking => walking
-barking => barking
 sitting => sitting
 lying_down => lying_down
 leash => leash
-dog => {rosie, rover, bob, dennis, spark, charlie}
 the_lake => the_lake
 rosie => rosie
-rover => rover
 bob => bob
 dennis => dennis
 spark => spark
@@ -337,17 +336,23 @@ def HandleAIMLCommand(cmd, data):
 
     # I will plant x Z y
     elif cmd == 7: 
-        o = 'o' + str(objectCounter)
-        objectCounter += 1
-        folval['o' + o] = o #insert constant
-        if len(folval[data[0]]) == 1: #clean up if necessary
-            if ('',) in folval[data[0]]:
-                folval[data[0]].clear()
-        folval[data[0]].add((o,)) #insert type of plant information
-        if len(folval[data[1]]) == 1: #clean up if necessary
-            if ('',) in folval[data[1]]:
-                folval[data[1]].clear()
-        folval[data[1]].add((o, folval[data[2]])) #insert location
+        if data[0] in folval:
+            if data[2] in folval:
+
+                o = 'o' + str(objectCounter)
+                objectCounter += 1
+                folval['o' + o] = o
+                ClearEmptyFolvalSlot(data[0])
+                folval[data[0]].add((o,))                    
+
+                ClearEmptyFolvalSlot(data[1])
+                folval[data[1]].add((o, folval[data[2]]))     
+
+                print("done.")
+            else:
+                print(data[2] + " does not exit in toy world.")
+        else:
+            print(data[0] + " does not exit in toy world.")
     
     #Yes/no queries
     elif cmd == 8:
@@ -376,7 +381,20 @@ def HandleAIMLCommand(cmd, data):
                             for i in vl:
                                 if i[0] == so:
                                     print(k)
-                                    break        
+                                    break
+
+    elif cmd == 10: 
+        if data[0] in folval:
+            if data[2] in folval:
+                
+                folval[data[2]].add(data[0])
+                folval[data[1]].add((data[0], data[2]))  
+
+                print("done.")
+            else:
+                print(data[2] + " does not exit in toy world.")
+        else:
+            print(data[0] + " does not exit in toy world.")       
     
     elif cmd == 10:
         ResetToyWorld()
