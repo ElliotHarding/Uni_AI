@@ -383,9 +383,8 @@
   <template>#8$some$<star index="1"/>$are_in$<star index="2"/></template></category>
 <category> <pattern> ARE ALL * IN * </pattern>
   <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category>
+<!-- is rover in field1 -->
   
-  <!-- <category> <pattern> ARE ALL * IN * </pattern> -->
-  <!-- <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category> ARE SOME DOGS BARKING... -->
 <category> <pattern> IS * BARKING </pattern>
   <template>#8$<star index="1"/>$is$barking</template></category>
 <category> <pattern> IS * SITTING </pattern>
@@ -406,7 +405,7 @@
 <category> <pattern> WHO IS LYING DOWN </pattern>
   <template>#9$is$lying_down<star index="1"/>$no one</template></category>
 
-<category> <pattern> ARE ANY DOGS * </pattern>
+<category> <pattern> ARE ANY DOGS * </pattern> <!-- Sitting, lying_down, walking ect.. -->
   <template>#11$is$<star index="1"/></template></category>
 
 <category> <pattern> RESET THE TOY WORLD </pattern>

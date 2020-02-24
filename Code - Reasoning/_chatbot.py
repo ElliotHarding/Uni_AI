@@ -1,4 +1,10 @@
-﻿#Imports
+﻿# do sitting/walking code
+# do not field1 & 2
+# do is rover in field2
+# do are there any dogs in field1 not work...
+
+
+#Imports
 import aiml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -338,12 +344,17 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 6:
         ListSizedDogs(data[0])
 
-    # I will plant x Z y
+    #Set values/actions/positions
     elif cmd == 7: 
         if data[0] in folval:
             if data[2] in folval:
 
                 o = data[0]
+                
+                for item in folval[data[1]]:
+                    if data[0] in item:                     
+                        folval[data[1]].remove(item)
+                        break 
 
                 if data[0] == "trees":              
                     o = 'o' + str(objectCounter)
@@ -355,7 +366,12 @@ def HandleAIMLCommand(cmd, data):
                 ClearEmptyFolvalSlot(data[1])
                 folval[data[1]].add((o, folval[data[2]]))     
 
-                print("done.")
+                if data[1] == "be_in":
+                    print(data[0] + " has moved to " + data[2])
+                elif data[1] == "is":                    
+                    print(data[0] + " is now " + data[2])
+                else:
+                    print("Done.")
             else:
                 print(data[2] + " does not exit in toy world.")
         else:
@@ -363,17 +379,17 @@ def HandleAIMLCommand(cmd, data):
     
     #Yes/no queries
     elif cmd == 8:
-        #try:
-        sent = " "
-        results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-        if results[2] == True:
-            print("Yes.")
-        else:
-            print("No.")
-        #except:
-            #print("Sorry, I don't know that.")
+        try:
+            sent = " "
+            results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+            if results[2] == True:
+                print("Yes.")
+            else:
+                print("No.")
+        except:
+            print("Sorry, I don't know that.")
 
-    #Query
+    #Query ~ List all values which meet x
     elif cmd == 9: 
         sat = GetMatchingFolvalValues(data[0], data[1])
         if len(sat) == 0:
@@ -392,7 +408,12 @@ def HandleAIMLCommand(cmd, data):
                 else:
                      print(so)
 
+    #Query ~ do any values meet x
     elif cmd == 11:
+
+        if data[1] == "lying down":
+            data[1] == "lying_down"
+
         if data[1] in folval:
             if len(GetMatchingFolvalValues(data[0], data[1])) == 0:
                 print("No.")
