@@ -359,15 +359,15 @@ def HandleAIMLCommand(cmd, data):
     
     #Yes/no queries
     elif cmd == 8:
-        #try:
-        sent = " "
-        results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-        if results[2] == True:
-            print("Yes.")
-        else:
-            print("No.")
-        #except:
-            #print("Sorry, I don't know that.")
+        try:
+            sent = " "
+            results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+            if results[2] == True:
+                print("Yes.")
+            else:
+                print("No.")
+        except:
+            print("Sorry, I don't know that.")
 
     # Which plants are in ...
     elif cmd == 9: 
@@ -375,16 +375,19 @@ def HandleAIMLCommand(cmd, data):
         if len(sat) == 0:
             print("None.")
         else:
-            sol = folval.values()
+            sol = folval.values()        
             for so in sat:
-                for k, v in folval.items():
-                    if len(v) > 0:
-                        vl = list(v)
-                        if len(vl[0]) == 1:
-                            for i in vl:
-                                if i[0] == so:
-                                    print(k)
-                                    break
+                if any(char.isdigit() for char in so) == True:                
+                    for k, v in folval.items():
+                        if len(v) > 0:
+                            vl = list(v)
+                            if len(vl[0]) == 1:
+                                for i in vl:
+                                    if i[0] == so:
+                                        print(k)
+                                        break
+                else:
+                     print(so)
 
     elif cmd == 10: 
         if data[0] in folval:
