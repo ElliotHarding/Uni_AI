@@ -406,7 +406,7 @@
   <template>#9$is$sitting$no one</template></category>
 <category> <pattern> WHO IS LYING DOWN </pattern>
   <template>#9$is$lying_down$no one</template></category>
-<category> <pattern> WHO IS ON LEASH </pattern>
+<category> <pattern> WHO IS ON A LEASH </pattern>
   <template>#9$is_on$leash$no one</template></category>
 <category> <pattern> WHO IS CHASING A BONE </pattern>
   <template>#9$is_chasing$bone$no one</template></category>

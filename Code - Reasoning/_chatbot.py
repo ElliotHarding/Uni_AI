@@ -42,6 +42,12 @@ is => {}
 is_on => {}
 is_chasing => {}
 """
+locations = ["field1", "field2", "field3", "field4", "the_lake"]
+actions = ["barking", "sitting", "walking", "lying_down"]
+dogs = ["rosie", "bob", "dennis", "spark", "charlie", "max", "rover"]
+canChase = dogs + ["bone"]
+canBeOn = ["leash"]
+canBePlaced = ["trees", "grass"] + canChase
 folval = nltk.Valuation.fromstring(toyWorldString)
 grammar_file = '_simple-sem.fcfg'
 objectCounter = 0
@@ -300,14 +306,36 @@ def ClearEmptyFolvalSlot(slot):
 def GetMatchingFolvalValues(linkWord, searchWord):
     return nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(linkWord+"(x," + searchWord + ")"), "x", nltk.Assignment(folval.domain))
 
+def CheckCorrectInput(filter, toCheck):
+    for item in filter:
+        if item == toCheck:
+            return True
+    return False
+
 #Set values/actions/positions
 def SetFolValValues(data):
     global objectCounter
     if data[0] in folval:
-        if data[2] in folval:
+        if data[2] in folval:    
+
+            if data[1] == "be_in" and (CheckCorrectInput(locations, data[0]) or not CheckCorrectInput(locations, data[2])):
+                print("Sorry, either " + data[2] + " is not a location, or " + data[0] + " is one.")
+                return
+                         
+            if data[1] == "is" and (not CheckCorrectInput(actions, data[2]) or not CheckCorrectInput(dogs, data[0])):
+                print("Sorry, either " + data[2] + " is not an action, or " + data[0] + " is not a dog.")
+                return
+
+            if data[1] == "is_chasing" and (not CheckCorrectInput(dogs, data[0]) or not CheckCorrectInput(canChase, data[2])):
+                print("Sorry, either " + data[0] + " is not a dog, or " + data[2] + " cant be chased.")
+                return
+
+            if data[1] == "is_on" and (not CheckCorrectInput(canBeOn, data[2]) or not CheckCorrectInput(dogs, data[0])):
+                print("Sorry, either " + data[2] + " cant be applied to a dog, or " + data[0] + " is not a dog.")
+                return
 
             o = data[0]
-            
+                
             #Can't be in same place or doing two actions at once
             for item in folval[data[1]]:
                 if data[0] in item:
@@ -326,8 +354,8 @@ def SetFolValValues(data):
                 folval[data[0]].add((o,))                  
 
             ClearEmptyFolvalSlot(data[1])
-            folval[data[1]].add((o, folval[data[2]]))     
-
+            folval[data[1]].add((o, folval[data[2]]))   
+        
             print("Done.")
         else:
             print(data[2] + " does not exist in toy world.")
