@@ -378,6 +378,8 @@
   <template>#7$<star index="1"/>$is$walking</template></category>
 <category> <pattern> MAKE * LIE DOWN </pattern>
   <template>#7$<star index="1"/>$is$lying_down</template></category>
+<category> <pattern> PUT * ON A LEASH</pattern>
+  <template>#7$leash$is_on$<star index="1"/></template></category>
 
 <category> <pattern> ARE THERE ANY * IN * </pattern>
   <template>#8$some$<star index="1"/>$are_in$<star index="2"/></template></category>
@@ -385,6 +387,8 @@
   <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category>
 <category> <pattern> IS * IN * </pattern>
   <template>#8$<star index="1"/>$is_in$<star index="2"/></template></category>
+<category> <pattern> IS * ON A LEASH </pattern>
+  <template>#8$leash$is_on$<star index="1"/></template></category>
   
 <category> <pattern> IS * BARKING </pattern>
   <template>#8$<star index="1"/>$is$barking</template></category>
@@ -398,13 +402,15 @@
 <category> <pattern> WHAT IS IN * </pattern>
   <template>#9$be_in$<star index="1"/>$nothing</template></category>
 <category> <pattern> WHO IS BARKING </pattern>
-  <template>#9$is$barking<star index="1"/>$no one</template></category>
+  <template>#9$is$barking$no one</template></category>
 <category> <pattern> WHO IS WALKING </pattern>
-  <template>#9$is$walking<star index="1"/>$no one</template></category>
+  <template>#9$is$walking$no one</template></category>
 <category> <pattern> WHO IS SITTING </pattern>
-  <template>#9$is$sitting<star index="1"/>$no one</template></category>
+  <template>#9$is$sitting$no one</template></category>
 <category> <pattern> WHO IS LYING DOWN </pattern>
-  <template>#9$is$lying_down<star index="1"/>$no one</template></category>
+  <template>#9$is$lying_down$no one</template></category>
+<category> <pattern> WHO IS ON LEASH </pattern>
+  <template>#9$is_on$rover$no one</template></category>
 
 <category> <pattern> ARE ANY DOGS * </pattern> <!-- Sitting, lying_down, walking ect.. -->
   <template>#11$is$<star index="1"/></template></category>

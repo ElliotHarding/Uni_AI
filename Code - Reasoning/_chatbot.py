@@ -1,10 +1,4 @@
-﻿# do sitting/walking code
-# do not field1 & 2
-# do is rover in field2
-# do are there any dogs in field1 not work...
-
-
-#Imports
+﻿#Imports
 import aiml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -19,29 +13,18 @@ import wikipediaapi
 import wikipediaapi
 wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
-#dog => {rosie, rover, bob, dennis, spark, charlie}
+
 #Reasoning
 toyWorldString = """
-lettuces => {}
-trees => {}
-barking => barking
-walking => walking
-sitting => sitting
-lying_down => lying_down
-dogs => {rosie, rover, bob, dennis, spark, charlie}
-mustards => {}
-potatoes => {}
-onions => {}
-carrots => {}
-beans => {}
-peas => {}
-be_in => {}
 field1 => f1
 field2 => f2
 field3 => f3
 field4 => f4
-leash => leash
 the_lake => the_lake
+barking => barking
+walking => walking
+sitting => sitting
+lying_down => lying_down
 rosie => rosie
 bob => bob
 dennis => dennis
@@ -49,9 +32,13 @@ spark => spark
 charlie => charlie
 max => max
 rover => rover
+dogs => {rosie, rover, bob, dennis, spark, charlie}
+be_in => {}
+trees => {}
+grass => {}
 is => {}
-is_in => {}
 is_on => {}
+leash => {}
 is_chasing => {}
 sees => {}
 bone => {}
@@ -353,26 +340,25 @@ def HandleAIMLCommand(cmd, data):
                 
                 #Can't be in same place or doing two actions at once
                 for item in folval[data[1]]:
-                    if data[0] in item:                     
+                    if data[0] in item:
+                        if data[1] == "be_in":
+                            print(data[0] + " has moved to " + data[2])
+                        elif data[1] == "is":                    
+                            print(data[0] + " is now " + data[2])                     
                         folval[data[1]].remove(item)
                         break 
 
-                if data[0] == "trees":              
+                if data[0] == "trees" or data[0] == "grass" or data[0] == "leash":              
                     o = 'o' + str(objectCounter)
                     objectCounter += 1
                     folval['o' + o] = o
                     ClearEmptyFolvalSlot(data[0])
-                    folval[data[0]].add((o,))                    
+                    folval[data[0]].add((o,))                  
 
                 ClearEmptyFolvalSlot(data[1])
                 folval[data[1]].add((o, folval[data[2]]))     
 
-                if data[1] == "be_in":
-                    print(data[0] + " has moved to " + data[2])
-                elif data[1] == "is":                    
-                    print(data[0] + " is now " + data[2])
-                else:
-                    print("Done.")
+                print("Done.")
             else:
                 print(data[2] + " does not exit in toy world.")
         else:
@@ -380,19 +366,20 @@ def HandleAIMLCommand(cmd, data):
     
     #Yes/no queries
     elif cmd == 8:
-        try:
-            sent = " "
-            results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-            if results[2] == True:
-                print("Yes.")
-            else:
-                print("No.")
-        except:
-            print("Sorry, I don't know that.")
+        #try:
+        sent = " "
+        results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+        #except:
+            #print("Sorry, I don't know that.")
 
     #Query ~ List all values which meet x
     elif cmd == 9: 
         sat = GetMatchingFolvalValues(data[0], data[1])
+        print(sat)
         if len(sat) == 0:
             print(data[2])
         else:   
