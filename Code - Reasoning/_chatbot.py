@@ -38,7 +38,7 @@ trees => {}
 grass => {}
 is => {}
 is_on => {}
-leash => {}
+leash => leash
 is_chasing => {}
 sees => {}
 bone => {}
@@ -348,7 +348,7 @@ def HandleAIMLCommand(cmd, data):
                         folval[data[1]].remove(item)
                         break 
 
-                if data[0] == "trees" or data[0] == "grass" or data[0] == "leash":              
+                if data[0] == "trees" or data[0] == "grass":              
                     o = 'o' + str(objectCounter)
                     objectCounter += 1
                     folval['o' + o] = o
