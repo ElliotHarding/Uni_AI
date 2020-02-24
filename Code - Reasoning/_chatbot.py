@@ -17,7 +17,7 @@ wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 #Reasoning
 toyWorldString = """
 lettuces => {}
-cabbages => {}
+trees => {}
 barking => {}
 mustards => {}
 potatoes => {}
@@ -341,7 +341,7 @@ def HandleAIMLCommand(cmd, data):
 
                 o = data[0]
 
-                if data[0] == "cabbages":              
+                if data[0] == "trees":              
                     o = 'o' + str(objectCounter)
                     objectCounter += 1
                     folval['o' + o] = o
