@@ -305,6 +305,9 @@ def ClearEmptyFolvalSlot(slot):
         if ('',) in folval[slot]:
             folval[slot].clear()
 
+def GetMatchingFolvalValues(linkWord, searchWord):
+    return nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(linkWord+"(x," + searchWord + ")"), "x", nltk.Assignment(folval.domain))
+
 # def AddToToyWorldIfNotExist(index, toAdd):
 #     if folval[index].add((o, folval[data[0]])):
 #         print()
@@ -370,13 +373,12 @@ def HandleAIMLCommand(cmd, data):
         #except:
             #print("Sorry, I don't know that.")
 
-    # Which plants are in ...
+    #Query
     elif cmd == 9: 
-        sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(data[0]+"(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
+        sat = GetMatchingFolvalValues(data[0], data[1])
         if len(sat) == 0:
-            print("None.")
-        else:
-            sol = folval.values()        
+            print(data[2])
+        else:   
             for so in sat:
                 if any(char.isdigit() for char in so) == True:                
                     for k, v in folval.items():
@@ -392,30 +394,12 @@ def HandleAIMLCommand(cmd, data):
 
     elif cmd == 11:
         if data[1] in folval:
-            sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(data[0]+"(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
-            if len(sat) == 0:
+            if len(GetMatchingFolvalValues(data[0], data[1])) == 0:
                 print("No.")
-            else:
-                sol = folval.values()        
+            else:    
                 print("yes.")
         else:
-            print("That action is not in the toy world.")
-
-    elif cmd == 10: 
-        if data[0] in folval:
-            if data[2] in folval:
-                
-                ClearEmptyFolvalSlot(data[2])
-                folval[data[2]].add(data[0])
-
-                ClearEmptyFolvalSlot(data[1])
-                folval[data[1]].add((data[0], data[2]))  
-
-                print("done.")
-            else:
-                print(data[2] + " does not exit in toy world.")
-        else:
-            print(data[0] + " does not exit in toy world.")       
+            print("That action is not in the toy world.")   
     
     elif cmd == 12:
         ResetToyWorld()

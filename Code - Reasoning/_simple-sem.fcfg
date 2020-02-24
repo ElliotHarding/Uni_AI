@@ -76,7 +76,6 @@ IV[NUM=sg,SEM=<\P.P(lying_down)>,TNS=pres] -> 'lying_down'
 IV[NUM=pl,SEM=<\P.P(sitting)>,TNS=pres] -> 'sitting'
 IV[NUM=sg,SEM=<\P.P(sitting)>,TNS=pres] -> 'sitting'
 
-
 TV[NUM=sg,SEM=<\X x.X(\y.chase(x,y))>,TNS=pres] -> 'chases'
 TV[NUM=pl,SEM=<\X x.X(\y.chase(x,y))>,TNS=pres] -> 'chase'
 TV[NUM=sg,SEM=<\X x.X(\y.see(x,y))>,TNS=pres] -> 'sees'

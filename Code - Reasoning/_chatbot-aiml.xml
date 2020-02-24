@@ -396,15 +396,15 @@
   <template>#8$<star index="1"/>$is$lying_down</template></category>
 
 <category> <pattern> WHAT IS IN * </pattern>
-  <template>#9$be_in$<star index="1"/></template></category>
+  <template>#9$be_in$<star index="1"/>$nothing</template></category>
 <category> <pattern> WHO IS BARKING </pattern>
-  <template>#9$is$barking<star index="1"/></template></category>
+  <template>#9$is$barking<star index="1"/>$no one</template></category>
 <category> <pattern> WHO IS WALKING </pattern>
-  <template>#9$is$walking<star index="1"/></template></category>
+  <template>#9$is$walking<star index="1"/>$no one</template></category>
 <category> <pattern> WHO IS SITTING </pattern>
-  <template>#9$is$sitting<star index="1"/></template></category>
+  <template>#9$is$sitting<star index="1"/>$no one</template></category>
 <category> <pattern> WHO IS LYING DOWN </pattern>
-  <template>#9$is$lying_down<star index="1"/></template></category>
+  <template>#9$is$lying_down<star index="1"/>$no one</template></category>
 
 <category> <pattern> ARE ANY DOGS * </pattern>
   <template>#11$is$<star index="1"/></template></category>
