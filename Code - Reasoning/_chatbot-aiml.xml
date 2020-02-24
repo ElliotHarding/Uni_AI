@@ -406,8 +406,11 @@
 <category> <pattern> WHO IS LYING DOWN </pattern>
   <template>#9$is$lying_down<star index="1"/></template></category>
 
+<category> <pattern> ARE ANY DOGS * </pattern>
+  <template>#11$is$<star index="1"/></template></category>
+
 <category> <pattern> RESET THE TOY WORLD </pattern>
-  <template>#11$</template></category>
+  <template>#12$</template></category>
 
 <!-- <category> <pattern> MAKE * BARK </pattern>
   <template>#10$<star index="1"/>$is$barking</template></category> -->

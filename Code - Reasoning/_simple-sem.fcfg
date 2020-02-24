@@ -77,10 +77,6 @@ IV[NUM=pl,SEM=<\P.P(sitting)>,TNS=pres] -> 'sitting'
 IV[NUM=sg,SEM=<\P.P(sitting)>,TNS=pres] -> 'sitting'
 
 
-IV[NUM=sg,SEM=<\x.bark(x)>,TNS=pres] -> 'barks'
-IV[NUM=pl,SEM=<\x.bark(x)>,TNS=pres] -> 'bark'
-IV[NUM=sg,SEM=<\x.walk(x)>,TNS=pres] -> 'walks'
-IV[NUM=pl,SEM=<\x.walk(x)>,TNS=pres] -> 'walk'
 TV[NUM=sg,SEM=<\X x.X(\y.chase(x,y))>,TNS=pres] -> 'chases'
 TV[NUM=pl,SEM=<\X x.X(\y.chase(x,y))>,TNS=pres] -> 'chase'
 TV[NUM=sg,SEM=<\X x.X(\y.see(x,y))>,TNS=pres] -> 'sees'
@@ -115,8 +111,6 @@ Det[NUM=sg,SEM=<\X x.X(\y.is(x,y))>,TNS=pres] -> 'is'
 
 N[NUM=sg,SEM=<\x.bone(x)>] -> 'bone' | 'frisbee'
 N[NUM=sg,SEM=<\x.lead(x)>] -> 'leash'
-N[NUM=pl,SEM=<\x.dog(x)>] -> 'dogs'
-N[NUM=sg,SEM=<\x.dog(x)>] -> 'dog'
 
 TV[NUM=sg,SEM=<\X x.X(\y.sees(x,y))>,TNS=pres] -> 'sees'
 TV[NUM=pl,SEM=<\X x.X(\y.sees(x,y))>,TNS=pres] -> 'can_see'

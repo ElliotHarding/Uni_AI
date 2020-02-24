@@ -22,6 +22,7 @@ barking => barking
 walking => walking
 sitting => sitting
 lying_down => lying_down
+dogs => {rosie, rover, bob, dennis, spark, charlie}
 mustards => {}
 potatoes => {}
 onions => {}
@@ -359,15 +360,15 @@ def HandleAIMLCommand(cmd, data):
     
     #Yes/no queries
     elif cmd == 8:
-        try:
-            sent = " "
-            results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-            if results[2] == True:
-                print("Yes.")
-            else:
-                print("No.")
-        except:
-            print("Sorry, I don't know that.")
+        #try:
+        sent = " "
+        results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+        #except:
+            #print("Sorry, I don't know that.")
 
     # Which plants are in ...
     elif cmd == 9: 
@@ -389,6 +390,17 @@ def HandleAIMLCommand(cmd, data):
                 else:
                      print(so)
 
+    elif cmd == 11:
+        if data[1] in folval:
+            sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(data[0]+"(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
+            if len(sat) == 0:
+                print("No.")
+            else:
+                sol = folval.values()        
+                print("yes.")
+        else:
+            print("That action is not in the toy world.")
+
     elif cmd == 10: 
         if data[0] in folval:
             if data[2] in folval:
@@ -405,7 +417,7 @@ def HandleAIMLCommand(cmd, data):
         else:
             print(data[0] + " does not exit in toy world.")       
     
-    elif cmd == 10:
+    elif cmd == 12:
         ResetToyWorld()
         print("Done.")
 
