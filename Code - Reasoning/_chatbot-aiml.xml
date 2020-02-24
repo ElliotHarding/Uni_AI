@@ -411,6 +411,11 @@
 <category> <pattern> WHO IS CHASING A BONE </pattern>
   <template>#9$is_chasing$bone$no one</template></category>
 
+<category> <pattern> WHAT IS THE TOY WORLD </pattern>
+  <template>#10</template></category>
+<category> <pattern> TELL ME ABOUT THE TOY WORLD </pattern>
+  <template>#10</template></category>
+
 <category> <pattern> ARE ANY DOGS * </pattern> <!-- Sitting, lying_down, walking ect.. -->
   <template>#11$is$<star index="1"/></template></category>
 

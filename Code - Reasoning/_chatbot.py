@@ -327,11 +327,11 @@ def SetFolValValues(data):
                 return
 
             if data[1] == "is_chasing" and (not CheckCorrectInput(dogs, data[0]) or not CheckCorrectInput(canChase, data[2])):
-                print("Sorry, either " + data[0] + " is not a dog, or " + data[2] + " cant be chased.")
+                print("Sorry, either " + data[0] + " is not a dog, or a " + data[2] + " can't be chased.")
                 return
 
             if data[1] == "is_on" and (not CheckCorrectInput(canBeOn, data[2]) or not CheckCorrectInput(dogs, data[0])):
-                print("Sorry, either " + data[2] + " cant be applied to a dog, or " + data[0] + " is not a dog.")
+                print("Sorry, either " + data[2] + " can't be applied to a dog, or " + data[0] + " is not a dog.")
                 return
 
             o = data[0]
@@ -409,6 +409,15 @@ def FolValAnyMeet(data):
     else:
         print("That action is not in the toy world.")   
 
+def DescribeToyWorld():
+    print("The toy world contains: ")
+    print("Locations: " + ', '.join(locations))    
+    print("Dogs: " + ', '.join(dogs))
+    print("Actions for dogs: " + ', '.join(actions))
+    print("Chaseable objects: " + ', '.join(canChase))
+    print("Placeable objects: " + ', '.join(canBePlaced))
+    print("Try the command: Put rover in field1")
+
 #######################################################
 # HandleAIMLCommand
 #
@@ -435,7 +444,9 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 8:
         FolValYesNoQueries(data)
     elif cmd == 9:
-        FolValListMatches(data)    
+        FolValListMatches(data)  
+    elif cmd == 10:
+        DescribeToyWorld()  
     elif cmd == 11:
         FolValAnyMeet(data)
     elif cmd == 12:
@@ -444,13 +455,12 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 99:
         if HandleUnknownInput(data[0]) == 0:
             print("I did not get that, please try again.")
-    print(folval)
 
 #######################################################
 # Main loop
 #######################################################
 def MainLoop():    
-    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Or ask me to tell you a dog related joke.\n"))
+    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n"))
     while True: 
 
         #Get input
