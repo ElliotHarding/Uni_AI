@@ -300,85 +300,56 @@ def ClearEmptyFolvalSlot(slot):
 def GetMatchingFolvalValues(linkWord, searchWord):
     return nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(linkWord+"(x," + searchWord + ")"), "x", nltk.Assignment(folval.domain))
 
-# def AddToToyWorldIfNotExist(index, toAdd):
-#     if folval[index].add((o, folval[data[0]])):
-#         print()
-
-#######################################################
-# HandleAIMLCommand
-#
-#   Handles responses for AIML commands
-#######################################################
-def HandleAIMLCommand(cmd, data):
+#Set values/actions/positions
+def SetFolValValues(data):
     global objectCounter
-    global folval
-    sent = " "
-    print(sent.join(data).lower())
+    if data[0] in folval:
+        if data[2] in folval:
 
-    if cmd == 0:
-        Exit()                
-    elif cmd == 1:
-        DescribeDog(data[0])
-    elif cmd == 2:
-        WikiSearch(data[0])
-    elif cmd == 3:
-        PrintCrossBreed(data[0])
-    elif cmd == 4:
-        PrintCrossBreeds()
-    elif cmd == 5:
-        PrintDogSize(data[0])
-    elif cmd == 6:
-        ListSizedDogs(data[0])
+            o = data[0]
+            
+            #Can't be in same place or doing two actions at once
+            for item in folval[data[1]]:
+                if data[0] in item:
+                    if data[1] == "be_in":
+                        print(data[0] + " has moved to " + data[2])
+                    elif data[1] == "is":                    
+                        print(data[0] + " is now " + data[2])                     
+                    folval[data[1]].remove(item)
+                    break 
 
-    #Set values/actions/positions
-    elif cmd == 7: 
-        if data[0] in folval:
-            if data[2] in folval:
+            if data[0] == "trees" or data[0] == "grass":              
+                o = 'o' + str(objectCounter)
+                objectCounter += 1
+                folval['o' + o] = o
+                ClearEmptyFolvalSlot(data[0])
+                folval[data[0]].add((o,))                  
 
-                o = data[0]
-                
-                #Can't be in same place or doing two actions at once
-                for item in folval[data[1]]:
-                    if data[0] in item:
-                        if data[1] == "be_in":
-                            print(data[0] + " has moved to " + data[2])
-                        elif data[1] == "is":                    
-                            print(data[0] + " is now " + data[2])                     
-                        folval[data[1]].remove(item)
-                        break 
+            ClearEmptyFolvalSlot(data[1])
+            folval[data[1]].add((o, folval[data[2]]))     
 
-                if data[0] == "trees" or data[0] == "grass":              
-                    o = 'o' + str(objectCounter)
-                    objectCounter += 1
-                    folval['o' + o] = o
-                    ClearEmptyFolvalSlot(data[0])
-                    folval[data[0]].add((o,))                  
-
-                ClearEmptyFolvalSlot(data[1])
-                folval[data[1]].add((o, folval[data[2]]))     
-
-                print("Done.")
-            else:
-                print(data[2] + " does not exit in toy world.")
+            print("Done.")
         else:
-            print(data[0] + " does not exit in toy world.")
-    
-    #Yes/no queries
-    elif cmd == 8:
-        #try:
+            print(data[2] + " does not exist in toy world.")
+    else:
+        print(data[0] + " does not exist in toy world.")
+
+#Yes/no queries
+def FolValYesNoQueries(data):
+    try:
         sent = " "
         results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
         if results[2] == True:
             print("Yes.")
         else:
             print("No.")
-        #except:
-            #print("Sorry, I don't know that.")
+    except:
+        print("Sorry, I don't know that.")
 
-    #Query ~ List all values which meet x
-    elif cmd == 9: 
+#Query ~ List all values which meet x
+def FolValListMatches(data):
+    try:
         sat = GetMatchingFolvalValues(data[0], data[1])
-        print(sat)
         if len(sat) == 0:
             print(data[2])
         else:   
@@ -393,113 +364,55 @@ def HandleAIMLCommand(cmd, data):
                                         print(k)
                                         break
                 else:
-                     print(so)
+                    print(so)
+    except:
+        print("Sorry can't help with that")
 
-    #Query ~ do any values meet x
-    elif cmd == 11:
-        print("test")
-        if data[1] == "lying down":
-            data[1] = "lying_down"
+#Query ~ do any values meet x
+def FolValAnyMeet(data):
+    if data[1] == "lying down":
+        data[1] = "lying_down"
 
-        if data[1] in folval:
-            if len(GetMatchingFolvalValues(data[0], data[1])) == 0:
-                print("No.")
-            else:    
-                print("yes.")
-        else:
-            print("That action is not in the toy world.")   
+    if data[1] in folval:
+        if len(GetMatchingFolvalValues(data[0], data[1])) == 0:
+            print("No.")
+        else:    
+            print("yes.")
+    else:
+        print("That action is not in the toy world.")   
+
+#######################################################
+# HandleAIMLCommand
+#
+#   Handles responses for AIML commands
+#######################################################
+def HandleAIMLCommand(cmd, data):
     
+    if cmd == 0:
+        Exit()                
+    elif cmd == 1:
+        DescribeDog(data[0])
+    elif cmd == 2:
+        WikiSearch(data[0])
+    elif cmd == 3:
+        PrintCrossBreed(data[0])
+    elif cmd == 4:
+        PrintCrossBreeds()
+    elif cmd == 5:
+        PrintDogSize(data[0])
+    elif cmd == 6:
+        ListSizedDogs(data[0])
+    elif cmd == 7: 
+        SetFolValValues(data)
+    elif cmd == 8:
+        FolValYesNoQueries(data)
+    elif cmd == 9:
+        FolValListMatches(data)    
+    elif cmd == 11:
+        FolValAnyMeet(data)
     elif cmd == 12:
         ResetToyWorld()
         print("Done.")
-
-    #Query
-    # elif cmd == 7:
-    #     #try:
-    #     sent = " "
-    #     results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-    #     if results[2] == True:
-    #         print("Yes.")
-    #     else:
-    #         print("No.")
-    #     #except:
-    #         #print("Sorry, I don't know that.")
-
-    # #Set action --> (PropN) (TV) (PropN)
-    # elif cmd == 8:           
-    #     if data[0] in folval:
-    #         if data[2] in folval:
-
-    #             ClearEmptyFolvalSlot(data[1])
-                
-    #             for item in folval[data[1]]:
-    #                 if data[0] in item:
-    #                     folval[data[1]].remove(item)
-    #                     break
-                
-    #             folval[data[1]].add((data[0], folval[data[2]]))               
-    #             print("done.")
-    #         else:
-    #             print(data[2] + " does not exit in toy world.")
-    #     else:
-    #         print(data[0] + " does not exit in toy world.")
-    
-    # #Set action --> (PropN) (TV) (N)   
-    # elif cmd == 9:
-
-    #     if data[0] in folval:
-    #         if data[2] in folval:
-
-    #             for item in folval[data[1]]:
-    #                 if data[0] in item:
-    #                     folval[data[1]].remove(item)
-    #                     break
-                        
-    #             #insert constant
-    #             o = 'o' + str(objectCounter)
-    #             objectCounter += 1
-    #             folval['o' + o] = o
-
-    #             ClearEmptyFolvalSlot(data[2])
-
-    #             #insert type of object information        
-    #             folval[data[2]].add((o,))
-
-    #             ClearEmptyFolvalSlot(data[1])
-                
-    #             #insert location 
-    #             folval[data[1]].add((o, folval[data[0]]))
-    #             print("done.")
-                
-    #         else:
-    #             print(data[2] + " does not exit in toy world.")
-    #     else:
-    #         print(data[0] + " does not exit in toy world.")
-
-    # #Query --> action(x,y)
-    # elif cmd == 10:
-
-    #     if data[2] in folval:                
-
-    #         sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(data[0]+"("+data[1]+","+data[2]+")"), data[1], nltk.Assignment(folval.domain))
-    #         if len(sat) == 0:
-    #             print("None.")
-    #         else:
-    #             #find satisfying objects in the valuation dictionary, and print their type names
-    #             sol = folval.values()
-    #             for so in sat:
-    #                 for k, v in folval.items():
-    #                     if len(v) > 0:
-    #                         vl = list(v)
-    #                         if len(vl[0]) == 1:
-    #                             for i in vl:
-    #                                 if i[0] == so:
-    #                                     print(k)
-    #                                     break    
-            
-        # else:
-        #     print(data[2] + " does not exit in toy world.")
-   
     elif cmd == 99:
         if HandleUnknownInput(data[0]) == 0:
             print("I did not get that, please try again.")
@@ -528,9 +441,6 @@ def MainLoop():
         #Otherwise direct respond
         else:
             print(answer)
-
-
             
 ReadFiles()
 MainLoop()
-    
