@@ -18,7 +18,6 @@ wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 toyWorldString = """
 lettuces => {}
 cabbages => {}
-rover => {}
 barking => {}
 mustards => {}
 potatoes => {}
@@ -42,6 +41,7 @@ dennis => dennis
 spark => spark
 charlie => charlie
 max => max
+rover => rover
 is => {}
 is_in => {}
 is_on => {}
@@ -339,11 +339,14 @@ def HandleAIMLCommand(cmd, data):
         if data[0] in folval:
             if data[2] in folval:
 
-                o = 'o' + str(objectCounter)
-                objectCounter += 1
-                folval['o' + o] = o
-                ClearEmptyFolvalSlot(data[0])
-                folval[data[0]].add((o,))                    
+                o = data[0]
+
+                if data[0] == "cabbages":              
+                    o = 'o' + str(objectCounter)
+                    objectCounter += 1
+                    folval['o' + o] = o
+                    ClearEmptyFolvalSlot(data[0])
+                    folval[data[0]].add((o,))                    
 
                 ClearEmptyFolvalSlot(data[1])
                 folval[data[1]].add((o, folval[data[2]]))     
@@ -356,15 +359,15 @@ def HandleAIMLCommand(cmd, data):
     
     #Yes/no queries
     elif cmd == 8:
-        try:
-            sent = " "
-            results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
-            if results[2] == True:
-                print("Yes.")
-            else:
-                print("No.")
-        except:
-            print("Sorry, I don't know that.")
+        #try:
+        sent = " "
+        results = nltk.evaluate_sents([sent.join(data).lower()], grammar_file, nltk.Model(folval.domain, folval), nltk.Assignment(folval.domain))[0][0]
+        if results[2] == True:
+            print("Yes.")
+        else:
+            print("No.")
+        #except:
+            #print("Sorry, I don't know that.")
 
     # Which plants are in ...
     elif cmd == 9: 
