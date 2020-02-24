@@ -351,6 +351,7 @@ def HandleAIMLCommand(cmd, data):
 
                 o = data[0]
                 
+                #Can't be in same place or doing two actions at once
                 for item in folval[data[1]]:
                     if data[0] in item:                     
                         folval[data[1]].remove(item)
@@ -410,9 +411,9 @@ def HandleAIMLCommand(cmd, data):
 
     #Query ~ do any values meet x
     elif cmd == 11:
-
+        print("test")
         if data[1] == "lying down":
-            data[1] == "lying_down"
+            data[1] = "lying_down"
 
         if data[1] in folval:
             if len(GetMatchingFolvalValues(data[0], data[1])) == 0:
