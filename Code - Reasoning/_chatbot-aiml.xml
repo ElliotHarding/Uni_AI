@@ -372,30 +372,46 @@
   <template>#7$<star index="1"/>$be_in$<star index="2"/></template></category>
 <category> <pattern> MAKE * BARK </pattern>
   <template>#7$<star index="1"/>$is$barking</template></category>
-
+<category> <pattern> MAKE * SIT </pattern>
+  <template>#7$<star index="1"/>$is$sitting</template></category>
+<category> <pattern> MAKE * WALK </pattern>
+  <template>#7$<star index="1"/>$is$walking</template></category>
+<category> <pattern> MAKE * LIE DOWN </pattern>
+  <template>#7$<star index="1"/>$is$lying_down</template></category>
 
 <category> <pattern> ARE THERE ANY * IN * </pattern>
   <template>#8$some$<star index="1"/>$are_in$<star index="2"/></template></category>
 <category> <pattern> ARE ALL * IN * </pattern>
   <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category>
-
+  
+  <!-- <category> <pattern> ARE ALL * IN * </pattern> -->
+  <!-- <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category> ARE SOME DOGS BARKING... -->
+<category> <pattern> IS * BARKING </pattern>
+  <template>#8$<star index="1"/>$is$barking</template></category>
+<category> <pattern> IS * SITTING </pattern>
+  <template>#8$<star index="1"/>$is$sitting</template></category>
+<category> <pattern> IS * WALKING </pattern>
+  <template>#8$<star index="1"/>$is$walking</template></category>
+<category> <pattern> IS * LYING DOWN </pattern>
+  <template>#8$<star index="1"/>$is$lying_down</template></category>
 
 <category> <pattern> WHAT IS IN * </pattern>
   <template>#9$be_in$<star index="1"/></template></category>
 <category> <pattern> WHO IS BARKING </pattern>
   <template>#9$is$barking<star index="1"/></template></category>
-
-
-
-<!-- <category> <pattern> MAKE * BARK </pattern>
-  <template>#10$<star index="1"/>$is$barking</template></category> -->
-<category> <pattern> IS * BARKING </pattern>
-  <template>#8$<star index="1"/>$is$barking</template></category>
+<category> <pattern> WHO IS WALKING </pattern>
+  <template>#9$is$walking<star index="1"/></template></category>
+<category> <pattern> WHO IS SITTING </pattern>
+  <template>#9$is$sitting<star index="1"/></template></category>
+<category> <pattern> WHO IS LYING DOWN </pattern>
+  <template>#9$is$lying_down<star index="1"/></template></category>
 
 <category> <pattern> RESET THE TOY WORLD </pattern>
   <template>#11$</template></category>
 
-  
+<!-- <category> <pattern> MAKE * BARK </pattern>
+  <template>#10$<star index="1"/>$is$barking</template></category> -->
+ 
 <!-- Reasoning -->
 
 <!-- Generic questions - - >
