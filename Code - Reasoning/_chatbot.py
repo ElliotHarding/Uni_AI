@@ -18,7 +18,7 @@ wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 toyWorldString = """
 lettuces => {}
 trees => {}
-barking => {}
+barking => barking
 mustards => {}
 potatoes => {}
 onions => {}
@@ -371,7 +371,7 @@ def HandleAIMLCommand(cmd, data):
 
     # Which plants are in ...
     elif cmd == 9: 
-        sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring("be_in(x," + data[0] + ")"), "x", nltk.Assignment(folval.domain))
+        sat = nltk.Model(folval.domain, folval).satisfiers(nltk.Expression.fromstring(data[0]+"(x," + data[1] + ")"), "x", nltk.Assignment(folval.domain))
         if len(sat) == 0:
             print("None.")
         else:
@@ -393,7 +393,10 @@ def HandleAIMLCommand(cmd, data):
         if data[0] in folval:
             if data[2] in folval:
                 
+                ClearEmptyFolvalSlot(data[2])
                 folval[data[2]].add(data[0])
+
+                ClearEmptyFolvalSlot(data[1])
                 folval[data[1]].add((data[0], data[2]))  
 
                 print("done.")
