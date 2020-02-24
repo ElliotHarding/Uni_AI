@@ -380,6 +380,8 @@
   <template>#7$<star index="1"/>$is$lying_down</template></category>
 <category> <pattern> PUT * ON A LEASH</pattern>
   <template>#7$<star index="1"/>$is_on$leash</template></category>
+<category> <pattern> MAKE * CHASE A BONE</pattern>
+  <template>#7$<star index="1"/>$is_chasing$bone</template></category>
 
 <category> <pattern> ARE THERE ANY * IN * </pattern>
   <template>#8$some$<star index="1"/>$are_in$<star index="2"/></template></category>
@@ -387,8 +389,6 @@
   <template>#8$all$<star index="1"/>$are_in$<star index="2"/></template></category>
 <category> <pattern> IS * IN * </pattern>
   <template>#8$<star index="1"/>$is_in$<star index="2"/></template></category>
-<category> <pattern> IS * ON A LEASH </pattern>
-  <template>#8$leash$is_on$<star index="1"/></template></category>
   
 <category> <pattern> IS * BARKING </pattern>
   <template>#8$<star index="1"/>$is$barking</template></category>
@@ -411,6 +411,8 @@
   <template>#9$is$lying_down$no one</template></category>
 <category> <pattern> WHO IS ON LEASH </pattern>
   <template>#9$is_on$leash$no one</template></category>
+<category> <pattern> WHO IS CHASING A BONE </pattern>
+  <template>#9$is_chasing$bone$no one</template></category>
 
 <category> <pattern> ARE ANY DOGS * </pattern> <!-- Sitting, lying_down, walking ect.. -->
   <template>#11$is$<star index="1"/></template></category>
