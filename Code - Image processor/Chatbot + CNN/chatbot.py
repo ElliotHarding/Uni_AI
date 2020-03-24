@@ -441,6 +441,9 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 99:
         if HandleUnknownInput(data) == 0:
             print("I did not get that, please try again.")
+            
+            
+
 
 #######################################################
 # Main loop

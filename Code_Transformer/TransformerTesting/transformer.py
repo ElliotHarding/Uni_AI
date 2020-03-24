@@ -544,7 +544,7 @@ def accuracy(y_true, y_pred):
 
 model.compile(optimizer=optimizer, loss=loss_function, metrics=[accuracy])
 
-EPOCHS = 20
+EPOCHS = 1 #20
 
 model.fit(dataset, epochs=EPOCHS)
 
