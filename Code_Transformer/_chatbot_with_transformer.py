@@ -84,6 +84,7 @@ waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", 
 breeds = []
 breedInfo = []
 sizes = []
+NUM_BREEDS = None
 
 transformer_model = None
 
@@ -575,6 +576,8 @@ def ReadFiles():
         breedInfo = [row[1] for row in breedAndInfoPairs]
         sizes = [row[2] for row in breedAndInfoPairs]
         
+        NUM_BREEDS = len(sizes)
+        
     except (IOError) as e:
         print("Error occured opening one of the files! " + e.strerror)
         sys.exit()
@@ -941,6 +944,45 @@ def evaluate(sentence):
     [i for i in prediction if i < tokenizer.vocab_size])
   
   return predicted_sentence
+  
+    
+def Game_IsCorrectChoice(choice, answer):
+    choice = choice.lower()
+
+    if choice == "small" or choice == "s":
+        return (answer == "S")
+    elif choice == "medium" or choice == "m":
+        return (answer == "M")
+    elif choice == "large" or choice == "L":
+        return (answer == "L")
+    else
+        return False
+        
+def Game_BotGuess(dogName):
+    return "S"
+  
+def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
+
+    print("Aim of the game is to guess the size of a dog. (Small, Medium, Large). Type 'quit' to stop.")
+
+    while True:
+        
+        dogIndex = random.randrange(0, numOfBreeds)
+        print("Guess the size of a " . breeds[dogIndex])
+        
+        playerInput = None
+        if userIsPlaying:
+            playerInput = GetInput()
+        else:
+            playerInput = Game_BotGuess(breeds[dogIndex])
+        
+        if playerInput == "quit":
+            print("See you next time!")
+            break        
+        elif Game_IsCorrectChoice(userInput, sizes[dogIndex]):
+            print("Correct!")
+        else:
+            print("Incorrect!")
 
 
 #######################################################
