@@ -1,0 +1,49 @@
+Loading chatbot-aiml.xml...done (0.01 seconds)
+Kernel bootstrap completed in 0.04 seconds
+
+Hi! I'm the dog breed information chatbot.
+ - Try asking me a question about a specifc breed. 
+ - Ask me about groups of breeds(hounds, terriers, retrievers).
+ - Try and describe a breed for me to guess. 
+ - Or ask me to tell you a dog related joke.
+
+> Hello
+Hello! How are you?
+> I'm good
+Nice!
+> tell me about hounds
+You can ask me about any of these dogs: American Leopard Hound, Afghan Hound, Basset Hound, Bavarian Mountain Scent Hound, Ibizan Hound, Pharaoh Hound
+> please give me info on a bavarian mountain scent hound
+The Bavarian Mountain Scent Hound is a purebred dog originally from Germany. These pups are loyal, intelligent, and reserved, which are some of the best qualities for a Hound dog breed.
+
+The Bavarian Mountain Scent Hound goes by a few other names, including Bavarian Mountain Scenthound and Bayerischer Gebirgsschwei. Despite being a very rare breed, you can try and find these adorable pooches in local shelters or breed specific rescues, so remember to adopt! Don’t shop!
+
+
+These reserved pups are very loyal to their pet parents and would fit great with families with children or larger households. They are a quiet breed but are very wary towards strangers or anyone theydon’t know approaching them or their humans. If you want a loyal pup who likes to be active and will love you unconditionally, the Bavarian Mountain Scent Hound may be the right dog for you!
+> Thanks. Can you tell me a joke?
+You are welcome.  What happens when it rains cats and dogs?
+> I don't know, What happens?
+You can step in a poodle!
+tell me about retrievers
+You can ask me about any of these dogs: Chesapeake Bay Retriever, Curly-Coated Retriever, Flat-Coated Retriever, Golden Cocker Retriever, Golden Retriever, Labrador Retriever, Nova Scotia Duck Tolling Retriever
+> is the chesapeake bay retriever a cross breed
+A Chesapeake Bay Retriever is in fact a pure breed.
+> how big is a chesapeake bay retriever?
+A Chesapeake Bay Retriever is a large sized dog.
+> tell me another joke
+Why are dogs like phones?
+> I dont know
+Because they have collar IDs.
+> haha
+It seems I couldn't find what you were looking for. Would you like me to wikipekida search 'haha'?
+> no thanks
+Right.
+> can you please wiki search hounds
+A hound is a type of dog that assists hunters by tracking or chasing the animal being hunted.
+Hound may also refer to:
+
+Dog, any dog of the subfamily Caninae
+Learn more at https://en.wikipedia.org/wiki/Hound_(disambiguation)
+> what are the cross breeds of dogs
+Here are all the cross breeds: Afador, American Pugabull, Bassador, Bernedoodle, Bocker, Boglen Terrier, Borador, Bordoodle, Boxerdoodle, Boxmatian, Bullboxer Pit, Bullmatian, Catahoula Bulldog, Cav-a-Jack, Cavachon, Cavador, Cavapoo, Cesky Terrier, Chabrador, Cheagle, Chi-Poo, Chilier, Chipin, Chiweenie, Chug, Chusky, Cockalier, Corgi Inu, Corgidor, Dachsador, Doberdor, Docker, Dorgi, Doxiepoo, German Sheprador, Goberian, Golden Cocker Retriever, Golden Mountain Dog, Goldendoodle, Gollie, Horgi, 
+Jack Chi, Kyi-Leo, Lab Pointer, Labernese, Labmaraner, Labrabull, Labradane, Labradoodle, Labrastaff, Labsky, Mastador, Morkie, Mutt, Pitsky, Pomapoo, Pomchi, Pomeagle, Poochon, Saint Berdoodle, Schnoodle, Shepsky, Shih-Poo, Shiranian, Shorkie, Valley Bulldog, Westiepoo, Whoodle, Yorkipoo
