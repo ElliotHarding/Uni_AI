@@ -32,7 +32,7 @@ NUM_HEADS = 8
 UNITS = 512
 DROPOUT = 0.1
 
-EPOCHS = 1 #20
+EPOCHS = 30
 
 def preprocess_sentence(sentence):
   sentence = sentence.lower().strip()
@@ -522,7 +522,6 @@ def predict(sentence):
   return predicted_sentence
   
 output = predict('Where have you been?')
-
 output = predict("It's a trap")
 
 # feed the model with its previous output

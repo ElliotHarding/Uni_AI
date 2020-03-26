@@ -230,7 +230,7 @@ class DDQNAgent(DQNAgent):
         """
 
         # Q Network weights filename
-        self.weights_file = 'ddqn_cartpole.h5'
+        #self.weights_file = 'ddqn_cartpole.h5'
         print("-------------DDQN------------")
 
     def get_target_q_value(self, next_state, reward):

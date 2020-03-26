@@ -81,31 +81,22 @@ def load_conversations():
 
 
 # Build tokenizer using tfds for both questions and answers
-def GenTokenizer():
+def GenTokenizer(questions, answers):
   print("Creating tokenizer for transformer model...")
-  questions, answers = load_conversations()
   
-  tokenizer = tfds.features.text.SubwordTextEncoder.build_from_corpus(
-    questions + answers, target_vocab_size=2**13)
+  #tokenizer = tfds.features.text.SubwordTextEncoder.build_from_corpus(
+    #questions + answers, target_vocab_size=2**13)
+    
+  #tokenizer.save_to_file('transformer_tokenizer')
+  tokenizer = tfds.features.text.SubwordTextEncoder.load_from_file('transformer_tokenizer')
     
   return tokenizer
     
-# Define start and end token to indicate the start and end of a sentence
-
-#print("START_TOKEN = ") 
-#print(START_TOKEN)
-#print("END_TOKEN = ") 
-#print(END_TOKEN)
-# Vocabulary size plus start and end token
-
-#print("VOCAB_SIZE = ") 
-#print(VOCAB_SIZE)
-
 # Tokenize, filter and pad sentences
 def tokenize_and_filter(inputs, outputs):
   tokenized_inputs, tokenized_outputs = [], []
   
-  tokenizer = GenTokenizer()
+  tokenizer = GenTokenizer(inputs, outputs)
   START_TOKEN, END_TOKEN = [tokenizer.vocab_size+1], [tokenizer.vocab_size + 2]
   VOCAB_SIZE = tokenizer.vocab_size + 3
   
@@ -124,13 +115,13 @@ def tokenize_and_filter(inputs, outputs):
   tokenized_outputs = tf.keras.preprocessing.sequence.pad_sequences(
       tokenized_outputs, maxlen=MAX_LENGTH, padding='post')
   
-  return tokenized_inputs, tokenized_outputs, VOCAB_SIZE
+  return tokenized_inputs, tokenized_outputs, VOCAB_SIZE, START_TOKEN, END_TOKEN, tokenizer
 
 
 def CreateDataset(questions, answers):
   print("Creating dataset for transformer model...")
   
-  questions, answers, VOCAB_SIZE = tokenize_and_filter(questions, answers)
+  questions, answers, VOCAB_SIZE, START_TOKEN, END_TOKEN, tokenizer = tokenize_and_filter(questions, answers)
   
   dataset = tf.data.Dataset.from_tensor_slices((
   {
@@ -147,7 +138,7 @@ def CreateDataset(questions, answers):
   dataset = dataset.batch(BATCH_SIZE)
   dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
   
-  return dataset, VOCAB_SIZE
+  return dataset, VOCAB_SIZE, START_TOKEN, END_TOKEN, tokenizer
 
 
 def scaled_dot_product_attention(query, key, value, mask):
@@ -463,7 +454,8 @@ def accuracy(y_true, y_pred):
 def get_model():
   tf.keras.backend.clear_session()
   
-  dataset, VOCAB_SIZE = CreateDataset(questions, answers)
+  questions, answers = load_conversations()
+  dataset, VOCAB_SIZE, START_TOKEN, END_TOKEN, tokenizer = CreateDataset(questions, answers)
 
   print("Creating transformer model...")
 
@@ -479,7 +471,7 @@ def get_model():
   model.compile(optimizer=optimizer, loss=loss_function, metrics=[accuracy])
   
   print("Loading transformer model weights...")
-  transformer_model.load_weights('C:/Users/elliot/Documents/Github/transformer_weights/transformer_model')
-  transformer_model.fit(dataset, epochs=EPOCHS)
+  model.load_weights('C:/Users/elliot/Documents/Github/transformer_weights/transformer_model')
+  model.fit(dataset, epochs=EPOCHS)
   
-  return model  
+  return model, START_TOKEN, END_TOKEN, MAX_LENGTH, tokenizer  

@@ -90,7 +90,7 @@ breedInfo = []
 sizes = []
 NUM_BREEDS = None
 
-transformer_model = _transformer_for_chatbot.get_model()
+transformer_model, START_TOKEN, END_TOKEN, MAX_LENGTH, tokenizer = _transformer_for_chatbot.get_model()
 
 guessing_game_model = _ddqn_for_guessing_game.DDQNAgent(np.array([1]), gym.spaces.Discrete(3))
 
@@ -236,10 +236,6 @@ def HandleUnknownInput(search):
 
     if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
         return
-
-    #No point in doing a wiki search if related to bot
-    if " you" in search or "you " in search or " me" in search or "me " in search:
-        return 0
         
     print(evaluate(search))
     return 0
@@ -560,7 +556,7 @@ def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
 #   Handles responses for AIML commands
 #######################################################
 def HandleAIMLCommand(cmd, data):
-    
+
     if cmd == 0:
         Exit()                
     elif cmd == 1:
