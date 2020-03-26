@@ -14,6 +14,7 @@ import os
 import re
 import tensorflow as tf
 import tensorflow_datasets as tfds
+import _ddqn_for_guessing_game
 
 #######################################################
 # Initialize wikipedia api
@@ -87,6 +88,8 @@ sizes = []
 NUM_BREEDS = None
 
 transformer_model = None
+
+guessing_game_model = _ddqn_for_guessing_game.DDQNAgent(np.array([1]), gym.spaces.Discrete(3))
 
 MAX_SAMPLES = 50000 # Maximum number of samples to preprocess
 MAX_LENGTH = 40 # Maximum sentence length
@@ -576,6 +579,8 @@ def ReadFiles():
         breedInfo = [row[1] for row in breedAndInfoPairs]
         sizes = [row[2] for row in breedAndInfoPairs]
         
+        guessing_game_model.load_weights('C:/Users/elliot/Documents/Github/ddqn_weights/ddqn_gameGuesser.h5')
+        
         NUM_BREEDS = len(sizes)
         
     except (IOError) as e:
@@ -955,16 +960,26 @@ def Game_IsCorrectChoice(choice, answer):
         return (answer == "M")
     elif choice == "large" or choice == "L":
         return (answer == "L")
-    else
+    else:
         return False
         
-def Game_BotGuess(dogName):
-    return "S"
-  
+def Game_BotGuess(dogIndex):
+    guess = guessing_game_model.act(np.reshape(np.array([dogIndex]), [1, 1]))
+    if guess == 0:
+        print("Guess : Small")
+        return "Small"
+    elif guess == 1:
+        print("Guess : Medium")
+        return "Medium"
+    else:
+        print("Guess : Large")
+        return "Large"
+
 def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
 
     print("Aim of the game is to guess the size of a dog. (Small, Medium, Large). Type 'quit' to stop.")
 
+    gamesCounter = 0
     while True:
         
         dogIndex = random.randrange(0, numOfBreeds)
@@ -974,15 +989,19 @@ def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
         if userIsPlaying:
             playerInput = GetInput()
         else:
-            playerInput = Game_BotGuess(breeds[dogIndex])
+            playerInput = Game_BotGuess(dogIndex)
+            gamesCounter += 1
         
         if playerInput == "quit":
             print("See you next time!")
             break        
-        elif Game_IsCorrectChoice(userInput, sizes[dogIndex]):
+        elif Game_IsCorrectChoice(playerInput, sizes[dogIndex]):
             print("Correct!")
         else:
             print("Incorrect!")
+            
+        if gamesCounter == 10:
+            break
 
 
 #######################################################
@@ -1028,6 +1047,8 @@ def HandleAIMLCommand(cmd, data):
 def MainLoop():    
     print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n"))
     while True: 
+    
+        Game_MatchGameMainLoop(breeds, sizes, NUM_BREEDS, false)
 
         #Get input
         userInput = GetInput()
