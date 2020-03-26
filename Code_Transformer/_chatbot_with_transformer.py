@@ -972,7 +972,11 @@ def Game_IsCorrectChoice(choice, answer):
 #######################################################
 # Game_BotGuess ~ Returns bots guess to answer of guessing game
 #######################################################
-def Game_BotGuess(dogIndex):
+def Game_BotGuess(dogIndex, gamesCounter):
+    
+    if gamesCounter == 10:
+        return "quit"
+
     guess = guessing_game_model.act(np.reshape(np.array([dogIndex]), [1, 1]))
     if guess == 0:
         print("Guess : Small")
@@ -1002,19 +1006,17 @@ def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
         if userIsPlaying:
             playerInput = GetInput()
         else:
-            playerInput = Game_BotGuess(dogIndex)
+            playerInput = Game_BotGuess(dogIndex, gamesCounter)
             gamesCounter += 1
         
         if playerInput == "quit":
             print("See you next time!")
+            print()
             break        
         elif Game_IsCorrectChoice(playerInput, sizes[dogIndex]):
             print("Correct!")
         else:
             print("Incorrect!")
-            
-        if gamesCounter == 10:
-            break
 
 
 #######################################################
