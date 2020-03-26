@@ -1,32 +1,3 @@
-import csv
-
-breeds = []
-breedInfo = []
-sizes = []
-NUM_BREEDS = None
-
-#######################################################
-# ReadFiles
-#   
-#   Reads breed-and-information file into global arrays
-#   breeds & breedInfo
-#######################################################
-def ReadFiles():
-    global breeds, breedInfo, sizes
-    try:        
-        breedAndInfoPairs = list(csv.reader(open('breed-and-information.csv', 'r')))
-                       
-        breeds = [row[0] for row in breedAndInfoPairs]
-        breedInfo = [row[1] for row in breedAndInfoPairs]
-        sizes = [row[2] for row in breedAndInfoPairs]
-        
-        NUM_BREEDS = len(sizes)
-        
-    except (IOError) as e:
-        print("Error occured opening one of the files! " + e.strerror)
-        sys.exit()
-        
-        
 from tensorflow.keras.layers import Dense, Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
@@ -37,6 +8,31 @@ import argparse
 import gym
 from gym import wrappers, logger
 
+breeds = []
+sizes = []
+
+#######################################################
+# ReadFiles
+#   
+#   Reads breed-and-information file into global arrays
+#   breeds & sizes
+#######################################################
+try:            
+
+    with open("drive/My Drive/breeds.txt") as f:
+        breeds = f.read().splitlines()
+
+    with open("drive/My Drive/sizes.txt") as f:
+        sizes = f.read().splitlines()
+        
+except (IOError) as e:
+        print("Error occured opening one of the files! " + e.strerror)
+        sys.exit()
+        
+
+#######################################################
+# DQNAgent
+#######################################################
 class DQNAgent:
     def __init__(self,
                  state_space, 
@@ -209,7 +205,9 @@ class DQNAgent:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
         
-
+#######################################################
+# DDQNAgent
+#######################################################
 class DDQNAgent(DQNAgent):
     def __init__(self,
                  state_space, 
@@ -257,22 +255,10 @@ class DDQNAgent(DQNAgent):
         return q_value
 
 
-
+#######################################################
+# Main
+#######################################################
 if __name__ == '__main__':
-    #parser = argparse.ArgumentParser(description=None)
-    #parser.add_argument('env_id',
-                        #nargs='?',
-                        #default='CartPole-v0',
-                        #help='Select the environment to run')
-    #parser.add_argument("-d",
-                        #"--ddqn",
-                        #action='store_true',
-                        #help="Use Double DQN")
-    #parser.add_argument("-r",
-                        #"--no-render",
-                        #action='store_true',
-                        #help="Disable rendering (for env w/o graphics")
-    #args = parser.parse_args()
 
     # the number of trials without falling over
     win_trials = 100
@@ -289,26 +275,17 @@ if __name__ == '__main__':
     scores = deque(maxlen=win_trials)
 
     logger.setLevel(logger.ERROR)
-    env = gym.make('CartPole-v0')
 
-    outdir = "/tmp/dqn-%s" % 'CartPole-v0'
-    if True:
-        outdir = "/tmp/ddqn-%s" % 'CartPole-v0'
-
-    if True:
-        env = wrappers.Monitor(env,
+    outdir = "/tmp/ddqn-%s" % 'CartPole-v0'
+    env = wrappers.Monitor(gym.make('CartPole-v0'),
                                directory=outdir,
                                video_callable=False,
                                force=True)
-    #else:
-        #env = wrappers.Monitor(env, directory=outdir, force=True)
     env.seed(0)
+    env.action_space.n = 3
 
-    # instantiate the DQN/DDQN agent
-    if True:
-        agent = DDQNAgent(env.observation_space, env.action_space)
-    else:
-        agent = DQNAgent(env.observation_space, env.action_space)
+    # instantiate the DDQN agent    
+    agent = DDQNAgent(env.observation_space, env.action_space)
 
     # should be solved in this number of episodes
     episode_count = 3000
@@ -321,14 +298,19 @@ if __name__ == '__main__':
 
     # Q-Learning sampling and fitting
     for episode in range(episode_count):
+
         state = env.reset()
         state = np.reshape(state, [1, state_size])
+
         done = False
         total_reward = 0
         while not done:
-            # in CartPole-v0, action=0 is left and action=1 is right
+            #action=0 is S action=1 is M action=2 is L            
             action = agent.act(state)
+
             next_state, reward, done, _ = env.step(action)
+            print(reward)
+
             # in CartPole-v0:
             # state = [pos, vel, theta, angular speed]
             next_state = np.reshape(next_state, [1, state_size])
@@ -336,7 +318,6 @@ if __name__ == '__main__':
             agent.remember(state, action, reward, next_state, done)
             state = next_state
             total_reward += reward
-
 
         # call experience relay
         if len(agent.memory) >= batch_size:
