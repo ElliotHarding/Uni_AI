@@ -421,6 +421,12 @@
 
 <category> <pattern> RESET THE TOY WORLD </pattern>
   <template>#12$</template></category>  
+  
+<category> <pattern> PLAY THE GUESSING GAME </pattern>
+  <template>#13$</template></category>  
+  
+<category> <pattern> DEMONSTRAIGHT THE GUESSING GAME </pattern>
+  <template>#14$</template></category>  
 
 <!-- Default reaction -->
 <category><pattern> * </pattern>

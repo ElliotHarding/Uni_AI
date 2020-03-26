@@ -953,7 +953,10 @@ def evaluate(sentence):
   
   return predicted_sentence
   
-    
+#######################################################
+# Game_IsCorrectChoice ~ Returns weather or not answer 
+# to guessing game is correct
+#######################################################
 def Game_IsCorrectChoice(choice, answer):
     choice = choice.lower()
 
@@ -966,6 +969,9 @@ def Game_IsCorrectChoice(choice, answer):
     else:
         return False
         
+#######################################################
+# Game_BotGuess ~ Returns bots guess to answer of guessing game
+#######################################################
 def Game_BotGuess(dogIndex):
     guess = guessing_game_model.act(np.reshape(np.array([dogIndex]), [1, 1]))
     if guess == 0:
@@ -978,6 +984,9 @@ def Game_BotGuess(dogIndex):
         print("Guess : Large")
         return "Large"
 
+#######################################################
+# Game_MatchGameMainLoop 
+#######################################################
 def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
 
     print("Aim of the game is to guess the size of a dog. (Small, Medium, Large). Type 'quit' to stop.")
@@ -986,6 +995,7 @@ def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
     while True:
 
         dogIndex = random.randrange(0, numOfBreeds)
+        print()
         print("Guess the size of a " + breeds[dogIndex])
         
         playerInput = None
@@ -1041,6 +1051,10 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 12:
         ResetToyWorld()
         print("Done.")
+    elif cmd == 13:
+        Game_MatchGameMainLoop(breeds, sizes, len(breeds), True)
+    elif cmd == 14:
+        Game_MatchGameMainLoop(breeds, sizes, len(breeds), False)
     elif cmd == 99:
         HandleUnknownInput(data[0])
 
@@ -1051,8 +1065,6 @@ def MainLoop():
     print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n"))
     while True: 
     
-        Game_MatchGameMainLoop(breeds, sizes, len(breeds), False)
-
         #Get input
         userInput = GetInput()
         
