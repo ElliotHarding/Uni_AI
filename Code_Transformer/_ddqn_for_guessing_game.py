@@ -1,4 +1,14 @@
-﻿#######################################################
+﻿from tensorflow.keras.layers import Dense, Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from collections import deque
+import numpy as np
+import random
+import argparse
+import gym
+from gym import wrappers, logger
+
+#######################################################
 # DQNAgent
 #######################################################
 class DQNAgent:

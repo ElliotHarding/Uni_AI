@@ -15,6 +15,8 @@ import re
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import _ddqn_for_guessing_game
+import gym
+import random
 
 #######################################################
 # Initialize wikipedia api
@@ -118,7 +120,7 @@ def preprocess_sentence(sentence):
   return sentence
 
 def load_conversations():
-  print("Loading conversations for transformer model")
+  print("Loading conversations for transformer model...")
   path_to_zip = tf.keras.utils.get_file(
     'cornell_movie_dialogs.zip',
     origin=
@@ -156,7 +158,7 @@ def load_conversations():
 
 questions, answers = load_conversations()
 
-print("Creating tokenizer for transformer model")
+print("Creating tokenizer for transformer model...")
 # Build tokenizer using tfds for both questions and answers
 tokenizer = tfds.features.text.SubwordTextEncoder.build_from_corpus(
     questions + answers, target_vocab_size=2**13)
@@ -202,7 +204,7 @@ questions, answers = tokenize_and_filter(questions, answers)
 
 # decoder inputs use the previous target as input
 # remove START_TOKEN from targets
-print("Creating dataset for transformer model")
+print("Creating dataset for transformer model...")
 dataset = tf.data.Dataset.from_tensor_slices((
     {
         'inputs': questions,
@@ -218,7 +220,7 @@ dataset = dataset.shuffle(BUFFER_SIZE)
 dataset = dataset.batch(BATCH_SIZE)
 dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
 
-print("Creating transformer model")
+print("Creating transformer model...")
 
 def scaled_dot_product_attention(query, key, value, mask):
   """Calculate the attention weights. """
@@ -579,6 +581,7 @@ def ReadFiles():
         breedInfo = [row[1] for row in breedAndInfoPairs]
         sizes = [row[2] for row in breedAndInfoPairs]
         
+        print("Loading guessing game model weights...")
         guessing_game_model.load_weights('C:/Users/elliot/Documents/Github/ddqn_weights/ddqn_gameGuesser.h5')
         
         NUM_BREEDS = len(sizes)
@@ -981,9 +984,9 @@ def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
 
     gamesCounter = 0
     while True:
-        
+
         dogIndex = random.randrange(0, numOfBreeds)
-        print("Guess the size of a " . breeds[dogIndex])
+        print("Guess the size of a " + breeds[dogIndex])
         
         playerInput = None
         if userIsPlaying:
@@ -1048,7 +1051,7 @@ def MainLoop():
     print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n"))
     while True: 
     
-        Game_MatchGameMainLoop(breeds, sizes, NUM_BREEDS, false)
+        Game_MatchGameMainLoop(breeds, sizes, len(breeds), False)
 
         #Get input
         userInput = GetInput()
