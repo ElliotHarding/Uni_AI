@@ -1,4 +1,7 @@
-﻿#######################################################
+﻿# Code adapted from:
+# https://github.com/tensorflow/examples/blob/master/community/en/transformer_chatbot.ipynb
+
+#######################################################
 # Imports
 #######################################################
 from sklearn.feature_extraction.text import TfidfVectorizer

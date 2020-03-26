@@ -1,4 +1,11 @@
-﻿from tensorflow.keras.layers import Dense, Input
+﻿# Code adapted from :
+# https://github.com/PacktPublishing/Advanced-Deep-Learning-with-Keras/blob/master/chapter9-drl/dqn-cartpole-9.6.1.py
+
+
+#######################################################
+# Imports
+#######################################################
+from tensorflow.keras.layers import Dense, Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from collections import deque

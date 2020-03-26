@@ -1,4 +1,6 @@
-﻿#Imports
+﻿#######################################################
+# Imports
+#######################################################
 import aiml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -8,15 +10,26 @@ import sys
 import inflect
 import nltk
 import wikipediaapi
-
+import os
+import re
 import tensorflow as tf
+import tensorflow_datasets as tfds
+import _ddqn_for_guessing_game
+import gym
+import random
+import _transformer_for_chatbot
 
-#Initialize wikipedia api
+#######################################################
+# Initialize wikipedia api
+#######################################################
 import wikipediaapi
 wiki_wiki = wikipediaapi.Wikipedia('en')
 wikipediaapi.log.setLevel(level=wikipediaapi.logging.ERROR)
 
-#Reasoning
+
+#######################################################
+# Reasoning vars
+#######################################################
 toyWorldString = """
 field1 => f1
 field2 => f2
@@ -54,65 +67,40 @@ folval = nltk.Valuation.fromstring(toyWorldString)
 grammar_file = '_simple-sem.fcfg'
 objectCounter = 0
 
-#For singularization 
+#######################################################
+# For singularization 
+#######################################################
 p = inflect.engine()
 
+#######################################################
 # Create a Kernel object & bootstrap to aiml file.
+#######################################################
 kern = aiml.Kernel()
 kern.setTextEncoding(None)
 kern.bootstrap(learnFiles="_chatbot-aiml.xml")
 
-#Global vars
+#######################################################
+# Global vars
+#######################################################
 stopWords = ["the","is","an","a","at","and","i"]
 waysOfSayingYes = ["yes", "y", "correct", "affirmative", "okay", "ok", "right", "of course", "by all means",
                    "sure", "indeed", "yea", "yeah", "yep", "yup", "certainly"]
 breeds = []
 breedInfo = []
 sizes = []
+NUM_BREEDS = None
 
-transformer_model = None
+transformer_model, START_TOKEN, END_TOKEN, MAX_LENGTH, tokenizer = _transformer_for_chatbot.get_model()
 
+guessing_game_model = _ddqn_for_guessing_game.DDQNAgent(np.array([1]), gym.spaces.Discrete(3))
+
+#######################################################
+# ResetToyWorld
+#######################################################
 def ResetToyWorld():
     global folval
     folval = nltk.Valuation.fromstring(toyWorldString)
     
-MAX_LENGTH = 40
-def loss_function(y_true, y_pred):
-  y_true = tf.reshape(y_true, shape=(-1, MAX_LENGTH - 1))
-  
-  loss = tf.keras.losses.SparseCategoricalCrossentropy(
-      from_logits=True, reduction='none')(y_true, y_pred)
-
-  mask = tf.cast(tf.not_equal(y_true, 0), tf.float32)
-  loss = tf.multiply(loss, mask)
-
-  return tf.reduce_mean(loss)
-
-def accuracy(y_true, y_pred):
-  # ensure labels have shape (batch_size, MAX_LENGTH - 1)
-  y_true = tf.reshape(y_true, shape=(-1, MAX_LENGTH - 1))
-  return tf.keras.metrics.sparse_categorical_accuracy(y_true, y_pred)
-  
-class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
-
-  def __init__(self, d_model, warmup_steps=4000):
-    super(CustomSchedule, self).__init__()
-
-    self.d_model = d_model
-    self.d_model = tf.cast(self.d_model, tf.float32)
-
-    self.warmup_steps = warmup_steps
-
-  def __call__(self, step):
-    arg1 = tf.math.rsqrt(step)
-    arg2 = step * (self.warmup_steps**-1.5)
-
-    return tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)
-
-D_MODEL = 256
-learning_rate = CustomSchedule(D_MODEL)
-optimizer = tf.keras.optimizers.Adam(learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
-
 #######################################################
 # ReadFiles
 #   
@@ -123,20 +111,15 @@ def ReadFiles():
     global breeds, breedInfo, sizes
     try:        
         breedAndInfoPairs = list(csv.reader(open('breed-and-information.csv', 'r')))
-                
-        transformer_model = get_model()
-        transformer_model.compile(optimizer=optimizer, loss=loss_function, metrics=[accuracy])
-        
-        # This initializes the variables used by the optimizers,
-        # as well as any stateful metric variables
-        #transformer_model.train_on_batch(x_train[:1], y_train[:1])
-
-        # Load the state of the old model
-        transformer_model.load_weights('transformer_weights')
-        
+                       
         breeds = [row[0] for row in breedAndInfoPairs]
         breedInfo = [row[1] for row in breedAndInfoPairs]
         sizes = [row[2] for row in breedAndInfoPairs]
+        
+        print("Loading guessing game model weights...")
+        guessing_game_model.load_weights('C:/Users/elliot/Documents/Github/ddqn_weights/ddqn_gameGuesser.h5')
+        
+        NUM_BREEDS = len(sizes)
         
     except (IOError) as e:
         print("Error occured opening one of the files! " + e.strerror)
@@ -253,16 +236,9 @@ def HandleUnknownInput(search):
 
     if CheckSimilarDogs(search, breedInfo, 0.3) == 1:
         return
-
-    #No point in doing a wiki search if related to bot
-    if " you" in search or "you " in search or " me" in search or "me " in search:
-        return 0
         
-    print("It seems I couldn't find what you were looking for. Would you like me to wikipekida search '" + search + "'?")
-    if (GetInput() in waysOfSayingYes):
-        WikiSearch(search)
-    else:
-        print("Right.")
+    print(evaluate(search))
+    return 0
 
 #######################################################
 # PrintDogSize
@@ -485,13 +461,9 @@ def preprocess_sentence(sentence):
 # Predict ~ Return result of input sentence using transformer model
 #######################################################
 def evaluate(sentence):
-  START_TOKEN = 8331
-  END_TOKEN = 8332
-  VOCAB_SIZE = 8333
   
   sentence = preprocess_sentence(sentence)
-  sentence = tf.expand_dims(
-      START_TOKEN + tokenizer.encode(sentence) + END_TOKEN, axis=0)
+  sentence = tf.expand_dims(START_TOKEN + tokenizer.encode(sentence) + END_TOKEN, axis=0)
 
   output = tf.expand_dims(START_TOKEN, 0)
 
@@ -511,6 +483,71 @@ def evaluate(sentence):
     [i for i in prediction if i < tokenizer.vocab_size])
   
   return predicted_sentence
+  
+#######################################################
+# Game_IsCorrectChoice ~ Returns weather or not answer 
+# to guessing game is correct
+#######################################################
+def Game_IsCorrectChoice(choice, answer):
+    choice = choice.lower()
+
+    if choice == "small" or choice == "s":
+        return (answer == "S")
+    elif choice == "medium" or choice == "m":
+        return (answer == "M")
+    elif choice == "large" or choice == "L":
+        return (answer == "L")
+    else:
+        return False
+        
+#######################################################
+# Game_BotGuess ~ Returns bots guess to answer of guessing game
+#######################################################
+def Game_BotGuess(dogIndex, gamesCounter):
+    
+    if gamesCounter == 10:
+        return "quit"
+
+    guess = guessing_game_model.act(np.reshape(np.array([dogIndex]), [1, 1]))
+    if guess == 0:
+        print("Guess : Small")
+        return "Small"
+    elif guess == 1:
+        print("Guess : Medium")
+        return "Medium"
+    else:
+        print("Guess : Large")
+        return "Large"
+
+#######################################################
+# Game_MatchGameMainLoop 
+#######################################################
+def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
+
+    print("Aim of the game is to guess the size of a dog. (Small, Medium, Large). Type 'quit' to stop.")
+
+    gamesCounter = 0
+    while True:
+
+        dogIndex = random.randrange(0, numOfBreeds)
+        print()
+        print("Guess the size of a " + breeds[dogIndex])
+        
+        playerInput = None
+        if userIsPlaying:
+            playerInput = GetInput()
+        else:
+            playerInput = Game_BotGuess(dogIndex, gamesCounter)
+            gamesCounter += 1
+        
+        if playerInput == "quit":
+            print("See you next time!")
+            print()
+            break        
+        elif Game_IsCorrectChoice(playerInput, sizes[dogIndex]):
+            print("Correct!")
+        else:
+            print("Incorrect!")
 
 
 #######################################################
@@ -519,7 +556,7 @@ def evaluate(sentence):
 #   Handles responses for AIML commands
 #######################################################
 def HandleAIMLCommand(cmd, data):
-    
+
     if cmd == 0:
         Exit()                
     elif cmd == 1:
@@ -547,9 +584,12 @@ def HandleAIMLCommand(cmd, data):
     elif cmd == 12:
         ResetToyWorld()
         print("Done.")
+    elif cmd == 13:
+        Game_MatchGameMainLoop(breeds, sizes, len(breeds), True)
+    elif cmd == 14:
+        Game_MatchGameMainLoop(breeds, sizes, len(breeds), False)
     elif cmd == 99:
-        if HandleUnknownInput(data[0]) == 0:
-            print("I did not get that, please try again.")
+        HandleUnknownInput(data[0])
 
 #######################################################
 # Main loop
@@ -557,12 +597,10 @@ def HandleAIMLCommand(cmd, data):
 def MainLoop():    
     print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n"))
     while True: 
-
+    
         #Get input
         userInput = GetInput()
         
-        print(evaluate(userInput))
-
         #Get response from aiml
         answer = kern.respond(userInput)
 
