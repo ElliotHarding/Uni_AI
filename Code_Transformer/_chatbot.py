@@ -503,11 +503,8 @@ def Game_IsCorrectChoice(choice, answer):
 #######################################################
 # Game_BotGuess ~ Returns bots guess to answer of guessing game
 #######################################################
-def Game_BotGuess(dogIndex, gamesCounter):
+def Game_BotGuess(dogIndex):
     
-    if gamesCounter == 10:
-        return "quit"
-
     guess = guessing_game_model.act(np.reshape(np.array([dogIndex]), [1, 1]))
     if guess == 0:
         print("Guess : Small")
@@ -527,27 +524,37 @@ def Game_MatchGameMainLoop(breeds, sizes, numOfBreeds, userIsPlaying):
     print("Aim of the game is to guess the size of a dog. (Small, Medium, Large). Type 'quit' to stop.")
 
     gamesCounter = 0
+    correct = 0
+    incorrect = 0
     while True:
+        print()
+    
+        if gamesCounter == 10 and not userIsPlaying:
+            break
 
         dogIndex = random.randrange(0, numOfBreeds)
-        print()
         print("Guess the size of a " + breeds[dogIndex])
         
         playerInput = None
         if userIsPlaying:
             playerInput = GetInput()
         else:
-            playerInput = Game_BotGuess(dogIndex, gamesCounter)
+            playerInput = Game_BotGuess(dogIndex)
             gamesCounter += 1
         
         if playerInput == "quit":
-            print("See you next time!")
             print()
             break        
         elif Game_IsCorrectChoice(playerInput, sizes[dogIndex]):
             print("Correct!")
+            correct+=1
         else:
             print("Incorrect!")
+            incorrect+=1
+    
+    print("Correct: " + str(correct) + " Incorrect: " + str(incorrect))
+    print("See you next time!")
+    print()
 
 
 #######################################################
@@ -595,7 +602,7 @@ def HandleAIMLCommand(cmd, data):
 # Main loop
 #######################################################
 def MainLoop():    
-    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n"))
+    print(("\nHi! I'm the dog breed information chatbot.\n - Try asking me a question about a specifc breed. \n - Ask me about groups of breeds(hounds, terriers, retrievers).\n - Try and describe a breed for me to guess. \n - Ask me to tell you a dog related joke.\n - Or ask me about the toy world.\n - Or say 'Play the guessing game'.\n - Or say 'Demonstrate the guessing game'.\n"))
     while True: 
     
         #Get input
